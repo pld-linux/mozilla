@@ -39,6 +39,7 @@ Patch3:		%{name}-ldap-with-nss.patch
 Patch4:		%{name}-gfx.patch
 Patch5:		%{name}-alpha-gcc3.patch
 Patch6:		%{name}-xpcom-aliasing.patch
+Patch7:		%{name}-amd64.patch
 URL:		http://www.mozilla.org/
 %{?_with_gtk1:BuildRequires:	ORBit-devel}
 BuildRequires:	freetype-devel >= 2.1.3
@@ -204,6 +205,7 @@ Mozilla
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1 
+%patch7 -p1 
 cp -f security/coreconf/Linux2.5.mk security/coreconf/Linux2.6.mk
 
 %build
