@@ -5,11 +5,9 @@
 			# gcc2-compiled Java plugins on nest and other gcc 3.x systems.
 			# WARNING! You have to recompile galeon with gcc2 in
 			# order to get it working with this release of mozilla
-%bcond_with	debug	# compile without \--disable-debug
 %bcond_with	ft218	# compile with freetype >= 2.1.8
 %bcond_without	gnomevfs	# disable GnomeVFS support
 #
-%define	pre	rc3
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
@@ -41,6 +39,8 @@ Patch2:		%{name}-ldap_nspr_includes.patch
 Patch3:		%{name}-ldap-with-nss.patch
 Patch4:		%{name}-gfx.patch
 Patch5:		%{name}-alpha-gcc3.patch
+# http://bugzilla.mozilla.org/show_bug.cgi?id=234035
+# http://bugzilla.mozilla.org/attachment.cgi?id=149334&action=view
 Patch6:		%{name}-freetype218.patch
 URL:		http://www.mozilla.org/
 %{?with_gtk1:BuildRequires:	ORBit-devel}
@@ -263,7 +263,7 @@ cp -f /usr/share/automake/config.* build/autoconf
 cp -f /usr/share/automake/config.* nsprpub/build/autoconf
 cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
 %configure2_13 \
-	%{!?with_debug:--disable-debug} \
+	%{!?debug:--disable-debug} \
 	--disable-elf-dynstr-gc \
 	--disable-pedantic \
 	--disable-tests \
@@ -274,7 +274,7 @@ cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
 	--enable-mathml \
 	--enable-optimize="%{rpmcflags}" \
 	--enable-postscript \
-	--enable-strip \
+	%{!?debug:--enable-strip} \
 	--enable-svg \
 	--enable-svg-renderer-cairo \
 	%{?with_gtk1:--enable-toolkit-gtk} \
@@ -828,9 +828,11 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %{_datadir}/%{name}/defaults/pref/inspector.js
 %{_datadir}/%{name}/res/inspector
 
+%if %{with gnomevfs}
 %files gnomevfs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkgnomevfs.so
+%endif
 
 %files calendar
 %defattr(644,root,root,755)
