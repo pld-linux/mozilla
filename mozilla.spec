@@ -196,7 +196,7 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_datadir}/idl,%{_pixmapsdir}} \
 	$RPM_BUILD_ROOT%{_applnkdir}/Network/{Communications,Mail,Misc,News,WWW} \
 	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,icons,res,searchplugins} \
 	$RPM_BUILD_ROOT%{_libdir}/%{name}/{components,plugins} \
-	$RPM_BUILD_ROOT%{_includedir}/%{name}
+	$RPM_BUILD_ROOT{%{_includedir}/%{name},%{_pkgconfigdir}}
 
 # preparing to create register
 rm -fr dist/bin/chrome/{US,chatzilla,classic,comm,content-packs,embed,en-US,en-unix,en-win,help,inspector,messenger,modern,pipnss,pippki,toolkit,xmlterm}
@@ -223,7 +223,9 @@ cp -frL dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugin
 cp -frL dist/idl/*		$RPM_BUILD_ROOT%{_datadir}/idl
 cp -frL dist/include/*		$RPM_BUILD_ROOT%{_includedir}/%{name}
 
-install dist/bin/*.so		$RPM_BUILD_ROOT%{_libdir}
+install dist/bin/*.so $RPM_BUILD_ROOT%{_libdir}
+
+install build/unix/*.pc $RPM_BUILD_ROOT%{_pkgconfigdir}
 
 install %{SOURCE1}	$RPM_BUILD_ROOT%{_applnkdir}/Network/WWW
 install %{SOURCE4}	$RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
@@ -498,3 +500,4 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %files devel
 %defattr(644,root,root,755)
 %{_includedir}/%{name}
+%{_pkgconfigdir}/*
