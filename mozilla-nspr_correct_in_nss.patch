@@ -1,3 +1,17 @@
+diff -Nur mozilla/config/config.mk mozilla/config/config.mk
+--- mozilla/config/config.mk	Tue Dec 18 10:05:50 2001
++++ mozilla/config/config.mk.new	Tue Dec 18 10:05:32 2001
+@@ -164,9 +164,8 @@
+ NSS_LIBS	= \
+ 	$(DIST)/lib/libsmime.$(LIB_SUFFIX) \
+ 	$(DIST)/lib/libcrmf.$(LIB_SUFFIX) \
+-	$(DIST)/lib/libssl.$(LIB_SUFFIX) \
++	/usr/lib/libssl.so \
+ 	$(DIST)/lib/libnss.$(LIB_SUFFIX) \
+-	$(DIST)/lib/libssl.$(LIB_SUFFIX) \
+ 	$(DIST)/lib/libpkcs12.$(LIB_SUFFIX) \
+ 	$(DIST)/lib/libpkcs7.$(LIB_SUFFIX) \
+ 	$(DIST)/lib/libcerthi.$(LIB_SUFFIX) \
 diff -Nur mozilla/security/coreconf/Linux.mk mozilla/security/coreconf/Linux.mk
 --- mozilla/security/coreconf/Linux.mk	Sat Jun  9 19:14:57 2001
 +++ mozilla/security/coreconf/Linux.mk	Mon Dec 17 18:59:29 2001
