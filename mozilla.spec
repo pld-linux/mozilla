@@ -52,6 +52,7 @@ BuildRequires:	nss-devel >= 3.8
 %{!?_with_gtk1:BuildRequires:	pango-devel >= 1.1.0}
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	pkgconfig
+BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.0.0
