@@ -1,18 +1,71 @@
---- mozilla/security/coreconf/Linux.mk	Sat Oct 27 02:38:08 2001
-+++ mozilla/security/coreconf/Linux.mk.new	Mon Dec 17 21:25:33 2001
-@@ -99,7 +99,7 @@
- endif
- 
- OS_CFLAGS		= $(DSO_CFLAGS) $(OS_REL_CFLAGS) -ansi -Wall -pipe -DLINUX -Dlinux -D_POSIX_SOURCE -D_BSD_SOURCE -DHAVE_STRERROR
--OS_LIBS			= -L/lib $(OS_PTHREAD) -ldl -lc
-+OS_LIBS			= -L/lib $(OS_PTHREAD) -ldl -lc `nspr-config --libs`
- 
- ifdef USE_PTHREADS
- 	DEFINES		+= -D_REENTRANT
-@@ -111,5 +111,5 @@
+diff -Nur mozilla/security/coreconf/Linux.mk mozilla/security/coreconf/Linux.mk
+--- mozilla/security/coreconf/Linux.mk	Sat Jun  9 19:14:57 2001
++++ mozilla/security/coreconf/Linux.mk	Mon Dec 17 18:59:29 2001
+@@ -106,5 +106,5 @@
  DSO_LDOPTS		= -shared
  DSO_LDFLAGS		=
  
 -# INCLUDES += -I/usr/include -Y/usr/include/linux
-+INCLUDES += -I/usr/include `nspr-config --cflags`
++ INCLUDES += -I/usr/include `nspr-config --cflags`
  G++INCLUDES		= -I/usr/include/g++
+diff -Nur mozilla/security/nss/cmd/modutil/manifest.mn mozilla/security/nss/cmd/modutil/manifest.mn
+--- mozilla/security/nss/cmd/modutil/manifest.mn	Fri Dec 22 18:08:42 2000
++++ mozilla/security/nss/cmd/modutil/manifest.mn	Mon Dec 17 19:00:50 2001
+@@ -54,6 +54,6 @@
+ 
+ DEFINES = -DNSPR20
+ 
+-INCLUDES =
++INCLUDES = -I(CORE_DEPTH)/nss/lib/nss
+ 
+ USE_STATIC_LIBS = 1
+diff -Nur mozilla/security/nss/lib/ckfw/builtins/Makefile mozilla/security/nss/lib/ckfw/builtins/Makefile
+--- mozilla/security/nss/lib/ckfw/builtins/Makefile	Wed May 23 07:55:13 2001
++++ mozilla/security/nss/lib/ckfw/builtins/Makefile	Mon Dec 17 19:02:03 2001
+@@ -60,8 +60,7 @@
+ EXTRA_LIBS += \
+         $(DIST)/lib/libnssckfw.$(LIB_SUFFIX) \
+         $(DIST)/lib/libnssb.$(LIB_SUFFIX) \
+-	$(PLC_STATIC_LIB) \
+-	$(PLDS_STATIC_LIB) \
++	`nspr-config --libs` \
+ 	$(NULL)
+ 
+ endif
+diff -Nur mozilla/security/nss/lib/fortcrypt/swfort/pkcs11/Makefile mozilla/security/nss/lib/fortcrypt/swfort/pkcs11/Makefile
+--- mozilla/security/nss/lib/fortcrypt/swfort/pkcs11/Makefile	Mon Apr 30 18:40:18 2001
++++ mozilla/security/nss/lib/fortcrypt/swfort/pkcs11/Makefile	Mon Dec 17 19:03:14 2001
+@@ -92,8 +92,7 @@
+ 	$(DIST)/lib/libsoftoken.$(LIB_SUFFIX) \
+ 	$(CRYPTO_LIB) \
+ 	$(DIST)/lib/libsecutil.$(LIB_SUFFIX) \
+-	$(PLC_STATIC_LIB) \
+-	$(PLDS_STATIC_LIB) \
++	`nspr-config --libs` \
+ 	$(NULL)
+ 
+ endif
+diff -Nur mozilla/security/nss/lib/smime/manifest.mn mozilla/security/nss/lib/smime/manifest.mn
+--- mozilla/security/nss/lib/smime/manifest.mn	Thu Jan 18 21:29:04 2001
++++ mozilla/security/nss/lib/smime/manifest.mn	Mon Dec 17 19:04:36 2001
+@@ -70,6 +70,8 @@
+ 	smimever.c \
+ 	$(NULL)
+ 
++INCLUDES = -I$(CORE_DEPTH)/nss/lib/nss
++
+ REQUIRES = security dbm
+ 
+ LIBRARY_NAME = smime
+diff -Nur mozilla/security/nss/lib/ssl/manifest.mn mozilla/security/nss/lib/ssl/manifest.mn
+--- mozilla/security/nss/lib/ssl/manifest.mn	Thu Jan 18 21:29:08 2001
++++ mozilla/security/nss/lib/ssl/manifest.mn	Mon Dec 17 19:05:15 2001
+@@ -72,6 +72,8 @@
+ 	nsskea.c \
+ 	$(NULL)
+ 
++INCLUDES = $(CORE_DEPTH)/nss/lib/nss
++
+ REQUIRES = security dbm
+ 
+ LIBRARY_NAME = ssl
