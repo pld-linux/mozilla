@@ -10,12 +10,12 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
-Version:	1.1
-Release:	1
+Version:	1.2
+Release:	0.beta.0
 Epoch:		2
 License:	GPL
 Group:		X11/Applications/Networking
-Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.gz
+Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}b/src/%{name}-source-%{version}b.tar.gz
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 #Source3:	%{name}-libart.tar.bz2
@@ -26,18 +26,17 @@ Source7:	%{name}-mail.desktop
 Source8:	%{name}-news.desktop
 Source9:	%{name}-terminal.desktop
 Source10:	%{name}-venkman.desktop
-Source11:	ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Lang-PL-Build-ID-%{version}.xpi
-Source12:	ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Reg-PL-Build-ID-%{version}.xpi
+Source11:	ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Lang-PL-Build-ID-%{version}Beta.xpi
+Source12:	ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Reg-PL-Build-ID-%{version}Beta.xpi
 Source13:	http://free.of.pl/a/adgor/lang_pl-installed-chrome.txt
 Source14:	%{name}-antialiasing-howto.txt
 Patch0:		%{name}-pld-homepage.patch
 Patch1:		%{name}-gdkxft.patch
 Patch2:		%{name}-nss.patch
 Patch3:		%{name}-ldap_nspr_includes.patch
-Patch4:		http://people.redhat.com/blizzard/mozilla/gtk2_embedding/2002-04-11/gtk2_embed.patch
-Patch5:		http://people.redhat.com/blizzard/mozilla/gtk2_embedding/2002-04-11/gtk2_widget.patch
-Patch6:		gtk2mozilla_head.patch
-Patch7:		%{name}-ldap-with-nss.patch
+Patch4:		gtk2mozilla_head.patch
+Patch5:		%{name}-ldap-with-nss.patch
+Patch6:		%{name}-gfx.patch
 URL:		http://www.mozilla.org/
 BuildRequires:	ORBit-devel
 BuildRequires:	autoconf
@@ -145,10 +144,9 @@ Mozilla
 %{?_with_gdkxft:%patch1 -p1}
 %patch2 -p1
 %patch3 -p1
-#%{?_with_gtk2:%patch4 -p1}
-#%{?_with_gtk2:%patch5 -p1}
-%{?_with_gtk2:%patch6}
-%patch7 -p1
+%{?_with_gtk2:%patch4 -p1}
+%patch5 -p1
+%patch6 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
@@ -238,7 +236,7 @@ for f in build/unix/*.pc ; do
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/$(basename $f)
 done
 
-sed -e 's,lib/mozilla-1.1,lib,g;s/mozilla-1.1/mozilla/g' build/unix/mozilla-gtkmozembed.pc \
+sed -e 's,lib/mozilla-1.2b,lib,g;s/mozilla-1.2b/mozilla/g' build/unix/mozilla-gtkmozembed.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-gtkmozembed.pc
 		
 sed -e 's|/%{name}-%{version}||; s|/X11R6||' build/unix/mozilla-nspr.pc \
@@ -326,10 +324,10 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/libprldap50.so
 %attr(755,root,root) %{_libdir}/libssldap50.so
 %attr(755,root,root) %{_libdir}/libmozjs.so
-%attr(755,root,root) %{_libdir}/libmozpango.so
-%attr(755,root,root) %{_libdir}/libmozpango-thaix.so
+#%attr(755,root,root) %{_libdir}/libmozpango.so
+#%attr(755,root,root) %{_libdir}/libmozpango-thaix.so
 %attr(755,root,root) %{_libdir}/libmoz_art_lgpl.so
-%{?_with_gtk2:%attr(755,root,root) %{_libdir}/libmai.so}
+#%{?_with_gtk2:%attr(755,root,root) %{_libdir}/libmai.so}
 %{!?_with_gtk2:%attr(755,root,root) %{_libdir}/libnullplugin.so}
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
@@ -338,11 +336,11 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libappcomps.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libautoconfig.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libcaps.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libchardet.so
+#%attr(755,root,root) %{_libdir}/%{name}/components/libchardet.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libchrome.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libcomposer.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libcookie.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libctl.so
+#%attr(755,root,root) %{_libdir}/%{name}/components/libctl.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libdocshell.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libeditor.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libembedcomponents.so
@@ -350,20 +348,23 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libgfx*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libgk*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libhtmlpars.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libi18n.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libiiextras.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libimg*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libinspector.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjar50.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjsd.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjsdom.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libjsloader.so
+#%attr(755,root,root) %{_libdir}/%{name}/components/libjsloader.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjsurl.so
-%attr(755,root,root) %{_libdir}/%{name}/components/liblwbrk.so
+#%attr(755,root,root) %{_libdir}/%{name}/components/liblwbrk.so
 
 %attr(755,root,root) %{_libdir}/%{name}/components/libmork.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmoz*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnecko*.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libnkcache.so
+#%attr(755,root,root) %{_libdir}/%{name}/components/libnkcache.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libnkdatetime.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libnkfinger.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libns*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/liboji.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libp3p.so
@@ -375,13 +376,14 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/librdf.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libregviewer.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libshistory.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libstrres.so
+#%attr(755,root,root) %{_libdir}/%{name}/components/libstrres.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtransformiix.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtxmgr.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libtxtsvc.so
+#%attr(755,root,root) %{_libdir}/%{name}/components/libtxtsvc.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libtypeaheadfind.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libuconv.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libucv*.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libunicharutil.so
+#%attr(755,root,root) %{_libdir}/%{name}/components/libunicharutil.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libuniversalchardet.so
 %attr(755,root,root) %{_libdir}/%{name}/components/liburiloader.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwallet.so
@@ -434,6 +436,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/pippki.xpt
 %{_libdir}/%{name}/components/plugin.xpt
 %{_libdir}/%{name}/components/pref.xpt
+%{_libdir}/%{name}/components/prefetch.xpt
 %{_libdir}/%{name}/components/prefmigr.xpt
 %{_libdir}/%{name}/components/profile.xpt
 %{_libdir}/%{name}/components/progressDlg.xpt
@@ -446,9 +449,10 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/sidebar.xpt
 %{_libdir}/%{name}/components/signonviewer.xpt
 %{_libdir}/%{name}/components/timebomb.xpt
-%{_libdir}/%{name}/components/transformiix.xpt
+#%{_libdir}/%{name}/components/transformiix.xpt
 %{_libdir}/%{name}/components/txmgr.xpt
 #%{_libdir}/%{name}/components/txtsvc.xpt
+%{_libdir}/%{name}/components/typeaheadfind.xpt
 %{_libdir}/%{name}/components/uconv.xpt
 %{_libdir}/%{name}/components/unicharutil.xpt
 %{_libdir}/%{name}/components/uriloader.xpt
@@ -463,6 +467,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/windowwatcher.xpt
 %{_libdir}/%{name}/components/x*.xpt
 
+%{_libdir}/*.js
 %{_libdir}/%{name}/components/*.js
 %{_libdir}/%{name}/components/*.dat
 
