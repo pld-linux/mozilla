@@ -5,7 +5,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.2.1
-Release:	0.12
+Release:	0.13
 Epoch:		2
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -20,6 +20,11 @@ Source7:	%{name}-mail.desktop
 Source8:	%{name}-news.desktop
 Source9:	%{name}-terminal.desktop
 Source10:	%{name}-venkman.desktop
+Source11:	ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Lang-PL-Build-ID-%{version}.xpi
+# Source11-md5:	ff815e9e9a5b2b2184a46ce0ab3dd94e
+Source12:	ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Reg-PL-Build-ID-%{version}.xpi
+# Source12-md5:	251dc06cc99b6b9d55bf66af743a34d4
+Source13:	http://free.of.pl/a/adgor/lang_pl-installed-chrome.txt
 Source14:	%{name}-antialiasing-howto.txt
 Patch0:		%{name}-pld-homepage.patch
 Patch1:		%{name}-nss.patch
@@ -39,12 +44,14 @@ BuildRequires:	libstdc++-devel
 BuildRequires:	nss-devel >= 3.6
 BuildRequires:	nspr-devel >= 4.2.2-2
 BuildRequires:	perl-modules >= 5.6.0
+BuildRequires:	unzip
 BuildRequires:	zip >= 2.1
 Provides:	mozilla-embedded = %{version}
 Requires:	nss >= 3.6
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
+Conflicts:	mozilla-Lang-PL
 
 %define		_chromedir	%{_libdir}/%{name}/chrome
 %define		_prefix		/usr/X11R6
@@ -229,6 +236,17 @@ install dist/bin/regchrome $RPM_BUILD_ROOT%{_bindir}
 install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
 
 cp %{SOURCE14} .
+
+# pl-stuff:
+unzip %{SOURCE11} -d $RPM_BUILD_ROOT%{_libdir}
+unzip -n %{SOURCE12} -d $RPM_BUILD_ROOT%{_libdir}
+mv $RPM_BUILD_ROOT%{_libdir}/bin/chrome/* $RPM_BUILD_ROOT%{_chromedir}
+mv $RPM_BUILD_ROOT%{_libdir}/bin/searchplugins/* $RPM_BUILD_ROOT%{_libdir}/mozilla/searchplugins
+install %{SOURCE13} $RPM_BUILD_ROOT%{_chromedir}
+cd $RPM_BUILD_ROOT%{_chromedir}
+unzip PL.jar
+zip -r PL.jar locale
+rm -rf locale
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -420,12 +438,17 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/*.js
 %config %verify(not size mtime md5) %{_libdir}/%{name}/components/*.dat
 
-%{_datadir}/%{name}/chrome
+%{_chromedir}
 %{_datadir}/%{name}/defaults
 %{_datadir}/%{name}/icons
 %{_datadir}/%{name}/res
 %{_datadir}/%{name}/searchplugins
 %{_datadir}/idl/*
+
+%lang(pl) %{_chromedir}/lang_pl-installed-chrome.txt
+%lang(pl) %{_chromedir}/PL.jar
+%lang(pl) %{_chromedir}/pl-PL.jar
+%lang(pl) %{_chromedir}/pl-unix.jar
 
 %{_pixmapsdir}/mozilla.png
 %{_applnkdir}/Network/WWW/mozilla.desktop
