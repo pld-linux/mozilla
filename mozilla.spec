@@ -49,6 +49,11 @@ Obsoletes:	mozilla-irc
 %define		_prefix		/usr/X11R6
 %define		_mandir		%{_prefix}/man
 
+%define		_gcc_ver	%(%{__cc} --version | cut -b 1)
+%if %{_gcc_ver} == 2
+%define		__cxx		"%{__cc}"
+%endif
+
 %description
 Mozilla is an open-source web browser, designed for standards
 compliance, performance and portability.
