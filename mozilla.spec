@@ -153,8 +153,7 @@ cp -frL dist/bin/dtd/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/dtd
 cp -frL dist/bin/components/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/components
 cp -frL dist/bin/plugins/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins
 cp -frL dist/idl/*		$RPM_BUILD_ROOT%{_datadir}/idl
-cp -frL dist/include/*.h	$RPM_BUILD_ROOT%{_includedir}/%{name}
-cp -frL dist/include/nspr/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/nspr
+cp -frL dist/include/*		$RPM_BUILD_ROOT%{_includedir}/%{name}
 
 install dist/bin/*.so		$RPM_BUILD_ROOT%{_libdir}
 
