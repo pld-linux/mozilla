@@ -7,7 +7,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.2.1
-Release:	0.13
+Release:	0.14
 Epoch:		2
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -244,7 +244,7 @@ unzip %{SOURCE11} -d $RPM_BUILD_ROOT%{_libdir}
 unzip -n %{SOURCE12} -d $RPM_BUILD_ROOT%{_libdir}
 mv $RPM_BUILD_ROOT%{_libdir}/bin/chrome/* $RPM_BUILD_ROOT%{_chromedir}
 mv $RPM_BUILD_ROOT%{_libdir}/bin/searchplugins/* $RPM_BUILD_ROOT%{_libdir}/mozilla/searchplugins
-install %{SOURCE13} $RPM_BUILD_ROOT%{_chromedir}
+install %{SOURCE13} $RPM_BUILD_ROOT%{_chromedir}/installed-chrome.txt
 cd $RPM_BUILD_ROOT%{_chromedir}
 unzip PL.jar
 zip -r PL.jar locale
