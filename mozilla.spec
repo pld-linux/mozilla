@@ -11,6 +11,7 @@ Source1:	mozilla.sh
 Source2:	mozilla-icon.png
 Source3:	mozilla.desktop
 URL:		http://www.mozilla.org/projects/newlayout/
+BuildRequires:	libstdc++-devel
 BuildRequires:	gtk+-devel
 BuildRequires:	glib-devel
 BuildRequires:	ORBit-devel
