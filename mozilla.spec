@@ -3,15 +3,17 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
 Version:	0.0.M18
 Epoch:		1
-Release:	1
+Release:	2
 License:	NPL
 Group:		X11/Applications/Networking
 Group(de):	X11/Applikationen/Netzwerkwesen
 Group(pl):	X11/Aplikacje/Sieciowe
 Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/m18/src/%{name}-source-M18.tar.bz2
-Source1:	%{name}.sh
-Source2:	%{name}.desktop
+Source1:	%{name}.desktop
 Patch0:		%{name}-no_libnsl.patch
+Patch1:		%{name}-default-home.patch
+Patch2:		%{name}-user-agent.patch
+Patch3:		%{name}-psm.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
 BuildRequires:	libjpeg-devel
@@ -62,12 +64,16 @@ Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
 %prep
 %setup -q -n mozilla
 %patch0 -p1
+%patch1 -p0
+%patch2 -p0
+%patch3 -p1
 
 %build
 autoconf
 CXXFLAGS="-fno-rtti -fno-exceptions"
 MOZ_OPTIMIZE_FLAGS="$RPM_OPT_FLAGS"
 %configure \
+	--with-default-mozilla-five-home=%{_libdir}/mozilla \
 	--with-pthreads \
 	--enable-optimize \
 	--enable-toolkit=gtk \
@@ -119,8 +125,7 @@ cp -frL dist/include/private/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/private
 
 install dist/bin/*.so		$RPM_BUILD_ROOT%{_libdir}
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/mozilla
-install %{SOURCE2} $RPM_BUILD_ROOT%{_applnkdir}/Network/WWW
+install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Network/WWW
 cp -frL dist/bin/icons/mozicon16.xpm $RPM_BUILD_ROOT%{_datadir}/pixmaps/mozilla-icon.xpm
 
 install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}
