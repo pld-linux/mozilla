@@ -14,6 +14,15 @@ Source2:	%{name}.png
 Patch0:		%{name}-navigator-overlay-menu.patch
 Patch1:		%{name}-prefs-debug.patch
 Patch2:		%{name}-taskbar-nomozilla.patch
+Patch3:		%{name}-fix-wrapper.patch
+Patch4:		%{name}-pld-custom-settings.patch
+Patch5:		%{name}-jar-delete-files.patch
+Patch6:		%{name}-psm.patch
+Patch7:		%{name}-alpha-compiler.patch
+Patch8:		%{name}-dlopen-plugin.patch
+Patch9:		%{name}-event.patch
+Patch10:	%{name}-libc-link.patch
+Patch11:	%{name}-norpath.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
 BuildRequires:	libjpeg-devel
@@ -21,9 +30,13 @@ BuildRequires:	gtk+-devel
 BuildRequires:	ORBit-devel
 BuildRequires:	libmng-devel
 BuildRequires:	fileutils
+BuildRequires:	zip >= 2.1
+BuildRequires:	perl >= 5.6.0
+BuildRequires:	autoconf
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_prefix		/usr/X11R6
+%define		_mandir		%{_prefix}/man
 
 %description
 Mozilla is an open-source web browser, designed for standards
@@ -67,11 +80,23 @@ Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
+%patch4 -p1
+%patch5 -p1
+%patch6 -p1
+%patch7 -p1
+%patch8 -p1
+%patch9 -p1
+%patch10 -p1
+%patch11 -p1
 
 %build
+autoconf
+(cd nsprpub ; autoconf)
 CXXFLAGS="-fno-rtti -fno-exceptions" ; export CXXFLAGS
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
 # mozilla
+
 %configure \
 	--with-default-mozilla-five-home=%{_libdir}/mozilla \
 	--enable-optimize="%{rpmcflags}" \
@@ -80,13 +105,15 @@ BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
 	--enable-strip-libs \
 	--enable-nspr-autoconf \
 	--enable-new-cache \
+	--enable-mathml \
+	--enable-svg \
+	--enable-ldap \
 	--with-extensions \
 	--disable-dtd-debug \
 	--disable-debug \
 	--disable-tests \
 	--disable-pedantic \
 	--disable-short-wchar \
-	--disable-md \
 	--with-x \
 	--with-jpeg \
 	--with-zlib \
@@ -107,13 +134,15 @@ BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
 	--enable-modules=psm \
 	--enable-nspr-autoconf \
 	--enable-new-cache \
+	--enable-mathml \
+	--enable-svg \
+	--enable-ldap \
 	--with-extensions \
 	--disable-dtd-debug \
 	--disable-debug \
 	--disable-tests \
 	--disable-pedantic \
 	--disable-short-wchar \
-	--disable-md \
 	--with-x \
 	--with-jpeg \
 	--with-zlib \
@@ -121,7 +150,9 @@ BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
 	--with-mng \
 	--with-xprint
 
-%{__make}
+# we can't use %{__make} here because nss/psm uses
+# the old mozilla build system
+make
 
 %install
 rm -rf $RPM_BUILD_ROOT
