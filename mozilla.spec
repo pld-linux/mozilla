@@ -1,8 +1,8 @@
 Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
-Version:	0.9.1
-Release:	2
+Version:	0.9.2
+Release:	1
 Epoch:		1
 License:	NPL
 Group:		X11/Applications/Networking
@@ -14,7 +14,7 @@ Source2:	%{name}.png
 Patch0:		%{name}-navigator-overlay-menu.patch
 Patch1:		%{name}-taskbar-nomozilla.patch
 Patch2:		%{name}-fix-wrapper.patch
-Patch3:		%{name}-pld-custom-settings.patch
+Patch3:		%{name}-pld-homepage.patch
 Patch4:		%{name}-dlopen-plugin.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
@@ -114,12 +114,12 @@ BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_bindir},%{_applnkdir}/Network/WWW} \
 	$RPM_BUILD_ROOT%{_datadir}/{idl,pixmaps} \
-	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,dtd,icons,profile,res,searchplugins} \
+	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,dtd,icons,res,searchplugins} \
 	$RPM_BUILD_ROOT%{_libdir}/%{name}/{components,plugins} \
 	$RPM_BUILD_ROOT%{_includedir}/%{name}
 
 # preparing to create register
-rm -fr dist/bin/chrome/{chatzilla,classic,comm,embed,en-US,en-unix,en-win,help,inspector,messenger,modern,pipnss,pippki,toolkit,xmlterm}
+rm -fr dist/bin/chrome/{US,chatzilla,classic,comm,content-packs,embed,en-US,en-unix,en-win,help,inspector,messenger,modern,pipnss,pippki,toolkit,xmlterm}
 echo "skin,install,select,classic/1.0"	>> dist/bin/chrome/installed-chrome.txt
 echo "locale,install,select,en-US"	>> dist/bin/chrome/installed-chrome.txt
 
@@ -132,7 +132,6 @@ ln -s ../../share/mozilla/chrome $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome
 ln -s ../../share/mozilla/defaults $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults
 ln -s ../../share/mozilla/dtd $RPM_BUILD_ROOT%{_libdir}/%{name}/dtd
 ln -s ../../share/mozilla/icons $RPM_BUILD_ROOT%{_libdir}/%{name}/icons
-ln -s ../../share/mozilla/profile $RPM_BUILD_ROOT%{_libdir}/%{name}/profile
 ln -s ../../share/mozilla/res $RPM_BUILD_ROOT%{_libdir}/%{name}/res
 ln -s ../../share/mozilla/searchplugins $RPM_BUILD_ROOT%{_libdir}/%{name}/searchplugins
 
@@ -142,7 +141,6 @@ cp -frL dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
 cp -frL dist/bin/dtd/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/dtd
 cp -frL dist/bin/icons/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/icons
 cp -frL dist/bin/plugins/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins
-cp -frL dist/bin/profile/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/profile
 cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
 cp -frL dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
 cp -frL dist/idl/*		$RPM_BUILD_ROOT%{_datadir}/idl
@@ -176,7 +174,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}/dtd
 %dir %{_libdir}/%{name}/icons
 %dir %{_libdir}/%{name}/plugins
-%dir %{_libdir}/%{name}/profile
 %dir %{_libdir}/%{name}/res
 %dir %{_libdir}/%{name}/searchplugins
 %dir %{_datadir}/%{name}
@@ -211,11 +208,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/components/libgfx*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libgk*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libhtmlpars.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libimggif.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libimgjpeg.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libimglib2.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libimgpng.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libimgppm.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libimg*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libinspector.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjar50.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjsdom.so
@@ -223,10 +216,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/components/libjsurl.so
 %attr(755,root,root) %{_libdir}/%{name}/components/liblwbrk.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmork.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libmozbrwsr.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libmozfind.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libmozldap.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libmozxfer.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libmoz*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnecko*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkcache.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libns*.so
@@ -325,7 +315,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/%{name}/icons
 %{_datadir}/%{name}/res
 %{_datadir}/%{name}/searchplugins
-%{_datadir}/%{name}/profile
 %{_datadir}/%{name}/dtd
 
 %{_pixmapsdir}/mozilla.png
@@ -347,7 +336,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/components/libmimeemitter.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmime.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmsg*.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libsmime.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libvcard.so
 
 %{_libdir}/%{name}/components/absync.xpt
