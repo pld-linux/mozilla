@@ -16,6 +16,7 @@ BuildRequires:	libstdc++-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	gtk+-devel
 BuildRequires:	ORBit-devel
+BuildRequires:	fileutils >= 4.0y
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_prefix		/usr/X11R6
@@ -103,22 +104,22 @@ ln -s ../../share/mozilla/res $RPM_BUILD_ROOT%{_libdir}/%{name}/res
 ln -s ../../share/mozilla/icons $RPM_BUILD_ROOT%{_libdir}/%{name}/icons
 ln -s ../../share/mozilla/searchplugins $RPM_BUILD_ROOT%{_libdir}/%{name}/searchplugins
 
-cp -fr dist/bin/chrome/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
-cp -fr dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
-cp -fr dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
-cp -fr dist/bin/icons/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/icons
-cp -fr dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
-cp -fr dist/bin/components/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/components
-cp -fr dist/idl/*		$RPM_BUILD_ROOT%{_datadir}/idl
-cp -fr dist/include/*.h	$RPM_BUILD_ROOT%{_includedir}/%{name}
-cp -fr dist/include/obsolete/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/obsolete
-cp -fr dist/include/private/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/private
+cp -frL dist/bin/chrome/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
+cp -frL dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
+cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
+cp -frL dist/bin/icons/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/icons
+cp -frL dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
+cp -frL dist/bin/components/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/components
+cp -frL dist/idl/*		$RPM_BUILD_ROOT%{_datadir}/idl
+cp -frL dist/include/*.h	$RPM_BUILD_ROOT%{_includedir}/%{name}
+cp -frL dist/include/obsolete/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/obsolete
+cp -frL dist/include/private/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/private
 
 install dist/bin/*.so		$RPM_BUILD_ROOT%{_libdir}
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/mozilla
 install %{SOURCE2} $RPM_BUILD_ROOT%{_applnkdir}/Network/WWW
-cp -fr dist/bin/icons/mozicon16.xpm $RPM_BUILD_ROOT%{_datadir}/pixmaps/mozilla-icon.xpm
+cp -frL dist/bin/icons/mozicon16.xpm $RPM_BUILD_ROOT%{_datadir}/pixmaps/mozilla-icon.xpm
 
 install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}
 install dist/bin/regchrome $RPM_BUILD_ROOT%{_bindir}
