@@ -11,7 +11,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.2
-Release:	0.beta.0
+Release:	0.beta.1
 Epoch:		2
 License:	GPL
 Group:		X11/Applications/Networking
@@ -48,8 +48,8 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.4
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
-BuildRequires:	nss-devel >= 3.4.2-3.20020929
-BuildRequires:	nspr-devel >= 4.2.2.b
+BuildRequires:	nss-devel >= 3.6
+BuildRequires:	nspr-devel >= 4.2.2-2
 BuildRequires:	perl-modules >= 5.6.0
 %{!?_without_PL:BuildRequires: unzip}
 BuildRequires:	zip >= 2.1
@@ -139,8 +139,7 @@ Mozilla
 %prep
 #%setup -q -a 3 -n mozilla
 %setup -q -n mozilla
-# for update:
-#%patch0 -p1
+%patch0 -p1
 %{?_with_gdkxft:%patch1 -p1}
 %patch2 -p1
 %patch3 -p1
@@ -193,8 +192,6 @@ CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 
 %{__make}
 
-
-
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_bindir},%{_datadir}/idl,%{_pixmapsdir}} \
@@ -246,7 +243,6 @@ sed -e 's,lib/mozilla-1.2b,lib,g;s/mozilla-1.2b/mozilla/g' build/unix/mozilla-gt
 sed -e 's|/%{name}-%{version}b||; s|/X11R6||' build/unix/mozilla-nspr.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nspr.pc
 
-
 install %{SOURCE1}	$RPM_BUILD_ROOT%{_applnkdir}/Network/WWW
 install %{SOURCE4}	$RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
 install %{SOURCE5}	$RPM_BUILD_ROOT%{_applnkdir}/Network/Communications
@@ -286,7 +282,7 @@ rm -rf $RPM_BUILD_ROOT
 %post
 /sbin/ldconfig
 umask 022
-rm -f %{_libdir}/mozilla/component.reg
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 
 cd %{_chromedir}
@@ -297,7 +293,7 @@ cat *-installed-chrome.txt >installed-chrome.txt
 %post mailnews
 /sbin/ldconfig
 umask 022
-rm -f %{_libdir}/mozilla/component.reg
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 
 %postun mailnews -p /sbin/ldconfig
@@ -473,7 +469,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 
 %{_libdir}/*.js
 %{_libdir}/%{name}/components/*.js
-%{_libdir}/%{name}/components/*.dat
+%config %verify(not size mtime md5) %{_libdir}/%{name}/components/*.dat
 
 %dir %{_datadir}/%{name}/chrome
 %{_datadir}/%{name}/chrome/[!lpP]*
