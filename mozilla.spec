@@ -35,7 +35,7 @@ Patch5:		%{name}-ldap-with-nss.patch
 Patch6:		%{name}-gfx.patch
 URL:		http://www.mozilla.org/
 BuildRequires:	ORBit-devel
-BuildRequires:	Xft-devel >= 2.0-5
+BuildRequires:	Xft-devel >= 2.0-6
 BuildRequires:	autoconf
 BuildRequires:	freetype-devel >= 2.0.9
 %{?_with_gtk1:BuildRequires:	gtk+-devel}
