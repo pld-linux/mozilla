@@ -1,0 +1,1515 @@
+diff -urN mozilla.orig/build/unix/mozilla-gtkmozembed.pc.in mozilla/build/unix/mozilla-gtkmozembed.pc.in
+--- mozilla.orig/build/unix/mozilla-gtkmozembed.pc.in	Mon Oct  7 16:42:18 2002
++++ mozilla/build/unix/mozilla-gtkmozembed.pc.in	Mon Oct  7 16:57:44 2002
+@@ -7,5 +7,5 @@
+ Description: Mozilla Embedding Widget for Gtk+
+ Version: %MOZILLA_VERSION%
+ Requires: mozilla-xpcom = %MOZILLA_VERSION%
+-Libs: -L${libdir} -lgtkembedmoz -lgtksuperwin
++Libs: -L${libdir} -lgtkembedmoz
+ Cflags: -I${includedir}/gtkembedmoz
+diff -urN mozilla.orig/embedding/browser/Makefile.in mozilla/embedding/browser/Makefile.in
+--- mozilla.orig/embedding/browser/Makefile.in	Mon Oct  7 16:42:26 2002
++++ mozilla/embedding/browser/Makefile.in	Mon Oct  7 16:57:44 2002
+@@ -27,6 +27,10 @@
+ 
+ DIRS=webBrowser build chrome
+ 
++ifdef MOZ_ENABLE_GTK2
++DIRS += gtk
++endif
++
+ ifdef MOZ_ENABLE_GTK
+ DIRS += gtk
+ endif
+diff -urN mozilla.orig/embedding/browser/gtk/src/EmbedWindow.cpp mozilla/embedding/browser/gtk/src/EmbedWindow.cpp
+--- mozilla.orig/embedding/browser/gtk/src/EmbedWindow.cpp	Mon Oct  7 16:42:26 2002
++++ mozilla/embedding/browser/gtk/src/EmbedWindow.cpp	Mon Oct  7 16:57:44 2002
+@@ -226,9 +226,11 @@
+ {
+   GtkWidget* parent = GTK_WIDGET(mOwner->mOwningWidget)->parent;
+ 
++#ifdef MOZ_WIDGET_GTK
+   if (GTK_IS_CONTAINER(parent))
+     gtk_container_focus(GTK_CONTAINER(parent),
+                         GTK_DIR_TAB_FORWARD);
++#endif
+   return NS_OK;
+ }
+ 
+@@ -237,9 +239,11 @@
+ {
+   GtkWidget* parent = GTK_WIDGET(mOwner->mOwningWidget)->parent;
+ 
++#ifdef MOZ_WIDGET_GTK
+   if (GTK_IS_CONTAINER(parent))
+     gtk_container_focus(GTK_CONTAINER(parent),
+                         GTK_DIR_TAB_BACKWARD);
++#endif
+   return NS_OK;
+ }
+ 
+@@ -405,7 +409,9 @@
+            0, 0,
+            sTipWindow->allocation.width, sTipWindow->allocation.height);
+ 
++#ifdef MOZ_WIDGET_GTK
+   gtk_widget_popup(sTipWindow, aXCoords + root_x, aYCoords + root_y);
++#endif /* MOZ_WIDGET_GTK */
+   
+   nsMemory::Free( (void*)tipString );
+ 
+diff -urN mozilla.orig/embedding/browser/gtk/src/Makefile.in mozilla/embedding/browser/gtk/src/Makefile.in
+--- mozilla.orig/embedding/browser/gtk/src/Makefile.in	Mon Oct  7 16:42:26 2002
++++ mozilla/embedding/browser/gtk/src/Makefile.in	Mon Oct  7 16:57:44 2002
+@@ -56,6 +56,11 @@
+ 		EmbedWindowCreator.cpp \
+ 		EmbedStream.cpp
+ 
++ifdef MOZ_ENABLE_GTK2
++CSRCS           = \
++		gtkmozembedmarshal.c
++endif
++
+ ifdef BUILD_STATIC_LIBS
+ # Static build stuff
+ DEFINES         += -D_BUILD_STATIC_BIN=1
+@@ -88,6 +93,7 @@
+ 		gtkmozembed.h \
+ 		gtkmozembed_internal.h
+ 
++ifdef MOZ_ENABLE_GTK
+ EXTRA_DSO_LDOPTS = \
+ 		$(MOZ_COMPONENT_LIBS) \
+ 		$(XPCOM_GLUE_LIBS) \
+@@ -95,6 +101,16 @@
+ 		$(NULL)
+ 
+ EXTRA_DSO_LDOPTS += $(MOZ_GTK_LDFLAGS)
++endif
++
++ifdef MOZ_ENABLE_GTK2
++EXTRA_DSO_LDOPTS = \
++		$(MOZ_COMPONENT_LIBS) \
++		$(XPCOM_GLUE_LIBS) \
++		$(NULL)
++
++EXTRA_DSO_LDOPTS += $(MOZ_GTK_LDFLAGS) $(MOZ_GTK2_LIBS)
++endif
+ 
+ include $(topsrcdir)/config/rules.mk
+ 
+@@ -109,7 +125,8 @@
+ endif
+ endif
+ 
+-CXXFLAGS        += $(MOZ_GTK_CFLAGS)
++CXXFLAGS        += $(MOZ_GTK_CFLAGS) $(MOZ_GTK2_CFLAGS)
++CFLAGS          += $(MOZ_GTK_CFLAGS) $(MOZ_GTK2_CFLAGS)
+ 
+ ifdef BUILD_STATIC_LIBS
+ 
+diff -urN mozilla.orig/embedding/browser/gtk/src/gtkmozembed2.cpp mozilla/embedding/browser/gtk/src/gtkmozembed2.cpp
+--- mozilla.orig/embedding/browser/gtk/src/gtkmozembed2.cpp	Mon Oct  7 16:42:26 2002
++++ mozilla/embedding/browser/gtk/src/gtkmozembed2.cpp	Mon Oct  7 16:57:44 2002
+@@ -36,11 +36,32 @@
+ #include <nsXPIDLString.h>
+ #include <nsReadableUtils.h>
+ 
++#ifdef MOZ_WIDGET_GTK
++
+ // so we can get callbacks from the mozarea
+ #include <gtkmozarea.h>
+ 
++// so we get the right marshaler for gtk 1.2
++#define gtkmozembed_VOID__INT_UINT \
++  gtk_marshal_NONE__INT_INT
++#define gtkmozembed_VOID__POINTER_INT_INT \
++  gtk_marshal_NONE__POINTER_INT_INT
++#define gtkmozembed_VOID__POINTER_INT_UINT \
++  gtk_marshal_NONE__POINTER_INT_INT
++#define gtkmozembed_VOID__POINTER_INT_POINTER \
++  gtk_marshal_NONE__POINTER_INT_POINTER
++
++#endif /* MOZ_WIDGET_GTK */
++
++#ifdef MOZ_WIDGET_GTK2
++
++#include "gtkmozembedmarshal.h"
++
++#endif /* MOZ_WIDGET_GTK2 */
++
+ class nsIDirectoryServiceProvider;
+ 
++#ifdef MOZ_WIDGET_GTK
+ // Some "massaged" enum information for the GTK Type System
+ static GtkFlagValue gtk_moz_embed_progress_flags_values[] = {
+   { GTK_MOZ_EMBED_FLAG_START,
+@@ -138,6 +159,7 @@
+   { 0,
+     NULL, NULL }
+ };
++#endif /* MOZ_WIDGET_GTK */
+ 
+ 
+ // class and instance initialization
+@@ -180,6 +202,7 @@
+ 		       GdkEventFocus *aGdkFocusEvent,
+ 		       GtkMozEmbed   *aEmbed);
+ 
++#ifdef MOZ_WIDGET_GTK
+ // signal handlers for tracking the focus and and focus out events on
+ // the toplevel window.
+ 
+@@ -189,6 +212,7 @@
+ static void
+ handle_toplevel_focus_out(GtkMozArea    *aArea,
+ 			  GtkMozEmbed   *aEmbed);
++#endif /* MOZ_WIDGET_GTK */
+ 
+ // globals for this type of widget
+ 
+@@ -249,191 +273,193 @@
+   moz_embed_signals[LINK_MESSAGE] = 
+     gtk_signal_new ("link_message",
+ 		    GTK_RUN_FIRST,
+-		    object_class->type,
++		    GTK_CLASS_TYPE(klass),
+ 		    GTK_SIGNAL_OFFSET(GtkMozEmbedClass, link_message),
+ 		    gtk_marshal_NONE__NONE,
+ 		    GTK_TYPE_NONE, 0);
+   moz_embed_signals[JS_STATUS] =
+     gtk_signal_new ("js_status",
+ 		    GTK_RUN_FIRST,
+-		    object_class->type,
++		    GTK_CLASS_TYPE(klass),
+ 		    GTK_SIGNAL_OFFSET(GtkMozEmbedClass, js_status),
+ 		    gtk_marshal_NONE__NONE,
+ 		    GTK_TYPE_NONE, 0);
+   moz_embed_signals[LOCATION] =
+     gtk_signal_new ("location",
+ 		    GTK_RUN_FIRST,
+-		    object_class->type,
++		    GTK_CLASS_TYPE(klass),
+ 		    GTK_SIGNAL_OFFSET(GtkMozEmbedClass, location),
+ 		    gtk_marshal_NONE__NONE,
+ 		    GTK_TYPE_NONE, 0);
+   moz_embed_signals[TITLE] = 
+     gtk_signal_new("title",
+ 		   GTK_RUN_FIRST,
+-		   object_class->type,
++		   GTK_CLASS_TYPE(klass),
+ 		   GTK_SIGNAL_OFFSET(GtkMozEmbedClass, title),
+ 		   gtk_marshal_NONE__NONE,
+ 		   GTK_TYPE_NONE, 0);
+   moz_embed_signals[PROGRESS] =
+     gtk_signal_new("progress",
+ 		   GTK_RUN_FIRST,
+-		   object_class->type,
++		   GTK_CLASS_TYPE(klass),
+ 		   GTK_SIGNAL_OFFSET(GtkMozEmbedClass, progress),
+ 		   gtk_marshal_NONE__INT_INT,
+ 		   GTK_TYPE_NONE, 2, GTK_TYPE_INT, GTK_TYPE_INT);
+   moz_embed_signals[PROGRESS_ALL] = 
+     gtk_signal_new("progress_all",
+ 		   GTK_RUN_FIRST,
+-		   object_class->type,
++		   GTK_CLASS_TYPE(klass),
+ 		   GTK_SIGNAL_OFFSET(GtkMozEmbedClass, progress_all),
+-		   gtk_marshal_NONE__POINTER_INT_INT,
++		   gtkmozembed_VOID__POINTER_INT_INT,
+ 		   GTK_TYPE_NONE, 3, GTK_TYPE_STRING,
+ 		   GTK_TYPE_INT, GTK_TYPE_INT);
+   moz_embed_signals[NET_STATE] =
+     gtk_signal_new("net_state",
+ 		   GTK_RUN_FIRST,
+-		   object_class->type,
++		   GTK_CLASS_TYPE(klass),
+ 		   GTK_SIGNAL_OFFSET(GtkMozEmbedClass, net_state),
+-		   gtk_marshal_NONE__INT_INT,
++		   gtkmozembed_VOID__INT_UINT,
+ 		   GTK_TYPE_NONE, 2, GTK_TYPE_INT, GTK_TYPE_UINT);
+   moz_embed_signals[NET_STATE_ALL] =
+     gtk_signal_new("net_state_all",
+ 		   GTK_RUN_FIRST,
+-		   object_class->type,
++		   GTK_CLASS_TYPE(klass),
+ 		   GTK_SIGNAL_OFFSET(GtkMozEmbedClass, net_state_all),
+-		   gtk_marshal_NONE__POINTER_INT_INT,
++		   gtkmozembed_VOID__POINTER_INT_UINT,
+ 		   GTK_TYPE_NONE, 3, GTK_TYPE_STRING,
+ 		   GTK_TYPE_INT, GTK_TYPE_UINT);
+   moz_embed_signals[NET_START] =
+     gtk_signal_new("net_start",
+ 		   GTK_RUN_FIRST,
+-		   object_class->type,
++		   GTK_CLASS_TYPE(klass),
+ 		   GTK_SIGNAL_OFFSET(GtkMozEmbedClass, net_start),
+ 		   gtk_marshal_NONE__NONE,
+ 		   GTK_TYPE_NONE, 0);
+   moz_embed_signals[NET_STOP] =
+     gtk_signal_new("net_stop",
+ 		   GTK_RUN_FIRST,
+-		   object_class->type,
++		   GTK_CLASS_TYPE(klass),
+ 		   GTK_SIGNAL_OFFSET(GtkMozEmbedClass, net_stop),
+ 		   gtk_marshal_NONE__NONE,
+ 		   GTK_TYPE_NONE, 0);
+   moz_embed_signals[NEW_WINDOW] =
+     gtk_signal_new("new_window",
+ 		   GTK_RUN_FIRST,
+-		   object_class->type,
++		   GTK_CLASS_TYPE(klass),
+ 		   GTK_SIGNAL_OFFSET(GtkMozEmbedClass, new_window),
+ 		   gtk_marshal_NONE__POINTER_UINT,
+ 		   GTK_TYPE_NONE, 2, GTK_TYPE_POINTER, GTK_TYPE_UINT);
+   moz_embed_signals[VISIBILITY] =
+     gtk_signal_new("visibility",
+ 		   GTK_RUN_FIRST,
+-		   object_class->type,
++		   GTK_CLASS_TYPE(klass),
+ 		   GTK_SIGNAL_OFFSET(GtkMozEmbedClass, visibility),
+ 		   gtk_marshal_NONE__BOOL,
+ 		   GTK_TYPE_NONE, 1, GTK_TYPE_BOOL);
+   moz_embed_signals[DESTROY_BROWSER] =
+     gtk_signal_new("destroy_browser",
+ 		   GTK_RUN_FIRST,
+-		   object_class->type,
++		   GTK_CLASS_TYPE(klass),
+ 		   GTK_SIGNAL_OFFSET(GtkMozEmbedClass, destroy_brsr),
+ 		   gtk_marshal_NONE__NONE,
+ 		   GTK_TYPE_NONE, 0);
+   moz_embed_signals[OPEN_URI] = 
+     gtk_signal_new("open_uri",
+ 		   GTK_RUN_LAST,
+-		   object_class->type,
++		   GTK_CLASS_TYPE(klass),
+ 		   GTK_SIGNAL_OFFSET(GtkMozEmbedClass, open_uri),
+ 		   gtk_marshal_BOOL__POINTER,
+ 		   GTK_TYPE_BOOL, 1, GTK_TYPE_STRING);
+   moz_embed_signals[SIZE_TO] =
+     gtk_signal_new("size_to",
+ 		   GTK_RUN_LAST,
+-		   object_class->type,
++		   GTK_CLASS_TYPE(klass),
+ 		   GTK_SIGNAL_OFFSET(GtkMozEmbedClass, size_to),
+ 		   gtk_marshal_NONE__INT_INT,
+ 		   GTK_TYPE_NONE, 2, GTK_TYPE_INT, GTK_TYPE_INT);
+   moz_embed_signals[DOM_KEY_DOWN] =
+     gtk_signal_new("dom_key_down",
+ 		   GTK_RUN_LAST,
+-		   object_class->type,
++		   GTK_CLASS_TYPE(klass),
+ 		   GTK_SIGNAL_OFFSET(GtkMozEmbedClass, dom_key_down),
+ 		   gtk_marshal_BOOL__POINTER,
+ 		   GTK_TYPE_BOOL, 1, GTK_TYPE_POINTER);
+   moz_embed_signals[DOM_KEY_PRESS] =
+     gtk_signal_new("dom_key_press",
+ 		   GTK_RUN_LAST,
+-		   object_class->type,
++		   GTK_CLASS_TYPE(klass),
+ 		   GTK_SIGNAL_OFFSET(GtkMozEmbedClass, dom_key_press),
+ 		   gtk_marshal_BOOL__POINTER,
+ 		   GTK_TYPE_BOOL, 1, GTK_TYPE_POINTER);
+   moz_embed_signals[DOM_KEY_UP] =
+     gtk_signal_new("dom_key_up",
+ 		   GTK_RUN_LAST,
+-		   object_class->type,
++		   GTK_CLASS_TYPE(klass),
+ 		   GTK_SIGNAL_OFFSET(GtkMozEmbedClass, dom_key_up),
+ 		   gtk_marshal_BOOL__POINTER,
+ 		   GTK_TYPE_BOOL, 1, GTK_TYPE_POINTER);
+   moz_embed_signals[DOM_MOUSE_DOWN] =
+     gtk_signal_new("dom_mouse_down",
+ 		   GTK_RUN_LAST,
+-		   object_class->type,
++		   GTK_CLASS_TYPE(klass),
+ 		   GTK_SIGNAL_OFFSET(GtkMozEmbedClass, dom_mouse_down),
+ 		   gtk_marshal_BOOL__POINTER,
+ 		   GTK_TYPE_BOOL, 1, GTK_TYPE_POINTER);
+   moz_embed_signals[DOM_MOUSE_UP] =
+     gtk_signal_new("dom_mouse_up",
+ 		   GTK_RUN_LAST,
+-		   object_class->type,
++		   GTK_CLASS_TYPE(klass),
+ 		   GTK_SIGNAL_OFFSET(GtkMozEmbedClass, dom_mouse_up),
+ 		   gtk_marshal_BOOL__POINTER,
+ 		   GTK_TYPE_BOOL, 1, GTK_TYPE_POINTER);
+   moz_embed_signals[DOM_MOUSE_CLICK] =
+     gtk_signal_new("dom_mouse_click",
+ 		   GTK_RUN_LAST,
+-		   object_class->type,
++		   GTK_CLASS_TYPE(klass),
+ 		   GTK_SIGNAL_OFFSET(GtkMozEmbedClass, dom_mouse_click),
+ 		   gtk_marshal_BOOL__POINTER,
+ 		   GTK_TYPE_BOOL, 1, GTK_TYPE_POINTER);
+   moz_embed_signals[DOM_MOUSE_DBL_CLICK] =
+     gtk_signal_new("dom_mouse_dbl_click",
+ 		   GTK_RUN_LAST,
+-		   object_class->type,
++		   GTK_CLASS_TYPE(klass),
+ 		   GTK_SIGNAL_OFFSET(GtkMozEmbedClass, dom_mouse_dbl_click),
+ 		   gtk_marshal_BOOL__POINTER,
+ 		   GTK_TYPE_BOOL, 1, GTK_TYPE_POINTER);
+   moz_embed_signals[DOM_MOUSE_OVER] =
+     gtk_signal_new("dom_mouse_over",
+ 		   GTK_RUN_LAST,
+-		   object_class->type,
++		   GTK_CLASS_TYPE(klass),
+ 		   GTK_SIGNAL_OFFSET(GtkMozEmbedClass, dom_mouse_over),
+ 		   gtk_marshal_BOOL__POINTER,
+ 		   GTK_TYPE_BOOL, 1, GTK_TYPE_POINTER);
+   moz_embed_signals[DOM_MOUSE_OUT] =
+     gtk_signal_new("dom_mouse_out",
+ 		   GTK_RUN_LAST,
+-		   object_class->type,
++		   GTK_CLASS_TYPE(klass),
+ 		   GTK_SIGNAL_OFFSET(GtkMozEmbedClass, dom_mouse_out),
+ 		   gtk_marshal_BOOL__POINTER,
+ 		   GTK_TYPE_BOOL, 1, GTK_TYPE_POINTER);
+   moz_embed_signals[SECURITY_CHANGE] =
+     gtk_signal_new("security_change",
+ 		   GTK_RUN_LAST,
+-		   object_class->type,
++		   GTK_CLASS_TYPE(klass),
+ 		   GTK_SIGNAL_OFFSET(GtkMozEmbedClass, security_change),
+ 		   gtk_marshal_NONE__POINTER_UINT,
+ 		   GTK_TYPE_NONE, 2, GTK_TYPE_POINTER, GTK_TYPE_UINT);
+   moz_embed_signals[STATUS_CHANGE] =
+     gtk_signal_new("status_change",
+ 		   GTK_RUN_LAST,
+-		   object_class->type,
++		   GTK_CLASS_TYPE(klass),
+ 		   GTK_SIGNAL_OFFSET(GtkMozEmbedClass, status_change),
+-		   gtk_marshal_NONE__POINTER_INT_POINTER,
++		   gtkmozembed_VOID__POINTER_INT_POINTER,
+ 		   GTK_TYPE_NONE, 3,
+ 		   GTK_TYPE_POINTER, GTK_TYPE_INT, GTK_TYPE_POINTER);
+ 
++#ifdef MOZ_WIDGET_GTK
+   gtk_object_class_add_signals(object_class, moz_embed_signals,
+ 			       EMBED_LAST_SIGNAL);
++#endif /* MOZ_WIDGET_GTK */
+ 
+ }
+ 
+@@ -443,6 +469,8 @@
+   EmbedPrivate *priv = new EmbedPrivate();
+   embed->data = priv;
+   gtk_widget_set_name(GTK_WIDGET(embed), "gtkmozembed");
++
++  GTK_WIDGET_UNSET_FLAGS (GTK_WIDGET(embed), GTK_NO_WINDOW);
+ }
+ 
+ GtkWidget *
+@@ -538,6 +566,7 @@
+ 				 embed,
+ 				 GTK_OBJECT(child_widget));
+ 
++#ifdef MOZ_WIDGET_GTK
+   // connect to the toplevel focus out events for the child
+   GtkMozArea *mozarea = GTK_MOZAREA(child_widget);
+   gtk_signal_connect_while_alive(GTK_OBJECT(mozarea),
+@@ -551,6 +580,7 @@
+ 				 GTK_SIGNAL_FUNC(handle_toplevel_focus_out),
+ 				 embed,
+ 				 GTK_OBJECT(mozarea));
++#endif /* MOZ_WIDGET_GTK */
+ }
+ 
+ static void
+@@ -663,6 +693,8 @@
+   return FALSE;
+ }
+ 
++#ifdef MOZ_WIDGET_GTK
++
+ static void
+ handle_toplevel_focus_in (GtkMozArea    *aArea,
+ 			  GtkMozEmbed   *aEmbed)
+@@ -683,6 +715,8 @@
+   embedPrivate->TopLevelFocusOut();
+ }
+ 
++#endif /* MOZ_WIDGET_GTK */
++
+ // Widget methods
+ 
+ void
+@@ -1011,6 +1045,8 @@
+   return embedPrivate->mChromeMask;
+ }
+ 
++#ifdef MOZ_WIDGET_GTK
++
+ GtkType
+ gtk_moz_embed_progress_flags_get_type(void)
+ {
+@@ -1059,6 +1095,8 @@
+   return chrome_flags_type;
+ }
+ 
++#endif /* MOZ_WIDGET_GTK */
++
+ void
+ gtk_moz_embed_get_nsIWebBrowser  (GtkMozEmbed *embed, nsIWebBrowser **retval)
+ {
+@@ -1183,14 +1221,16 @@
+   moz_embed_single_signals[NEW_WINDOW_ORPHAN] =
+     gtk_signal_new("new_window_orphan",
+ 		   GTK_RUN_FIRST,
+-		   object_class->type,
++		   GTK_CLASS_TYPE(klass),
+ 		   GTK_SIGNAL_OFFSET(GtkMozEmbedSingleClass,
+ 				     new_window_orphan),
+ 		   gtk_marshal_NONE__POINTER_UINT,
+ 		   GTK_TYPE_NONE, 2, GTK_TYPE_POINTER, GTK_TYPE_UINT);
+   
++#ifdef MOZ_WIDGET_GTK
+   gtk_object_class_add_signals(object_class, moz_embed_single_signals,
+ 			       SINGLE_LAST_SIGNAL);
++#endif /* MOZ_WIDGET_GTK */
+ }
+ 
+ static void
+diff -urN mozilla.orig/embedding/browser/gtk/src/gtkmozembedmarshal.c mozilla/embedding/browser/gtk/src/gtkmozembedmarshal.c
+--- mozilla.orig/embedding/browser/gtk/src/gtkmozembedmarshal.c	Thu Jan  1 01:00:00 1970
++++ mozilla/embedding/browser/gtk/src/gtkmozembedmarshal.c	Mon Oct  7 16:57:44 2002
+@@ -0,0 +1,203 @@
++
++#include	<glib-object.h>
++
++
++#ifdef G_ENABLE_DEBUG
++#define g_marshal_value_peek_boolean(v)  g_value_get_boolean (v)
++#define g_marshal_value_peek_char(v)     g_value_get_char (v)
++#define g_marshal_value_peek_uchar(v)    g_value_get_uchar (v)
++#define g_marshal_value_peek_int(v)      g_value_get_int (v)
++#define g_marshal_value_peek_uint(v)     g_value_get_uint (v)
++#define g_marshal_value_peek_long(v)     g_value_get_long (v)
++#define g_marshal_value_peek_ulong(v)    g_value_get_ulong (v)
++#define g_marshal_value_peek_int64(v)    g_value_get_int64 (v)
++#define g_marshal_value_peek_uint64(v)   g_value_get_uint64 (v)
++#define g_marshal_value_peek_enum(v)     g_value_get_enum (v)
++#define g_marshal_value_peek_flags(v)    g_value_get_flags (v)
++#define g_marshal_value_peek_float(v)    g_value_get_float (v)
++#define g_marshal_value_peek_double(v)   g_value_get_double (v)
++#define g_marshal_value_peek_string(v)   (char*) g_value_get_string (v)
++#define g_marshal_value_peek_param(v)    g_value_get_param (v)
++#define g_marshal_value_peek_boxed(v)    g_value_get_boxed (v)
++#define g_marshal_value_peek_pointer(v)  g_value_get_pointer (v)
++#define g_marshal_value_peek_object(v)   g_value_get_object (v)
++#else /* !G_ENABLE_DEBUG */
++/* WARNING: This code accesses GValues directly, which is UNSUPPORTED API.
++ *          Do not access GValues directly in your code. Instead, use the
++ *          g_value_get_*() functions
++ */
++#define g_marshal_value_peek_boolean(v)  (v)->data[0].v_int
++#define g_marshal_value_peek_char(v)     (v)->data[0].v_int
++#define g_marshal_value_peek_uchar(v)    (v)->data[0].v_uint
++#define g_marshal_value_peek_int(v)      (v)->data[0].v_int
++#define g_marshal_value_peek_uint(v)     (v)->data[0].v_uint
++#define g_marshal_value_peek_long(v)     (v)->data[0].v_long
++#define g_marshal_value_peek_ulong(v)    (v)->data[0].v_ulong
++#define g_marshal_value_peek_int64(v)    (v)->data[0].v_int64
++#define g_marshal_value_peek_uint64(v)   (v)->data[0].v_uint64
++#define g_marshal_value_peek_enum(v)     (v)->data[0].v_int
++#define g_marshal_value_peek_flags(v)    (v)->data[0].v_uint
++#define g_marshal_value_peek_float(v)    (v)->data[0].v_float
++#define g_marshal_value_peek_double(v)   (v)->data[0].v_double
++#define g_marshal_value_peek_string(v)   (v)->data[0].v_pointer
++#define g_marshal_value_peek_param(v)    (v)->data[0].v_pointer
++#define g_marshal_value_peek_boxed(v)    (v)->data[0].v_pointer
++#define g_marshal_value_peek_pointer(v)  (v)->data[0].v_pointer
++#define g_marshal_value_peek_object(v)   (v)->data[0].v_pointer
++#endif /* !G_ENABLE_DEBUG */
++
++
++/* NONE:INT,UINT (/dev/stdin:1) */
++void
++gtkmozembed_VOID__INT_UINT (GClosure     *closure,
++                            GValue       *return_value,
++                            guint         n_param_values,
++                            const GValue *param_values,
++                            gpointer      invocation_hint,
++                            gpointer      marshal_data)
++{
++  typedef void (*GMarshalFunc_VOID__INT_UINT) (gpointer     data1,
++                                               gint         arg_1,
++                                               guint        arg_2,
++                                               gpointer     data2);
++  register GMarshalFunc_VOID__INT_UINT callback;
++  register GCClosure *cc = (GCClosure*) closure;
++  register gpointer data1, data2;
++
++  g_return_if_fail (n_param_values == 3);
++
++  if (G_CCLOSURE_SWAP_DATA (closure))
++    {
++      data1 = closure->data;
++      data2 = g_value_peek_pointer (param_values + 0);
++    }
++  else
++    {
++      data1 = g_value_peek_pointer (param_values + 0);
++      data2 = closure->data;
++    }
++  callback = (GMarshalFunc_VOID__INT_UINT) (marshal_data ? marshal_data : cc->callback);
++
++  callback (data1,
++            g_marshal_value_peek_int (param_values + 1),
++            g_marshal_value_peek_uint (param_values + 2),
++            data2);
++}
++
++/* NONE:POINTER,INT,INT (/dev/stdin:2) */
++void
++gtkmozembed_VOID__POINTER_INT_INT (GClosure     *closure,
++                                   GValue       *return_value,
++                                   guint         n_param_values,
++                                   const GValue *param_values,
++                                   gpointer      invocation_hint,
++                                   gpointer      marshal_data)
++{
++  typedef void (*GMarshalFunc_VOID__POINTER_INT_INT) (gpointer     data1,
++                                                      gpointer     arg_1,
++                                                      gint         arg_2,
++                                                      gint         arg_3,
++                                                      gpointer     data2);
++  register GMarshalFunc_VOID__POINTER_INT_INT callback;
++  register GCClosure *cc = (GCClosure*) closure;
++  register gpointer data1, data2;
++
++  g_return_if_fail (n_param_values == 4);
++
++  if (G_CCLOSURE_SWAP_DATA (closure))
++    {
++      data1 = closure->data;
++      data2 = g_value_peek_pointer (param_values + 0);
++    }
++  else
++    {
++      data1 = g_value_peek_pointer (param_values + 0);
++      data2 = closure->data;
++    }
++  callback = (GMarshalFunc_VOID__POINTER_INT_INT) (marshal_data ? marshal_data : cc->callback);
++
++  callback (data1,
++            g_marshal_value_peek_pointer (param_values + 1),
++            g_marshal_value_peek_int (param_values + 2),
++            g_marshal_value_peek_int (param_values + 3),
++            data2);
++}
++
++/* NONE:POINTER,INT,UINT (/dev/stdin:3) */
++void
++gtkmozembed_VOID__POINTER_INT_UINT (GClosure     *closure,
++                                    GValue       *return_value,
++                                    guint         n_param_values,
++                                    const GValue *param_values,
++                                    gpointer      invocation_hint,
++                                    gpointer      marshal_data)
++{
++  typedef void (*GMarshalFunc_VOID__POINTER_INT_UINT) (gpointer     data1,
++                                                       gpointer     arg_1,
++                                                       gint         arg_2,
++                                                       guint        arg_3,
++                                                       gpointer     data2);
++  register GMarshalFunc_VOID__POINTER_INT_UINT callback;
++  register GCClosure *cc = (GCClosure*) closure;
++  register gpointer data1, data2;
++
++  g_return_if_fail (n_param_values == 4);
++
++  if (G_CCLOSURE_SWAP_DATA (closure))
++    {
++      data1 = closure->data;
++      data2 = g_value_peek_pointer (param_values + 0);
++    }
++  else
++    {
++      data1 = g_value_peek_pointer (param_values + 0);
++      data2 = closure->data;
++    }
++  callback = (GMarshalFunc_VOID__POINTER_INT_UINT) (marshal_data ? marshal_data : cc->callback);
++
++  callback (data1,
++            g_marshal_value_peek_pointer (param_values + 1),
++            g_marshal_value_peek_int (param_values + 2),
++            g_marshal_value_peek_uint (param_values + 3),
++            data2);
++}
++
++/* NONE:POINTER,INT,POINTER (/dev/stdin:4) */
++void
++gtkmozembed_VOID__POINTER_INT_POINTER (GClosure     *closure,
++                                       GValue       *return_value,
++                                       guint         n_param_values,
++                                       const GValue *param_values,
++                                       gpointer      invocation_hint,
++                                       gpointer      marshal_data)
++{
++  typedef void (*GMarshalFunc_VOID__POINTER_INT_POINTER) (gpointer     data1,
++                                                          gpointer     arg_1,
++                                                          gint         arg_2,
++                                                          gpointer     arg_3,
++                                                          gpointer     data2);
++  register GMarshalFunc_VOID__POINTER_INT_POINTER callback;
++  register GCClosure *cc = (GCClosure*) closure;
++  register gpointer data1, data2;
++
++  g_return_if_fail (n_param_values == 4);
++
++  if (G_CCLOSURE_SWAP_DATA (closure))
++    {
++      data1 = closure->data;
++      data2 = g_value_peek_pointer (param_values + 0);
++    }
++  else
++    {
++      data1 = g_value_peek_pointer (param_values + 0);
++      data2 = closure->data;
++    }
++  callback = (GMarshalFunc_VOID__POINTER_INT_POINTER) (marshal_data ? marshal_data : cc->callback);
++
++  callback (data1,
++            g_marshal_value_peek_pointer (param_values + 1),
++            g_marshal_value_peek_int (param_values + 2),
++            g_marshal_value_peek_pointer (param_values + 3),
++            data2);
++}
++
+diff -urN mozilla.orig/embedding/browser/gtk/src/gtkmozembedmarshal.h mozilla/embedding/browser/gtk/src/gtkmozembedmarshal.h
+--- mozilla.orig/embedding/browser/gtk/src/gtkmozembedmarshal.h	Thu Jan  1 01:00:00 1970
++++ mozilla/embedding/browser/gtk/src/gtkmozembedmarshal.h	Mon Oct  7 16:57:44 2002
+@@ -0,0 +1,48 @@
++
++#ifndef __gtkmozembed_MARSHAL_H__
++#define __gtkmozembed_MARSHAL_H__
++
++#include	<glib-object.h>
++
++G_BEGIN_DECLS
++
++/* NONE:INT,UINT (/dev/stdin:1) */
++extern void gtkmozembed_VOID__INT_UINT (GClosure     *closure,
++                                        GValue       *return_value,
++                                        guint         n_param_values,
++                                        const GValue *param_values,
++                                        gpointer      invocation_hint,
++                                        gpointer      marshal_data);
++#define gtkmozembed_NONE__INT_UINT	gtkmozembed_VOID__INT_UINT
++
++/* NONE:POINTER,INT,INT (/dev/stdin:2) */
++extern void gtkmozembed_VOID__POINTER_INT_INT (GClosure     *closure,
++                                               GValue       *return_value,
++                                               guint         n_param_values,
++                                               const GValue *param_values,
++                                               gpointer      invocation_hint,
++                                               gpointer      marshal_data);
++#define gtkmozembed_NONE__POINTER_INT_INT	gtkmozembed_VOID__POINTER_INT_INT
++
++/* NONE:POINTER,INT,UINT (/dev/stdin:3) */
++extern void gtkmozembed_VOID__POINTER_INT_UINT (GClosure     *closure,
++                                                GValue       *return_value,
++                                                guint         n_param_values,
++                                                const GValue *param_values,
++                                                gpointer      invocation_hint,
++                                                gpointer      marshal_data);
++#define gtkmozembed_NONE__POINTER_INT_UINT	gtkmozembed_VOID__POINTER_INT_UINT
++
++/* NONE:POINTER,INT,POINTER (/dev/stdin:4) */
++extern void gtkmozembed_VOID__POINTER_INT_POINTER (GClosure     *closure,
++                                                   GValue       *return_value,
++                                                   guint         n_param_values,
++                                                   const GValue *param_values,
++                                                   gpointer      invocation_hint,
++                                                   gpointer      marshal_data);
++#define gtkmozembed_NONE__POINTER_INT_POINTER	gtkmozembed_VOID__POINTER_INT_POINTER
++
++G_END_DECLS
++
++#endif /* __gtkmozembed_MARSHAL_H__ */
++
+diff -urN mozilla.orig/embedding/browser/gtk/src/gtkmozembedmarshal.txt mozilla/embedding/browser/gtk/src/gtkmozembedmarshal.txt
+--- mozilla.orig/embedding/browser/gtk/src/gtkmozembedmarshal.txt	Thu Jan  1 01:00:00 1970
++++ mozilla/embedding/browser/gtk/src/gtkmozembedmarshal.txt	Mon Oct  7 16:57:44 2002
+@@ -0,0 +1,4 @@
++NONE:INT,UINT
++NONE:POINTER,INT,INT
++NONE:POINTER,INT,UINT
++NONE:POINTER,INT,POINTER
+diff -urN mozilla.orig/widget/src/gtk2/nsAppShell.cpp mozilla/widget/src/gtk2/nsAppShell.cpp
+--- mozilla.orig/widget/src/gtk2/nsAppShell.cpp	Mon Oct  7 16:42:41 2002
++++ mozilla/widget/src/gtk2/nsAppShell.cpp	Mon Oct  7 16:57:44 2002
+@@ -189,7 +189,6 @@
+ NS_IMETHODIMP
+ nsAppShell::ListenToEventQueue(nsIEventQueue *aQueue, PRBool aListen)
+ {
+-    LOG(("ListenToEventQueue %p %d\n", (void *)aQueue, aListen));
+     // initialize our hash tables if we have to
+     if (!sQueueHashTable)
+         sQueueHashTable = PL_NewHashTable(3, (PLHashFunction)IntHashKey,
+@@ -216,24 +215,20 @@
+             g_io_channel_unref(ioc);
+             PL_HashTableAdd(sQueueHashTable, GINT_TO_POINTER(key),
+                             GUINT_TO_POINTER(tag));
+-            LOG(("created tag %d from key %d\n", tag, key));
+         }
+         /* bump up the count */
+         gint count = GPOINTER_TO_INT(PL_HashTableLookup(sCountHashTable, 
+                                                         GINT_TO_POINTER(key)));
+         PL_HashTableAdd(sCountHashTable, GINT_TO_POINTER(key), 
+                         GINT_TO_POINTER(count+1));
+-        LOG(("key %d now has count %d\n", key, count+1));
+     } else {
+         /* remove listener */
+         gint count = GPOINTER_TO_INT(PL_HashTableLookup(sCountHashTable,
+                                                         GINT_TO_POINTER(key)));
+-        LOG(("key %d will have count %d\n", key, count-1));
+         if (count - 1 == 0) {
+             guint tag;
+             tag = GPOINTER_TO_UINT(PL_HashTableLookup(sQueueHashTable,
+                                                       GINT_TO_POINTER(key)));
+-            LOG(("shutting down tag %d\n", tag));
+             g_source_remove(tag);
+             PL_HashTableRemove(sQueueHashTable, GINT_TO_POINTER(key));
+             PL_HashTableRemove(sCountHashTable, GINT_TO_POINTER(key));
+diff -urN mozilla.orig/widget/src/gtk2/nsCommonWidget.cpp mozilla/widget/src/gtk2/nsCommonWidget.cpp
+--- mozilla.orig/widget/src/gtk2/nsCommonWidget.cpp	Mon Oct  7 16:42:41 2002
++++ mozilla/widget/src/gtk2/nsCommonWidget.cpp	Mon Oct  7 16:57:44 2002
+@@ -317,13 +317,10 @@
+ {
+     mIsShown = aState;
+ 
+-    LOG(("nsCommonWidget::Show [%p] state %d\n", (void *)this, aState));
+-
+     // Ok, someone called show on a window that isn't sized to a sane
+     // value.  Mark this window as needing to have Show() called on it
+     // and return.
+     if (aState && !AreBoundsSane()) {
+-        LOG(("\tbounds are insane\n"));
+         mNeedsShow = PR_TRUE;
+         return NS_OK;
+     }
+@@ -335,7 +332,6 @@
+     // If someone is showing this window and it needs a resize then
+     // resize the widget.
+     if (aState && mNeedsResize) {
+-        LOG(("\tresizing\n"));
+         NativeResize(mBounds.x, mBounds.y, mBounds.width, mBounds.height,
+                      PR_FALSE);
+     }
+diff -urN mozilla.orig/widget/src/gtk2/nsScrollbar.cpp mozilla/widget/src/gtk2/nsScrollbar.cpp
+--- mozilla.orig/widget/src/gtk2/nsScrollbar.cpp	Mon Oct  7 16:42:41 2002
++++ mozilla/widget/src/gtk2/nsScrollbar.cpp	Mon Oct  7 16:57:44 2002
+@@ -98,7 +98,6 @@
+     if (mIsDestroyed)
+         return NS_OK;
+ 
+-    LOG(("nsScrollbar::Destroy [%p]\n", (void *)this));
+     mIsDestroyed = PR_TRUE;
+ 
+     NativeShow(PR_FALSE);
+@@ -133,9 +132,6 @@
+     if (aX == mBounds.x && aY == mBounds.y)
+         return NS_OK;
+ 
+-    LOG(("nsScrollbar::Move [%p] %d %d\n", (void *)this,
+-         aX, aY));
+-
+     mBounds.x = aX;
+     mBounds.y = aY;
+ 
+@@ -379,16 +375,7 @@
+ NS_IMETHODIMP
+ nsScrollbar::SetBounds (const nsRect &aRect)
+ {
+-    LOG(("nsScrollbar::SetBounds [%p] %d %d %d %d\n",
+-         (void *)this, aRect.x, aRect.y,
+-         aRect.width, aRect.height));
+-
+     if (mWidget) {
+-        LOG(("widget allocation %d %d %d %d\n",
+-             mWidget->allocation.x,
+-             mWidget->allocation.y,
+-             mWidget->allocation.width,
+-             mWidget->allocation.height));
+         nsCommonWidget::SetBounds(aRect);
+ 
+         // update the x/y with our new sizes
+@@ -474,21 +461,12 @@
+     g_signal_connect(G_OBJECT(mAdjustment), "value_changed",
+                      G_CALLBACK(value_changed_cb), this);
+ 
+-    LOG(("nsScrollbar [%p] %s %p %lx\n", (void *)this,
+-         (mOrientation == GTK_ORIENTATION_VERTICAL)
+-         ? "vertical" : "horizontal", 
+-         (void *)mWidget, GDK_WINDOW_XWINDOW(mWidget->window)));
+-    LOG(("\tparent was %p %lx\n", (void *)parentWindow,
+-         GDK_WINDOW_XWINDOW(parentWindow)));
+-
+     return NS_OK;
+ }
+ 
+ void
+ nsScrollbar::NativeResize(PRInt32 aWidth, PRInt32 aHeight, PRBool aRepaint)
+ {
+-    LOG(("nsScrollbar::NativeResize [%p] %d %d\n", (void *)this,
+-         aWidth, aHeight));
+     // clear our resize flag
+     mNeedsResize = PR_FALSE;
+ 
+@@ -501,8 +479,6 @@
+                           PRInt32 aWidth, PRInt32 aHeight,
+                           PRBool  aRepaint)
+ {
+-    LOG(("nsScrollbar::NativeResize [%p] %d %d %d %d\n", (void *)this,
+-         aX, aY, aWidth, aHeight));
+     // clear our resize flag
+     mNeedsResize = PR_FALSE;
+ 
+@@ -513,8 +489,6 @@
+ void
+ nsScrollbar::NativeShow (PRBool  aAction)
+ {
+-    LOG(("nsScrollbar::NativeShow [%p] %d\n", (void *)this, aAction));
+-
+     if (aAction) {
+         // unset our flag now that our window has been shown
+         mNeedsShow = PR_FALSE;
+@@ -528,7 +502,6 @@
+ void
+ nsScrollbar::OnValueChanged(void)
+ {
+-    LOG(("nsScrollbar::OnValueChanged [%p]\n", (void *)this));
+     nsScrollbarEvent event;
+     InitScrollbarEvent(event, NS_SCROLLBAR_POS);
+     event.position = (PRUint32)mAdjustment->value;
+diff -urN mozilla.orig/widget/src/gtk2/nsWindow.cpp mozilla/widget/src/gtk2/nsWindow.cpp
+--- mozilla.orig/widget/src/gtk2/nsWindow.cpp	Mon Oct  7 16:42:41 2002
++++ mozilla/widget/src/gtk2/nsWindow.cpp	Mon Oct  7 16:57:44 2002
+@@ -149,7 +149,6 @@
+ 
+ /* initialization static functions */
+ static nsresult    initialize_prefs        (void);
+-static nsresult    initialize_default_icon (void);
+   
+ // this is the last window that had a drag event happen on it.
+ nsWindow *nsWindow::mLastDragMotionWindow = NULL;
+@@ -220,7 +219,6 @@
+ 
+         // It's OK if either of these fail, but it may not be one day.
+         initialize_prefs();
+-        initialize_default_icon();
+     }
+     
+     if (mLastDragMotionWindow == this)
+@@ -302,7 +300,6 @@
+ 
+ nsWindow::~nsWindow()
+ {
+-    LOG(("nsWindow::~nsWindow() [%p]\n", (void *)this));
+     if (mLastDragMotionWindow == this) {
+         mLastDragMotionWindow = NULL;
+     }
+@@ -352,7 +349,6 @@
+     if (mIsDestroyed)
+         return NS_OK;
+ 
+-    LOG(("nsWindow::Destroy [%p]\n", (void *)this));
+     mIsDestroyed = PR_TRUE;
+ 
+     // ungrab if required
+@@ -400,7 +396,6 @@
+ 
+     // make sure that we remove ourself as the focus window
+     if (mHasFocus) {
+-        LOG(("automatically losing focus...\n"));
+         mHasFocus = PR_FALSE;
+         // get the owning gtk widget and the nsWindow for that widget and
+         // remove ourselves as the focus widget tracked in that window
+@@ -424,7 +419,8 @@
+         gtk_widget_destroy(GTK_WIDGET(mContainer));
+         mContainer = nsnull;
+     }
+-    else if (mDrawingarea) {
++    
++    if (mDrawingarea) {
+         g_object_unref(mDrawingarea);
+         mDrawingarea = nsnull;
+     }
+@@ -442,8 +438,6 @@
+ NS_IMETHODIMP
+ nsWindow::SetModal(PRBool aModal)
+ {
+-    LOG(("nsWindow::SetModal [%p] %d\n", (void *)this, aModal));
+-
+     // find the toplevel window and add it to the grab list
+     GtkWidget *grabWidget = nsnull;
+ 
+@@ -502,9 +496,6 @@
+     if (aX == mBounds.x && aY == mBounds.y)
+         return NS_OK;
+ 
+-    LOG(("nsWindow::Move [%p] %d %d\n", (void *)this,
+-         aX, aY));
+-
+     mBounds.x = aX;
+     mBounds.y = aY;
+ 
+@@ -539,8 +530,6 @@
+ {
+     nsresult rv;
+ 
+-    LOG(("nsWindow::SetSizeMode [%p] %d\n", (void *)this, aMode));
+-
+     // Save the requested state.
+     rv = nsBaseWidget::SetSizeMode(aMode);
+ 
+@@ -583,8 +572,6 @@
+     // Make sure that our owning widget has focus.  If it doesn't try to
+     // grab it.  Note that we don't set our focus flag in this case.
+ 
+-    LOG(("SetFocus [%p]\n", (void *)this));
+-
+     GtkWidget *owningWidget =
+         get_gtk_widget_for_gdk_window(mDrawingarea->inner_window);
+     if (!owningWidget)
+@@ -604,8 +591,6 @@
+         return NS_ERROR_FAILURE;
+ 
+     if (!GTK_WIDGET_HAS_FOCUS(owningWidget)) {
+-
+-        LOG(("grabbing focus for the toplevel\n"));
+         owningWindow->mContainerBlockFocus = PR_TRUE;
+         gtk_widget_grab_focus(owningWidget);
+         owningWindow->mContainerBlockFocus = PR_FALSE;
+@@ -623,14 +608,12 @@
+ 
+     // If this is the widget that already has focus, return.
+     if (mHasFocus) {
+-        LOG(("already have focus...\n"));
+         return NS_OK;
+     }
+ 
+     // If there is already a focued child window, dispatch a LOSTFOCUS
+     // event from that widget and unset its got focus flag.
+     if (owningWindow->mFocusChild) {
+-        LOG(("removing focus child %p\n", (void *)owningWindow->mFocusChild));
+         owningWindow->mFocusChild->LoseFocus();
+     }
+ 
+@@ -663,10 +646,7 @@
+ {
+     nsRect origin(0, 0, mBounds.width, mBounds.height);
+     WidgetToScreen(origin, aRect);
+-    LOG(("GetScreenBounds %d %d | %d %d | %d %d\n",
+-         aRect.x, aRect.y,
+-         mBounds.width, mBounds.height,
+-         aRect.width, aRect.height));
++
+     return NS_OK;
+ }
+ 
+@@ -746,9 +726,6 @@
+     rect.width = mBounds.width;
+     rect.height = mBounds.height;
+ 
+-    LOG(("Invalidate (all) [%p]: %d %d %d %d\n", (void *)this,
+-         rect.x, rect.y, rect.width, rect.height));
+-
+     gdk_window_invalidate_rect(mDrawingarea->inner_window,
+                                &rect, TRUE);
+     if (aIsSynchronous)
+@@ -768,9 +745,6 @@
+     rect.width = aRect.width;
+     rect.height = aRect.height;
+ 
+-    LOG(("Invalidate (rect) [%p]: %d %d %d %d\n", (void *)this,
+-         rect.x, rect.y, rect.width, rect.height));
+-
+     gdk_window_invalidate_rect(mDrawingarea->inner_window,
+                                &rect, TRUE);
+     if (aIsSynchronous)
+@@ -790,16 +764,9 @@
+         GdkRectangle rect;
+         gdk_region_get_clipbox(region, &rect);
+ 
+-        LOG(("Invalidate (region) [%p]: %d %d %d %d\n", (void *)this,
+-             rect.x, rect.y, rect.width, rect.height));
+-
+         gdk_window_invalidate_region(mDrawingarea->inner_window,
+                                      region, TRUE);
+     }
+-    else {
+-        LOG(("Invalidate (region) [%p] with empty region\n",
+-             (void *)this));
+-    }
+ 
+     return NS_OK;
+ }
+@@ -953,8 +920,6 @@
+     nsCAutoString aPath;
+     pathConverter->GetNativePath(aPath);
+ 
+-    LOG(("nsWindow::SetIcon using path %s\n", aPath.get()));
+-
+     GdkPixbuf *iconPixbuf = gdk_pixbuf_new_from_file(aPath.get(), NULL);
+     if (!iconPixbuf)
+         return NS_ERROR_FAILURE;
+@@ -984,11 +949,9 @@
+     if (mContainer) {
+         gdk_window_get_root_origin(GTK_WIDGET(mContainer)->window,
+                                    &x, &y);
+-        LOG(("WidgetToScreen (container) %d %d\n", x, y));
+     }
+     else {
+         gdk_window_get_origin(mDrawingarea->inner_window, &x, &y);
+-        LOG(("WidgetToScreen (drawing) %d %d\n", x, y));
+     }
+ 
+     aNewRect.x = x + aOldRect.x;
+@@ -1043,8 +1006,6 @@
+ NS_IMETHODIMP
+ nsWindow::CaptureMouse(PRBool aCapture)
+ {
+-    LOG(("CaptureMouse %p\n", (void *)this));
+-
+     GtkWidget *widget = 
+         get_gtk_widget_for_gdk_window(mDrawingarea->inner_window);
+ 
+@@ -1068,8 +1029,6 @@
+     GtkWidget *widget = 
+         get_gtk_widget_for_gdk_window(mDrawingarea->inner_window);
+ 
+-    LOG(("CaptureRollupEvents %p\n", (void *)this));
+-
+     if (aDoCapture) {
+         gRollupListener = aListener;
+         gRollupWindow =
+@@ -1092,8 +1051,6 @@
+ NS_IMETHODIMP
+ nsWindow::GetAttention()
+ {
+-    LOG(("nsWindow::GetAttention [%p]\n", (void *)this));
+-
+     GtkWidget* top_window = nsnull;
+     GetToplevelWidget(&top_window);
+     if (top_window && GTK_WIDGET_VISIBLE(top_window)) {
+@@ -1113,7 +1070,6 @@
+         IMEComposeStart();
+         IMEComposeText(NULL, 0, NULL, NULL);
+         IMEComposeEnd();
+-        LOG(("gtk_im_context_focus_out\n"));
+     }
+ #endif
+ 
+@@ -1132,8 +1088,6 @@
+ nsWindow::OnExposeEvent(GtkWidget *aWidget, GdkEventExpose *aEvent)
+ {
+     if (mIsDestroyed) {
+-        LOG(("Expose event on destroyed window [%p] window %p\n",
+-             (void *)this, (void *)aEvent->window));
+         return NS_OK;
+     }
+ 
+@@ -1141,13 +1095,6 @@
+     if (aEvent->window != mDrawingarea->inner_window)
+         return FALSE;
+ 
+-    LOG(("sending expose event [%p] %p 0x%lx\n\t%d %d %d %d\n",
+-         (void *)this,
+-         (void *)aEvent->window,
+-         GDK_WINDOW_XWINDOW(aEvent->window),
+-         aEvent->area.x, aEvent->area.y,
+-         aEvent->area.width, aEvent->area.height));
+-
+     // ok, send out the paint event
+     // XXX figure out the region/rect stuff!
+     nsRect rect(aEvent->area.x, aEvent->area.y,
+@@ -1176,9 +1123,6 @@
+ gboolean
+ nsWindow::OnConfigureEvent(GtkWidget *aWidget, GdkEventConfigure *aEvent)
+ {
+-    LOG(("configure event [%p] %d %d %d %d\n", (void *)this,
+-         aEvent->x, aEvent->y, aEvent->width, aEvent->height));
+-
+     // can we shortcut?
+     if (mBounds.x == aEvent->x &&
+         mBounds.y == aEvent->y)
+@@ -1201,10 +1145,6 @@
+ void
+ nsWindow::OnSizeAllocate(GtkWidget *aWidget, GtkAllocation *aAllocation)
+ {
+-    LOG(("size_allocate [%p] %d %d %d %d\n",
+-         (void *)this, aAllocation->x, aAllocation->y,
+-         aAllocation->width, aAllocation->height));
+-
+     nsRect rect(aAllocation->x, aAllocation->y,
+                 aAllocation->width, aAllocation->height);
+ 
+@@ -1240,8 +1180,6 @@
+     event.point.x = nscoord(aEvent->x);
+     event.point.y = nscoord(aEvent->y);
+ 
+-    LOG(("OnEnterNotify: %p\n", (void *)this));
+-
+     // if we have a non-xembed plugin (java, basically) dispatch focus
+     // to it because it's too dumb not to know how to do it itself.
+     if( mHasNonXembedPlugin ) {
+@@ -1273,8 +1211,6 @@
+     event.point.x = nscoord(aEvent->x);
+     event.point.y = nscoord(aEvent->y);
+ 
+-    LOG(("OnLeaveNotify: %p\n", (void *)this));
+-
+     // if we have a non-xembed plugin (java, basically) take focus
+     // back since it's not going to give it up by itself.
+     if( mHasNonXembedPlugin ) {
+@@ -1426,7 +1362,6 @@
+     GtkIMContext *im = aTmpWindow->IMEGetContext();
+     if (!(aTmpWindow->mIsTopLevel) && im) {
+         gtk_im_context_focus_in(im);
+-        LOG(("OnContainFocusIn-set IC focus in. aTmpWindow:%x\n", aTmpWindow));
+     }
+ #endif
+ }
+@@ -1589,29 +1524,23 @@
+ void
+ nsWindow::OnWindowStateEvent(GtkWidget *aWidget, GdkEventWindowState *aEvent)
+ {
+-    LOG(("nsWindow::OnWindowStateEvent [%p] changed %d new_window_state %d\n",
+-         (void *)this, aEvent->changed_mask, aEvent->new_window_state));
+-
+     nsSizeModeEvent event;
+     InitSizeModeEvent(event);
+ 
+     // did we change to maximized?
+     if (aEvent->changed_mask & GDK_WINDOW_STATE_MAXIMIZED &&
+         aEvent->new_window_state & GDK_WINDOW_STATE_MAXIMIZED) {
+-        LOG(("\tMaximized\n"));
+         event.mSizeMode = nsSizeMode_Maximized;
+         mSizeState = nsSizeMode_Maximized;
+     }
+     // did we change to iconified?
+     else if (aEvent->changed_mask & GDK_WINDOW_STATE_ICONIFIED &&
+              aEvent->new_window_state & GDK_WINDOW_STATE_ICONIFIED) {
+-        LOG(("\tMinimized\n"));
+         event.mSizeMode = nsSizeMode_Minimized;
+         mSizeState = nsSizeMode_Minimized;
+     }
+     // are we now normal?
+     else if (aEvent->changed_mask == 0 && aEvent->new_window_state == 0) {
+-        LOG(("\tNormal\n"));
+         event.mSizeMode = nsSizeMode_Normal;
+         mSizeState = nsSizeMode_Normal;
+     }
+@@ -1633,8 +1562,6 @@
+                             guint aTime,
+                             gpointer aData)
+ {
+-    LOG(("nsWindow::OnDragMotionSignal\n"));
+-
+     // Reset out drag motion timer
+     ResetDragMotionTimer(aWidget, aDragContext, aX, aY, aTime);
+ 
+@@ -1721,8 +1648,6 @@
+                            guint aTime,
+                            gpointer aData)
+ {
+-    LOG(("nsWindow::OnDragLeaveSignal(%p)\n", this));
+-
+     // make sure to unset any drag motion timers here.
+     ResetDragMotionTimer(0, 0, 0, 0, 0);
+ 
+@@ -1746,8 +1671,6 @@
+                           gpointer *aData)
+ 
+ {
+-    LOG(("nsWindow::OnDragDropSignal\n"));
+-
+     // get our drag context
+     nsCOMPtr<nsIDragService> dragService = do_GetService(kCDragServiceCID);
+     nsCOMPtr<nsIDragSessionGTK> dragSessionGTK = do_QueryInterface(dragService);
+@@ -1859,8 +1782,6 @@
+                                   guint aTime,
+                                   gpointer aData)
+ {
+-    LOG(("nsWindow::OnDragDataReceived(%p)\n", this));
+-
+     // get our drag context
+     nsCOMPtr<nsIDragService> dragService = do_GetService(kCDragServiceCID);
+     nsCOMPtr<nsIDragSessionGTK> dragSessionGTK = do_QueryInterface(dragService);
+@@ -1872,8 +1793,6 @@
+ void
+ nsWindow::OnDragLeave(void)
+ {
+-    LOG(("nsWindow::OnDragLeave(%p)\n", this));
+-
+     nsMouseEvent event;
+ 
+     event.message = NS_DRAGDROP_EXIT;
+@@ -1895,8 +1814,6 @@
+ void
+ nsWindow::OnDragEnter(nscoord aX, nscoord aY)
+ {
+-    LOG(("nsWindow::OnDragEnter(%p)\n", this));
+-    
+     nsMouseEvent event;
+ 
+     event.message = NS_DRAGDROP_ENTER;
+@@ -1995,6 +1912,7 @@
+         mIsTopLevel = PR_TRUE;
+         if (mWindowType == eWindowType_dialog) {
+             mShell = gtk_window_new(GTK_WINDOW_TOPLEVEL);
++            SetupWindowIcon(mShell); 
+             gtk_window_set_type_hint(GTK_WINDOW(mShell),
+                                      GDK_WINDOW_TYPE_HINT_DIALOG);
+             gtk_window_set_transient_for(GTK_WINDOW(mShell),
+@@ -2011,8 +1929,6 @@
+                                                 GTK_WINDOW(mShell));
+                     // store this in case any children are created
+                     mWindowGroup = parentnsWindow->mWindowGroup;
+-                    LOG(("adding window %p to group %p\n",
+-                         (void *)mShell, (void *)mWindowGroup));
+                 }
+             }
+         }
+@@ -2031,11 +1947,10 @@
+         }
+         else { // must be eWindowType_toplevel
+             mShell = gtk_window_new(GTK_WINDOW_TOPLEVEL);
++            SetupWindowIcon(mShell);
+             // each toplevel window gets its own window group
+             mWindowGroup = gtk_window_group_new();
+             // and add ourselves to the window group
+-            LOG(("adding window %p to new group %p\n",
+-                 (void *)mShell, (void *)mWindowGroup));
+             gtk_window_group_add_window(mWindowGroup, GTK_WINDOW(mShell));
+         }
+ 
+@@ -2161,26 +2076,6 @@
+                          G_CALLBACK(drag_data_received_event_cb), NULL);
+     }
+ 
+-    LOG(("nsWindow [%p]\n", (void *)this));
+-    if (mShell) {
+-        LOG(("\tmShell %p %p %lx\n", (void *)mShell, (void *)mShell->window,
+-             GDK_WINDOW_XWINDOW(mShell->window)));
+-    }
+-
+-    if (mContainer) {
+-        LOG(("\tmContainer %p %p %lx\n", (void *)mContainer,
+-             (void *)GTK_WIDGET(mContainer)->window,
+-             GDK_WINDOW_XWINDOW(GTK_WIDGET(mContainer)->window)));
+-    }
+-
+-    if (mDrawingarea) {
+-        LOG(("\tmDrawingarea %p %p %p %lx %lx\n", (void *)mDrawingarea,
+-             (void *)mDrawingarea->clip_window,
+-             (void *)mDrawingarea->inner_window,
+-             GDK_WINDOW_XWINDOW(mDrawingarea->clip_window),
+-             GDK_WINDOW_XWINDOW(mDrawingarea->inner_window)));
+-    }
+-
+     // resize so that everything is set to the right dimensions
+     Resize(mBounds.width, mBounds.height, PR_FALSE);
+ 
+@@ -2190,9 +2085,6 @@
+ void
+ nsWindow::NativeResize(PRInt32 aWidth, PRInt32 aHeight, PRBool  aRepaint)
+ {
+-    LOG(("nsWindow::NativeResize [%p] %d %d\n", (void *)this,
+-         aWidth, aHeight));
+-
+     // clear our resize flag
+     mNeedsResize = PR_FALSE;
+ 
+@@ -2218,9 +2110,6 @@
+ {
+     mNeedsResize = PR_FALSE;
+ 
+-    LOG(("nsWindow::NativeResize [%p] %d %d %d %d\n", (void *)this,
+-         aX, aY, aWidth, aHeight));
+-
+     if (mIsTopLevel) {
+         if (mParent && mWindowType == eWindowType_popup) {
+             nsRect oldrect, newrect;
+@@ -2296,8 +2185,6 @@
+ void
+ nsWindow::GrabPointer(void)
+ {
+-    LOG(("GrabPointer %d\n", mRetryPointerGrab));
+-
+     mRetryPointerGrab = PR_FALSE;
+ 
+     // If the window isn't visible, just set the flag to retry the
+@@ -2306,7 +2193,6 @@
+     PRBool visibility = PR_TRUE;
+     IsVisible(visibility);
+     if (!visibility) {
+-        LOG(("GrabPointer: window not visible\n"));
+         mRetryPointerGrab = PR_TRUE;
+         return;
+     }
+@@ -2321,7 +2207,6 @@
+                               (GdkWindow *)NULL, NULL, GDK_CURRENT_TIME);
+ 
+     if (retval != GDK_GRAB_SUCCESS) {
+-        LOG(("GrabPointer: pointer grab failed\n"));
+         mRetryPointerGrab = PR_TRUE;
+     }
+ }
+@@ -2329,8 +2214,6 @@
+ void
+ nsWindow::GrabKeyboard(void)
+ {
+-    LOG(("GrabKeyboard %d\n", mRetryKeyboardGrab));
+-
+     mRetryKeyboardGrab = PR_FALSE;
+ 
+     // If the window isn't visible, just set the flag to retry the
+@@ -2339,7 +2222,6 @@
+     PRBool visibility = PR_TRUE;
+     IsVisible(visibility);
+     if (!visibility) {
+-        LOG(("GrabKeyboard: window not visible\n"));
+         mRetryKeyboardGrab = PR_TRUE;
+         return;
+     }
+@@ -2358,7 +2240,6 @@
+     retval = gdk_keyboard_grab(grabWindow, TRUE, GDK_CURRENT_TIME);
+ 
+     if (retval != GDK_GRAB_SUCCESS) {
+-        LOG(("GrabKeyboard: keyboard grab failed %d\n", retval));
+         gdk_pointer_ungrab(GDK_CURRENT_TIME);
+         mRetryKeyboardGrab = PR_TRUE;
+     }
+@@ -2367,8 +2248,6 @@
+ void
+ nsWindow::ReleaseGrabs(void)
+ {
+-    LOG(("ReleaseGrabs\n"));
+-
+     mRetryPointerGrab = PR_FALSE;
+     mRetryKeyboardGrab = PR_FALSE;
+ 
+@@ -2825,7 +2704,6 @@
+ gboolean
+ button_press_event_cb   (GtkWidget *widget, GdkEventButton *event)
+ {
+-    LOG(("button_press_event_cb\n"));
+     nsWindow *window = get_window_for_gdk_window(event->window);
+     if (!window)
+         return TRUE;
+@@ -2922,7 +2800,6 @@
+ gboolean
+ key_press_event_cb (GtkWidget *widget, GdkEventKey *event)
+ {
+-    LOG(("key_press_event_cb\n"));
+     // find the window with focus and dispatch this event to that widget
+     nsWindow *window = get_window_for_gtk_widget(widget);
+     if (!window)
+@@ -2938,7 +2815,6 @@
+ gboolean
+ key_release_event_cb (GtkWidget *widget, GdkEventKey *event)
+ {
+-    LOG(("key_release_event_cb\n"));
+     // find the window with focus and dispatch this event to that widget
+     nsWindow *window = get_window_for_gtk_widget(widget);
+     if (!window)
+@@ -3148,11 +3024,10 @@
+     return NS_OK;
+ }
+ 
+-/* static */
+ nsresult
+-initialize_default_icon(void)
++nsWindow::SetupWindowIcon(GtkWidget *window)
+ {
+-    // Set up the default icon for all windows
++    // Set up the window icon
+     nsresult rv;
+     nsCOMPtr<nsIFile> chromeDir;
+     rv = NS_GetSpecialDirectory(NS_APP_CHROME_DIR,
+@@ -3174,15 +3049,13 @@
+     nsCAutoString aPath;
+     defaultPathConverter->GetNativePath(aPath);
+ 
+-    LOG(("Loading default icon from %s\n", aPath.get()));
+-
+     GdkPixbuf *defaultIcon = gdk_pixbuf_new_from_file(aPath.get(), NULL);
+     if (!defaultIcon)
+         return NS_ERROR_FAILURE;
+ 
+     GList *list = NULL;
+     list = g_list_append(list, defaultIcon);
+-    gtk_window_set_default_icon_list(list);
++    gtk_window_set_icon_list(GTK_WINDOW(window), list);
+     g_object_unref(G_OBJECT(defaultIcon));
+     g_list_free(list);
+ 
+@@ -3218,7 +3091,6 @@
+     if (mDragMotionTimerID) {
+         gtk_timeout_remove(mDragMotionTimerID);
+         mDragMotionTimerID = 0;
+-        LOG(("*** canceled motion timer\n"));
+     }
+ 
+     // if no widget was passed in, just return instead of setting a new
+@@ -3236,8 +3108,6 @@
+ void
+ nsWindow::FireDragMotionTimer(void)
+ {
+-    LOG(("nsWindow::FireDragMotionTimer(%p)\n", this));
+-
+     OnDragMotionEvent(mDragMotionWidget, mDragMotionContext,
+                       mDragMotionX, mDragMotionY, mDragMotionTime,
+                       this);
+@@ -3246,8 +3116,6 @@
+ void
+ nsWindow::FireDragLeaveTimer(void)
+ {
+-    LOG(("nsWindow::FireDragLeaveTimer(%p)\n", this));
+-
+     mDragLeaveTimer = 0;
+ 
+     // clean up any pending drag motion window info
+@@ -3458,9 +3326,6 @@
+     gtk_im_context_get_preedit_string(context, &preedit_string,
+                                       &feedback_list, &cursor_pos);
+   
+-    LOG(("preedit string is: %s   length is: %d\n",
+-         preedit_string, strlen(preedit_string)));
+-
+     if ((preedit_string == NULL) || (0 == strlen(preedit_string))) {
+         window->IMEComposeStart();
+         window->IMEComposeText(NULL, 0, NULL, NULL);
+@@ -3476,7 +3341,6 @@
+ 
+     if (!uniStr) {
+         g_free(preedit_string);
+-        LOG(("utf8-utf16 string tranfer failed!\n"));
+         if (feedback_list)
+             pango_attr_list_unref(feedback_list);
+         return;
+@@ -3515,7 +3379,6 @@
+     // g_free((void *)utf8_str));
+ 
+     if (!uniStr) {
+-        LOG(("utf80utf16 string tranfer failed!\n"));
+         return;
+     }
+ 
+diff -urN mozilla.orig/widget/src/gtk2/nsWindow.h mozilla/widget/src/gtk2/nsWindow.h
+--- mozilla.orig/widget/src/gtk2/nsWindow.h	Mon Oct  7 16:42:41 2002
++++ mozilla/widget/src/gtk2/nsWindow.h	Mon Oct  7 16:57:44 2002
+@@ -248,6 +248,7 @@
+ #endif
+ 
+ private:
++    nsresult           SetupWindowIcon(GtkWidget *window);
+     void               GetToplevelWidget(GtkWidget **aWidget);
+     void              *SetupPluginPort(void);
+ 

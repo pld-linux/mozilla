@@ -1,0 +1,57 @@
+diff -urN mozilla.orig/config/config.mk mozilla/config/config.mk
+--- mozilla.orig/config/config.mk	Mon Oct  7 16:42:26 2002
++++ mozilla/config/config.mk	Mon Oct  7 16:50:17 2002
+@@ -173,7 +173,7 @@
+ else
+ NSS_LIBS	= \
+ 	$(LIBS_DIR) \
+-	$(DIST)/lib/$(LIB_PREFIX)crmf.$(LIB_SUFFIX) \
++	/usr/lib/libcrmf.a \
+ 	-lsmime3 \
+ 	-lssl3 \
+ 	-lnss3 \
+@@ -182,11 +182,6 @@
+ endif
+ 
+ NSS_DEP_LIBS	= \
+-	$(DIST)/lib/$(LIB_PREFIX)crmf.$(LIB_SUFFIX) \
+-	$(DIST)/lib/$(LIB_PREFIX)smime3$(DLL_SUFFIX) \
+-	$(DIST)/lib/$(LIB_PREFIX)ssl3$(DLL_SUFFIX) \
+-	$(DIST)/lib/$(LIB_PREFIX)nss3$(DLL_SUFFIX) \
+-	$(DIST)/lib/$(LIB_PREFIX)softokn3$(DLL_SUFFIX) \
+ 	$(NULL)
+ 
+ MOZ_UNICHARUTIL_LIBS = $(DIST)/lib/$(LIB_PREFIX)unicharutil_s.$(LIB_SUFFIX)
+diff -urN mozilla.orig/security/manager/Makefile.in mozilla/security/manager/Makefile.in
+--- mozilla.orig/security/manager/Makefile.in	Mon Oct  7 16:42:35 2002
++++ mozilla/security/manager/Makefile.in	Mon Oct  7 16:47:43 2002
+@@ -105,16 +105,6 @@
+ else
+ 	cd $(DIST)/lib; cp -f $(LIB_PREFIX)mozdbm_s.$(LIB_SUFFIX) $(LIB_PREFIX)dbm.$(LIB_SUFFIX); $(RANLIB) $(LIB_PREFIX)dbm.$(LIB_SUFFIX)
+ endif
+-	$(MAKE) -C $(topsrcdir)/security/nss/lib $(DEFAULT_GMAKE_FLAGS)
+-	$(INSTALL) -m 755 $(DIST)/lib/$(LOADABLE_ROOT_MODULE) $(DIST)/bin
+-	$(INSTALL) -m 755 $(DIST)/lib/$(SOFTOKEN3_LIB) $(DIST)/bin
+-	$(INSTALL) -m 755 $(DIST)/lib/$(NSS3_LIB) $(DIST)/bin
+-	$(INSTALL) -m 755 $(DIST)/lib/$(SSL3_LIB) $(DIST)/bin
+-	$(INSTALL) -m 755 $(DIST)/lib/$(SMIME3_LIB) $(DIST)/bin
+-ifdef HAVE_FREEBL_MODULES
+-	$(INSTALL) -m 755 $(DIST)/lib/$(FREEBL_PURE32_MODULE) $(DIST)/bin
+-	$(INSTALL) -m 755 $(DIST)/lib/$(FREEBL_HYBRID_MODULE) $(DIST)/bin
+-endif
+ 	$(MAKE) -C boot $@
+ 	$(MAKE) -C ssl $@
+ 	$(MAKE) -C pki $@
+diff -urN mozilla.orig/security/manager/ssl/src/Makefile.in mozilla/security/manager/ssl/src/Makefile.in
+--- mozilla.orig/security/manager/ssl/src/Makefile.in	Mon Oct  7 16:42:34 2002
++++ mozilla/security/manager/ssl/src/Makefile.in	Mon Oct  7 16:48:47 2002
+@@ -108,8 +108,7 @@
+ 
+ # Use local includes because they are inserted before INCLUDES
+ # so that Mozilla's nss.h is used, not glibc's
+-LOCAL_INCLUDES += -I$(DIST)/public/nss \
+-                  -I$(DIST)/private/nss \
++LOCAL_INCLUDES += -I/usr/include/nss \
+                   $(NULL)
+ 
+ EXTRA_DSO_LDOPTS += \
