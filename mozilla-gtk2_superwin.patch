@@ -1,0 +1,10 @@
+--- mozilla/embedding/browser/gtk/tests/Makefile.in.orig	Sat Oct 26 23:43:40 2002
++++ mozilla/embedding/browser/gtk/tests/Makefile.in	Sat Oct 26 23:45:02 2002
+@@ -47,7 +47,6 @@
+ 
+ LIBS		+= \
+ 		-lgtkembedmoz \
+-		-lgtksuperwin \
+ 		$(NULL)
+ 
+ include $(topsrcdir)/config/config.mk
