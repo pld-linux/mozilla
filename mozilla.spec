@@ -2,7 +2,7 @@ Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
 Version:	0.9.1
-Release:	1
+Release:	2
 Epoch:		1
 License:	NPL
 Group:		X11/Applications/Networking
@@ -146,7 +146,7 @@ cp -frL dist/bin/profile/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/profile
 cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
 cp -frL dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
 cp -frL dist/idl/*		$RPM_BUILD_ROOT%{_datadir}/idl
-cp -frL dist/include		$RPM_BUILD_ROOT%{_includedir}/%{name}
+cp -frL dist/include/*		$RPM_BUILD_ROOT%{_includedir}/%{name}
 
 install dist/bin/*.so		$RPM_BUILD_ROOT%{_libdir}
 
