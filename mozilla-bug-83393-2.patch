@@ -1,0 +1,47 @@
+diff -u -r1.27 basebrowser-unix
+--- mozilla/embedding/config/basebrowser-unix	2001/06/08 12:05:26	1.27
++++ mozilla/embedding/config/basebrowser-unix	2001/07/04 23:01:23
+@@ -163,13 +163,13 @@
+ 
+ ; psm2
+ ; Optional - only if you need PSM2 support
+-; components/libpipnss.so
+-; components/pipnss.xpt
+-; chrome/pipnss.jar
+-; components/libpippki.so
+-; components/pippki.xpt
+-; chrome/pippki.jar
+-; defaults/pref/security-prefs.js
++components/libpipnss.so
++components/pipnss.xpt
++chrome/pipnss.jar
++components/libpippki.so
++components/pippki.xpt
++chrome/pippki.jar
++defaults/pref/security-prefs.js
+ 
+ ; rdf
+ components/librdf.so
+diff -u -r1.4 installed-chrome.txt
+--- mozilla/embedding/config/installed-chrome.txt	2001/05/22 03:32:16	1.4
++++ mozilla/embedding/config/installed-chrome.txt	2001/07/04 23:01:23
+@@ -1,11 +1,19 @@
+ content,install,url,jar:resource:/chrome/embed.jar!/content/global/
+ locale,install,url,jar:resource:/chrome/embed.jar!/locale/en-US/global/
++locale,install,url,jar:resource:/chrome/embed.jar!/locale/en-US/global/
+ locale,install,url,jar:resource:/chrome/embed.jar!/locale/en-US/necko/
+ locale,install,url,jar:resource:/chrome/embed.jar!/locale/en-US/communicator/
+ content,install,url,jar:resource:/chrome/pipnss.jar!/content/pipnss/
+ locale,install,url,jar:resource:/chrome/pipnss.jar!/locale/en-US/pipnss/
+ content,install,url,jar:resource:/chrome/pippki.jar!/content/pippki/
+ locale,install,url,jar:resource:/chrome/pippki.jar!/locale/en-US/pippki/
++content,install,url,jar:resource:/chrome/embed.jar!/content/help/ 
++locale,install,url,jar:resource:/chrome/embed.jar!/locale/en-US/help/
+ skin,install,url,jar:resource:/chrome/embed.jar!/skin/classic/global/
++skin,install,url,jar:resource:/chrome/embed.jar!/skin/classic/communicator/
+ skin,install,select,classic/1.0 
+ locale,install,select,en-US 
++content,install,url,jar:resource:/chrome/embed.jar!/content/global-region/
++content,install,url,jar:resource:/chrome/embed.jar!/content/global-platform/
++locale,install,url,jar:resource:/chrome/embed.jar!/locale/US/global-region/
++locale,install,url,jar:resource:/chrome/embed.jar!/locale/en-US/global-platform/
