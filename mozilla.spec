@@ -9,7 +9,7 @@
 %bcond_without	gnomevfs	# disable GnomeVFS support
 
 %bcond_without	heimdal	# disable heimdal support
-%bcond_vithout	svg	# disable svg support
+%bcond_without	svg	# disable svg support
 #
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
