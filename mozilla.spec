@@ -45,6 +45,7 @@ Patch5:		%{name}-alpha-gcc3.patch
 Patch6:		%{name}-freetype218.patch
 Patch7:		%{name}-cairo.patch
 URL:		http://www.mozilla.org/
+BuildRequires:	automake
 %{?with_gtk1:BuildRequires:	ORBit-devel}
 %{?with_svg:BuildRequires:	cairo-devel >= 0.1.17}
 %if %{with ft218}
