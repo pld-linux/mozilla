@@ -1,0 +1,4 @@
+- Source13 is renamed so %%install comes more simple
+- Corrected %%post (now it supports already installed addons/themes while mozilla
+  is updated or reinstalled)
+- Release 4
