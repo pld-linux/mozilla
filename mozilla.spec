@@ -46,7 +46,7 @@ BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libmng-devel >= 1.0.4
 BuildRequires:	libpng-devel >= 1.2.0
 BuildRequires:	libstdc++-devel
-BuildRequires:	nspr-devel >= 4.3-2.20030517
+BuildRequires:	nspr-devel >= 1:4.3-2.20030517
 BuildRequires:	nss-devel >= 3.8
 %{!?_with_gtk1:BuildRequires:	pango-devel >= 1.1.0}
 BuildRequires:	perl-modules >= 5.6.0
