@@ -14,9 +14,7 @@ Release:	0.1
 Epoch:		2
 License:	GPL
 Group:		X11/Applications/Networking
-#Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.gz
-# from ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/RPMS/SRPMS/%{name}-%{version}-0_rh8.src.rpm
-Source0:	%{name}-source-%{version}-0_rh8.tar.gz
+Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source4:	%{name}-addressbook.desktop
