@@ -14,7 +14,7 @@ Source1:	%{name}.desktop
 Source2:	%{name}.png
 # Patch0:		%{name}-navigator-overlay-menu.patch
 # Patch1:		%{name}-taskbar-nomozilla.patch
-# Patch2:		%{name}-dlopen-plugin.patch
+Patch2:		%{name}-dlopen-plugin.patch
 Patch3:		%{name}-pld-homepage.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
@@ -73,7 +73,7 @@ Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
 %setup -q -n mozilla
 #%patch0 -p1
 #%patch1 -p1
-#%patch2 -p1
+%patch2 -p1
 %patch3 -p1
 
 %build
