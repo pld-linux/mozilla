@@ -102,12 +102,6 @@ dist/bin/regxpcom
 
 install dist/bin/component.reg $RPM_BUILD_ROOT%{_libdir}/%{name}
 
-# discussion feature: it's need to create some files (skin overview and others)
-#LD_LIBRARY_PATH="dist/bin" \
-#MOZILLA_FIVE_HOME="dist/bin" \
-#dist/bin/mozilla-bin &
-#sleep 20
-
 ln -s ../../share/mozilla/chrome $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome
 ln -s ../../share/mozilla/defaults $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults
 ln -s ../../share/mozilla/res $RPM_BUILD_ROOT%{_libdir}/%{name}/res
@@ -123,7 +117,6 @@ cp -fr dist/bin/components/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/components
 cp -fr dist/idl/*		$RPM_BUILD_ROOT%{_datadir}/idl
 #cp -fr dist/include/gtkmozilla.h $RPM_BUILD_ROOT%{_includedir}
 
-#install dist/lib/libgtkmozilla.{so.0.*,la} $RPM_BUILD_ROOT%{_libdir}
 install dist/bin/*.so		$RPM_BUILD_ROOT%{_libdir}
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/mozilla
