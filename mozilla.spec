@@ -38,8 +38,8 @@ URL:		http://www.mozilla.org/
 %{?_with_gtk1:BuildRequires:	ORBit-devel}
 BuildRequires:	freetype-devel >= 2.1.3
 %{?_with_gtk1:BuildRequires:	gtk+-devel >= 1.2.0}
-%{!?_with_gtk1:BuildRequires:  gtk+2-devel >= 2.2.0}
-%{!?_with_gtk1:BuildRequires:  libIDL-devel >= 0.8.0}
+%{!?_with_gtk1:BuildRequires:	gtk+2-devel >= 2.2.0}
+%{!?_with_gtk1:BuildRequires:	libIDL-devel >= 0.8.0}
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libmng-devel >= 1.0.4
 BuildRequires:	libpng-devel >= 1.2.0
@@ -48,7 +48,7 @@ BuildRequires:	nspr-devel >= 4.3-2.20030517
 BuildRequires:	nss-devel >= 3.8
 %{!?_with_gtk1:BuildRequires:	pango-devel >= 1.1.0}
 BuildRequires:	perl-modules >= 5.6.0
-%{!?_with_gtk1:BuildRequires:  pkgconfig}
+%{!?_with_gtk1:BuildRequires:	pkgconfig}
 BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.0.0
