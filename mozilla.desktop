@@ -7,5 +7,5 @@ Exec=mozilla
 Icon=mozilla.png
 Terminal=0
 Type=Application
-Categories=Network;X-WWW;
+Categories=Network;WebBrowser
 # vi: encoding=utf-8
