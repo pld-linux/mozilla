@@ -5,7 +5,7 @@
  NSS_LIBS	= \
  	$(LIBS_DIR) \
 -	$(DIST)/lib/$(LIB_PREFIX)crmf.$(LIB_SUFFIX) \
-+	/usr/lib/libcrmf.a \
++	-lcrmf \
  	-lsmime3 \
  	-lssl3 \
  	-lnss3 \
