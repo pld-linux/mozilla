@@ -128,7 +128,7 @@ export MOZ_INTERNAL_LIBART_LGPL
 	--enable-postscript \
 	--enable-strip-libs \
 	--enable-svg \
-	--enable-toolkit=gtk \
+	--enable-toolkit-gtk \
 	--enable-xinerama \
 	--enable-xprint \
 	--enable-xsl \
