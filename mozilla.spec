@@ -82,17 +82,17 @@ rm -rf $RPM_BUILD_ROOT
 %postun -p /sbin/ldconfig
 
 %files
-%attr(-, root, root)
+%attr(-,root,root)
 
 %{prefix}/lib/mozilla/components/*
 %{prefix}/lib/*.so
 %{prefix}/lib/mozilla/bin/*
 %{prefix}/lib/mozilla/res/*
-%attr(755, root, root)%{_bindir}/mozilla-viewer
-%attr(755, root, root)%{_bindir}/mozilla-apprunner
+%attr(755,root,root)%{_bindir}/mozilla-viewer
+%attr(755,root,root)%{_bindir}/mozilla-apprunner
 
 %files devel
-%attr(-, root, root)
+%attr(-,root,root)
 
 %{prefix}/lib/*.a
 %{prefix}/include/mozilla/*
