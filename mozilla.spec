@@ -3,7 +3,7 @@
 # _with_gdkxft
 # _with_gtk2
 %define		_version	1.0
-%define		_rc		rc1
+%define		_rc		rc2
 
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
