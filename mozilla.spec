@@ -26,6 +26,7 @@ BuildRequires:	fileutils
 BuildRequires:	zip >= 2.1
 BuildRequires:	perl >= 5.6.0
 BuildRequires:	autoconf
+BuildConflicts:	mozilla-devel < %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_prefix		/usr/X11R6
