@@ -2,13 +2,14 @@ Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
 Version:	5.M17
-Release:	1
+Release:	2
 License:	NPL
 Group:		X11/Applications/Networking
 Group(pl):	X11/Aplikacje/Sieciowe
 Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/m17/src/%{name}-source-M17.tar.bz2
 Source1:	%{name}.sh
 Source2:	%{name}.desktop
+Patch0:		%{name}-no_libnsl.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
 BuildRequires:	libjpeg-devel
@@ -55,8 +56,10 @@ Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
 
 %prep
 %setup -q -n mozilla
+%patch0 -p1
 
 %build
+autoconf
 CXXFLAGS="-fno-rtti -fno-exceptions"
 MOZ_OPTIMIZE_FLAGS="$RPM_OPT_FLAGS"
 LDFLAGS="-s"
