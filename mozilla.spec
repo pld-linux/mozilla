@@ -47,10 +47,8 @@ Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
 %setup -q -n mozilla
 
 %build
-#CFLAGS="$RPM_OPT_FLAGS" ; export CFLAGS
-#CXXFLAGS="$RPM_OPT_FLAGS" ; export CXXFLAGS
-CFLAGS="-march=pentium -O6 -funroll-loops -ffast-math -mpentium" ; export CFLAGS
-CXXFLAGS="-march=pentium -O6 -funroll-loops -ffast-math -mpentium" ; export CXXFLAGS
+CFLAGS="$RPM_OPT_FLAGS" ; export CFLAGS
+CXXFLAGS="$RPM_OPT_FLAGS" ; export CXXFLAGS
 LDFLAGS="-s" ; export LDFLAGS
 ./configure \
 	--with-pthreads \
