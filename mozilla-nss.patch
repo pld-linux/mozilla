@@ -1,6 +1,5 @@
-diff -urN mozilla.orig/config/config.mk mozilla/config/config.mk
---- mozilla.orig/config/config.mk	Tue Mar 25 07:53:20 2003
-+++ mozilla/config/config.mk	Fri Apr  4 00:12:55 2003
+--- mozilla/config/config.mk~	Wed Apr 23 02:54:06 2003
++++ mozilla/config/config.mk	Thu May 15 10:23:19 2003
 @@ -169,7 +169,7 @@
  
  NSS_LIBS	= \
@@ -15,17 +14,16 @@ diff -urN mozilla.orig/config/config.mk mozilla/config/config.mk
  
  NSS_DEP_LIBS	= \
 -	$(DIST)/lib/$(LIB_PREFIX)crmf.$(LIB_SUFFIX) \
--	$(DIST)/lib/$(LIB_PREFIX)smime3$(DLL_SUFFIX) \
--	$(DIST)/lib/$(LIB_PREFIX)ssl3$(DLL_SUFFIX) \
--	$(DIST)/lib/$(LIB_PREFIX)nss3$(DLL_SUFFIX) \
--	$(DIST)/lib/$(LIB_PREFIX)softokn3$(DLL_SUFFIX) \
+-	$(DIST)/lib/$(DLL_PREFIX)smime3$(DLL_SUFFIX) \
+-	$(DIST)/lib/$(DLL_PREFIX)ssl3$(DLL_SUFFIX) \
+-	$(DIST)/lib/$(DLL_PREFIX)nss3$(DLL_SUFFIX) \
+-	$(DIST)/lib/$(DLL_PREFIX)softokn3$(DLL_SUFFIX) \
  	$(NULL)
  
  MOZ_UNICHARUTIL_LIBS = $(DIST)/lib/$(LIB_PREFIX)unicharutil_s.$(LIB_SUFFIX)
-diff -urN mozilla.orig/security/manager/Makefile.in mozilla/security/manager/Makefile.in
---- mozilla.orig/security/manager/Makefile.in	Tue Apr  1 17:07:41 2003
-+++ mozilla/security/manager/Makefile.in	Fri Apr  4 00:30:14 2003
-@@ -114,37 +114,6 @@
+--- mozilla/security/manager/Makefile.in~	Wed Apr 23 02:54:08 2003
++++ mozilla/security/manager/Makefile.in	Thu May 15 10:25:59 2003
+@@ -116,37 +116,6 @@
  else
  	cd $(DIST)/lib; cp -f $(LIB_PREFIX)mozdbm_s.$(LIB_SUFFIX) $(LIB_PREFIX)dbm.$(LIB_SUFFIX); $(RANLIB) $(LIB_PREFIX)dbm.$(LIB_SUFFIX)
  endif
@@ -62,11 +60,10 @@ diff -urN mozilla.orig/security/manager/Makefile.in mozilla/security/manager/Mak
 -endif
  	$(MAKE) -C boot $@
  	$(MAKE) -C ssl $@
- 	$(MAKE) -C pki $@
-diff -urN mozilla.orig/security/manager/ssl/src/Makefile.in mozilla/security/manager/ssl/src/Makefile.in
---- mozilla.orig/security/manager/ssl/src/Makefile.in	Thu Feb 20 15:56:09 2003
-+++ mozilla/security/manager/ssl/src/Makefile.in	Fri Apr  4 00:31:08 2003
-@@ -111,7 +111,7 @@
+ ifdef MOZ_XUL
+--- mozilla/security/manager/ssl/src/Makefile.in~	Fri Apr 11 02:56:20 2003
++++ mozilla/security/manager/ssl/src/Makefile.in	Thu May 15 10:27:52 2003
+@@ -114,7 +114,7 @@
  
  # Use local includes because they are inserted before INCLUDES
  # so that Mozilla's nss.h is used, not glibc's
