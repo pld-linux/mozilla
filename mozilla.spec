@@ -13,7 +13,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.3b
-Release:	0.1
+Release:	0.2
 Epoch:		2
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -229,15 +229,15 @@ cp -frL dist/public/ldap{,-private} $RPM_BUILD_ROOT%{_includedir}/%{name}
 install dist/bin/*.so $RPM_BUILD_ROOT%{_libdir}
 
 for f in build/unix/*.pc ; do
-	sed -e 's/mozilla-1.3a/mozilla/' $f \
+	sed -e 's/mozilla-%{version}/mozilla/' $f \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/$(basename $f)
 done
 
-sed -e 's,lib/mozilla-1.3a,lib,g;s/mozilla-1.3a/mozilla/g' build/unix/mozilla-gtkmozembed.pc \
+sed -e 's,lib/mozilla-%{version},lib,g;s/mozilla-%{version}/mozilla/g' build/unix/mozilla-gtkmozembed.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-gtkmozembed.pc
 
 		
-sed -e 's|/mozilla-1.3a||' build/unix/mozilla-nspr.pc \
+sed -e 's|/mozilla-%{version}||' build/unix/mozilla-nspr.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nspr.pc
 
 install %{SOURCE1}	$RPM_BUILD_ROOT%{_applnkdir}/Network/WWW
