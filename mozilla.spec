@@ -2,19 +2,20 @@
 # Conditional build:
 # _with_gdkxft
 # _with_gtk2
+%define		_version	1.0
+%define		_rc		rc1
 
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Name:		mozilla
-Version:	1.0.rc1
+Version:	%{_version}.%{_rc}
 Release:	1
 Epoch:		1
 License:	GPL
 Group:		X11/Applications/Networking
-Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
-#Mirror0:	ftp://sunsite.icm.edu.pl/pub/mozilla/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
+Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{_version}%{_rc}/src/%{name}-source-%{version}.tar.bz2
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-libart.tar.bz2
