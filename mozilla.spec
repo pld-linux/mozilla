@@ -11,7 +11,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.1
-Release:	0.11
+Release:	1
 Epoch:		2
 License:	GPL
 Group:		X11/Applications/Networking
