@@ -245,7 +245,8 @@ Mozilla.
 Mozilla
 
 %prep
-%setup -q -n %{name}
+%setup -q -c -T
+tar jxf %{SOURCE0} --strip-path=1
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
