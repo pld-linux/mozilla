@@ -106,37 +106,39 @@ Mozilla.
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
+MOZILLA_OFFICIAL="1"; export MOZILLA_OFFICIAL
 
 MOZ_INTERNAL_LIBART_LGPL="x"
 export MOZ_INTERNAL_LIBART_LGPL
 
 %configure2_13 \
-	--with-default-mozilla-five-home=%{_libdir}/mozilla \
-	--with-nspr-prefix="/usr" \
-	--enable-optimize="%{rpmcflags}" \
-	--with-pthreads \
-	--enable-toolkit=gtk \
-	--enable-strip-libs \
-	--enable-new-cache \
-	--enable-mathml \
-	--enable-svg \
-	--enable-ldap \
-	--enable-xsl \
-	--enable-xinerama \
-	--disable-elf-dynstr-gc \
-	--enable-crypto \
-	--with-extensions \
-	--disable-dtd-debug \
 	--disable-debug \
-	--disable-tests \
+	--disable-dtd-debug \
+	--disable-elf-dynstr-gc \
 	--disable-pedantic \
 	--disable-short-wchar \
-	--with-x \
-	--with-jpeg \
-	--with-zlib \
-	--with-png \
-	--with-mng \
-	--with-xprint
+	--disable-tests \
+	--enable-crypto \
+	--enable-extensions \
+	--enable-ldap \
+	--enable-mathml \
+	--enable-new-cache \
+	--enable-optimize="%{rpmcflags}" \
+	--disable-postscript \
+	--enable-strip-libs \
+	--enable-svg \
+	--enable-toolkit=gtk \
+	--enable-xinerama \
+	--enable-xprint \
+	--enable-xsl \
+	--with-default-mozilla-five-home=%{_libdir}/mozilla \
+	--with-nspr-prefix="/usr" \
+	--with-pthreads \
+	--with-system-jpeg=/usr \
+	--with-system-mng=/usr \
+	--with-system-png=/usr \
+	--with-system-zlib=/usr \
+	--with-x
 
 %{__make}
 
