@@ -36,7 +36,6 @@ BuildRequires:	nss-devel >= 3.4.rc1-0.2
 BuildRequires:  nspr-devel >= 4.1.2-3
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	zip >= 2.1
-BuildConflicts:	freetype1-devel < 1.3.1-5
 Provides:	mozilla-embedded = %{version}
 %{?_with_gdkxft:Requires:	gdkxft}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -134,12 +133,12 @@ export MOZ_INTERNAL_LIBART_LGPL
 	--enable-xprint \
 	--enable-xsl \
 	--with-default-mozilla-five-home=%{_libdir}/mozilla \
-	--with-nspr-prefix="/usr" \
+	--witht-system-nspr \
 	--with-pthreads \
-	--with-system-jpeg=/usr \
-	--with-system-mng=/usr \
-	--with-system-png=/usr \
-	--with-system-zlib=/usr \
+	--with-system-jpeg \
+	--with-system-mng \
+	--with-system-png \
+	--with-system-zlib \
 	--with-x
 
 %{__make}
