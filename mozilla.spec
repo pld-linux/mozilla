@@ -1,8 +1,8 @@
 Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
-Version:	0.7
-Release:	2
+Version:	0.8
+Release:	0.1
 Epoch:		1
 License:	NPL
 Group:		X11/Applications/Networking
@@ -12,8 +12,6 @@ Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Patch0:		%{name}-editor-overlay-menu.patch
-Patch1:		%{name}-navigator-overlay-menu.patch
-Patch2:		%{name}-psm-sparc-config.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
 BuildRequires:	libjpeg-devel
@@ -64,20 +62,15 @@ Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
 %prep
 %setup -q -n mozilla
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
 
 %build
 autoconf
 CXXFLAGS="-fno-rtti -fno-exceptions" ; export CXXFLAGS
-MOZ_OPTIMIZE_FLAGS="%{?debug:-O0 -g}%{!?debug:$RPM_OPT_FLAGS}" ; export MOZ_OPTIMIZE_FLAGS
 %configure \
 	--with-default-mozilla-five-home=%{_libdir}/mozilla \
+	--enable-optimize="%{?debug:-O0 -g}%{!?debug:$RPM_OPT_FLAGS}" \
 	--with-pthreads \
-	--enable-optimize \
 	--enable-toolkit=gtk \
-	--enable-x11-shm \
-	--enable-optimize \
 	--enable-strip-libs \
 	--with-extensions \
 	--disable-dtd-debug \
@@ -87,7 +80,8 @@ MOZ_OPTIMIZE_FLAGS="%{?debug:-O0 -g}%{!?debug:$RPM_OPT_FLAGS}" ; export MOZ_OPTI
 	--with-x \
 	--with-jpeg \
 	--with-zlib \
-	--with-png
+	--with-png \
+	--with-xprint
 
 %{__make}
 
@@ -182,8 +176,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/components/libcookie.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libdocshell.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libeditor.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libgfx_gtk.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libgfxps.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libembedcomponents.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libgfx*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libgk*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libhtmlpars.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjar50.so
@@ -202,7 +196,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/components/libprofile.so
 %attr(755,root,root) %{_libdir}/%{name}/components/librdf.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libregviewer.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libsample.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libshistory.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libstrres.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtimer_gtk.so
@@ -219,11 +212,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/components/libxml*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libxpconnect.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libxpinstall.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libxremote_client.so
 
 %{_libdir}/%{name}/components/appshell.xpt
 %{_libdir}/%{name}/components/autocomplete.xpt
 %{_libdir}/%{name}/components/bookmarks.xpt
 %{_libdir}/%{name}/components/caps.xpt
+%{_libdir}/%{name}/components/chardet.xpt
 %{_libdir}/%{name}/components/chrome.xpt
 %{_libdir}/%{name}/components/cookieviewer.xpt
 %{_libdir}/%{name}/components/directory.xpt
@@ -243,21 +238,21 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{name}/components/necko*.xpt
 %{_libdir}/%{name}/components/oji.xpt
 %{_libdir}/%{name}/components/plugin.xpt
-%{_libdir}/%{name}/components/prefmigr.xpt
 %{_libdir}/%{name}/components/pref.xpt
+%{_libdir}/%{name}/components/prefmigr.xpt
 %{_libdir}/%{name}/components/profile.xpt
 %{_libdir}/%{name}/components/proxyObjInst.xpt
 %{_libdir}/%{name}/components/rdf.xpt
 %{_libdir}/%{name}/components/regviewer.xpt
 %{_libdir}/%{name}/components/related.xpt
 %{_libdir}/%{name}/components/remote.xpt
-%{_libdir}/%{name}/components/sample.xpt
 %{_libdir}/%{name}/components/search.xpt
 %{_libdir}/%{name}/components/shistory.xpt
 %{_libdir}/%{name}/components/sidebar.xpt
 %{_libdir}/%{name}/components/signonviewer.xpt
 %{_libdir}/%{name}/components/timebomb.xpt
 %{_libdir}/%{name}/components/txmgr.xpt
+%{_libdir}/%{name}/components/txtsvc.xpt
 %{_libdir}/%{name}/components/uconv.xpt
 %{_libdir}/%{name}/components/unicharutil.xpt
 %{_libdir}/%{name}/components/uriloader.xpt
@@ -267,6 +262,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{name}/components/webBrowser*.xpt
 %{_libdir}/%{name}/components/webshell_idls.xpt
 %{_libdir}/%{name}/components/widget.xpt
+%{_libdir}/%{name}/components/windowwatcher.xpt
 %{_libdir}/%{name}/components/xml*.xpt
 %{_libdir}/%{name}/components/xp*.xpt
 
