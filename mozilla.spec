@@ -30,6 +30,7 @@ BuildRequires:	autoconf
 BuildRequires:	freetype-devel >= 2.0.9
 %{!?_with_gtk2:BuildRequires:	gtk+-devel}
 %{?_with_gtk2:BuildRequires:	gtk+2-devel >= 2.0.2}
+%{?_with_gtk2:BuildRequires:	pkgconfig}
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel
 BuildRequires:	libpng-devel
@@ -174,7 +175,7 @@ ln -sf ../../share/mozilla/searchplugins $RPM_BUILD_ROOT%{_libdir}/%{name}/searc
 cp -frL dist/bin/chrome/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
 cp -frL dist/bin/components/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/components
 cp -frL dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
-cp -frL dist/bin/icons/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/icons
+%{!?_with_gtk2:cp -frL dist/bin/icons/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/icons}
 cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
 cp -frL dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
 cp -frL dist/idl/*		$RPM_BUILD_ROOT%{_datadir}/idl
