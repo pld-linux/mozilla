@@ -24,8 +24,8 @@ Source7:	%{name}-mail.desktop
 Source8:	%{name}-news.desktop
 Source9:	%{name}-terminal.desktop
 Source10:	%{name}-venkman.desktop
-Source11:	ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Lang-PL-Build-ID-%{version}Beta.xpi
-Source12:	ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Reg-PL-Build-ID-%{version}Beta.xpi
+Source11:	http://osdn.dl.sourceforge.net/mozillapl/Lang-PL-Build-ID-%{version}.xpi
+Source12:	http://osdn.dl.sourceforge.net/mozillapl/Reg-PL-Build-ID-%{version}.xpi
 Source13:	http://free.of.pl/a/adgor/lang_pl-installed-chrome.txt
 Source14:	%{name}-antialiasing-howto.txt
 Patch0:		%{name}-pld-homepage.patch
