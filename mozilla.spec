@@ -23,18 +23,18 @@ Patch1:		%{name}-taskbar-no%{name}.patch
 Patch2:		%{name}-pld-homepage.patch
 Patch3:		%{name}-nspr_correct_in_nss.patch
 URL:		http://www.mozilla.org/projects/newlayout/
-BuildRequires:	libstdc++-devel
+BuildRequires:	ORBit-devel
+BuildRequires:	autoconf
+BuildRequires:	fileutils
+BuildRequires:	gtk+-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel
 BuildRequires:	libpng-devel
-BuildRequires:	gtk+-devel
-BuildRequires:	ORBit-devel
+BuildRequires:	libstdc++-devel
 BuildRequires:	nspr-devel
 BuildRequires:	nss-static
-BuildRequires:	fileutils
-BuildRequires:	zip >= 2.1
 BuildRequires:	perl-modules >= 5.6.0
-BuildRequires:	autoconf
+BuildRequires:	zip >= 2.1
 Provides:	mozilla-embedded
 Obsoletes:	mozilla-embedded
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -71,8 +71,8 @@ Requires:	%{name} = %{version}
 %description mailnews
 Programs for mail and news integrated with browser.
 
-%description -l pl mailnews
-Programy pocztowe i newsów zintegrowane z przegl±dark±.
+%description mailnews -l pl
+Programy pocztowe i obs³uga newsów zintegrowane z przegl±dark±.
 
 %package devel
 Summary:	Mozilla development crap
@@ -95,13 +95,13 @@ Obsoletes:	mozilla-embedded-devel
 %description devel
 Mozilla development libs and headers.
 
-%description -l es devel
+%description devel -l es
 Development package for Mozilla.
 
-%description -l pl devel
-Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
+%description devel -l pl
+Biblioteki i pliki nag³ówkowe.
 
-%description -l pt_BR devel
+%description devel -l pt_BR
 Arquivos de inclusão para desenvolvimento de programas que usam o
 Mozilla.
 
@@ -193,7 +193,7 @@ install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post 
+%post
 /sbin/ldconfig
 umask 022
 rm -f %{_libdir}/mozilla/component.reg
@@ -201,7 +201,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 
 %postun	-p /sbin/ldconfig
 
-%post   mailnews 
+%post mailnews
 /sbin/ldconfig
 umask 022
 rm -f %{_libdir}/mozilla/component.reg
