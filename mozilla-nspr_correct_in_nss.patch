@@ -1,17 +1,15 @@
 diff -urN mozilla.orig/config/config.mk mozilla/config/config.mk
 --- mozilla.orig/config/config.mk	Sun Dec  9 08:08:58 2001
 +++ mozilla/config/config.mk	Sat Jan 26 23:17:12 2002
-@@ -164,9 +164,8 @@
+@@ -164,7 +164,7 @@
  NSS_LIBS	= \
- 	$(DIST)/lib/libsmime.$(LIB_SUFFIX) \
- 	$(DIST)/lib/libcrmf.$(LIB_SUFFIX) \
--	$(DIST)/lib/libssl.$(LIB_SUFFIX) \
+ 	$(DIST)/lib/$(NSS_LIB_PREFIX)smime.$(LIB_SUFFIX) \
+ 	$(DIST)/lib/$(NSS_LIB_PREFIX)crmf.$(LIB_SUFFIX) \
+-	$(DIST)/lib/$(NSS_LIB_PREFIX)ssl.$(LIB_SUFFIX) \
 +	/usr/lib/libssl3.a \
- 	$(DIST)/lib/libnss.$(LIB_SUFFIX) \
--	$(DIST)/lib/libssl.$(LIB_SUFFIX) \
- 	$(DIST)/lib/libpkcs12.$(LIB_SUFFIX) \
- 	$(DIST)/lib/libpkcs7.$(LIB_SUFFIX) \
- 	$(DIST)/lib/libcerthi.$(LIB_SUFFIX) \
+ 	$(DIST)/lib/$(NSS_LIB_PREFIX)nss.$(LIB_SUFFIX) \
+ 	$(DIST)/lib/$(NSS_LIB_PREFIX)certhi.$(LIB_SUFFIX) \
+ 	$(DIST)/lib/$(NSS_LIB_PREFIX)cryptohi.$(LIB_SUFFIX) \
 diff -urN mozilla.orig/security/coreconf/Linux.mk mozilla/security/coreconf/Linux.mk
 --- mozilla.orig/security/coreconf/Linux.mk	Sat Oct 27 02:38:08 2001
 +++ mozilla/security/coreconf/Linux.mk	Sat Jan 26 23:18:08 2002
