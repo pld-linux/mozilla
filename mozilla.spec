@@ -7,6 +7,9 @@
 			# order to get it working with this release of mozilla
 %bcond_with	ft218	# compile with freetype >= 2.1.8
 %bcond_without	gnomevfs	# disable GnomeVFS support
+
+%bcond_without	heimdal	# disable heimdal support
+%bcond_vithout	svg	# disable svg support
 #
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
@@ -44,7 +47,7 @@ Patch5:		%{name}-alpha-gcc3.patch
 Patch6:		%{name}-freetype218.patch
 URL:		http://www.mozilla.org/
 %{?with_gtk1:BuildRequires:	ORBit-devel}
-BuildRequires:	cairo-devel >= 0.1.17
+%{?with_svg:BuildRequires:	cairo-devel >= 0.1.17}
 %if %{with ft218}
 BuildRequires:	freetype-devel >= 1:2.1.8
 %else
@@ -56,7 +59,7 @@ BuildConflicts:	freetype-devel = 2.1.8
 %{?with_gtk1:BuildRequires:	gtk+-devel >= 1.2.0}
 %{!?with_gtk1:BuildRequires:	gtk+2-devel >= 2.2.0}
 # for libnegotiateauth
-BuildRequires:	heimdal-devel
+%{?with_heimdal:BuildRequires:	heimdal-devel}
 %{!?with_gtk1:BuildRequires:	libIDL-devel >= 0.8.0}
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.0
@@ -276,8 +279,8 @@ cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
 	--enable-optimize="%{rpmcflags}" \
 	--enable-postscript \
 	%{!?debug:--enable-strip} \
-	--enable-svg \
-	--enable-svg-renderer-cairo \
+	%{?with_svg:--enable-svg} \
+	%{?with_svg:--enable-svg-renderer-cairo} \
 	%{?with_gtk1:--enable-toolkit-gtk} \
 	%{!?with_gtk1:--disable-toolkit-gtk --enable-default-toolkit=gtk2} \
 	%{!?with_gnomevfs:--disable-gnomevfs} \
@@ -554,7 +557,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %attr(755,root,root) %{_libdir}/%{name}/components/libmoz*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmyspell.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnecko*.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libnegotiateauth.so
+%{?with_heimdal:%attr(755,root,root) %{_libdir}/%{name}/components/libnegotiateauth.so}
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkdatetime.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkfinger.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libns*.so
@@ -602,7 +605,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %{_libdir}/%{name}/components/find.xpt
 %{_libdir}/%{name}/components/filepicker.xpt
 %{_libdir}/%{name}/components/gfx*.xpt
-%{_libdir}/%{name}/components/gksvgrenderer.xpt
+%{?with_svg:{_libdir}/%{name}/components/gksvgrenderer.xpt}
 %{_libdir}/%{name}/components/helperAppDlg.xpt
 %{_libdir}/%{name}/components/history.xpt
 %{_libdir}/%{name}/components/htmlparser.xpt
@@ -694,7 +697,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %{_datadir}/%{name}/chrome/modern.jar
 %{_datadir}/%{name}/chrome/pipnss.jar
 %{_datadir}/%{name}/chrome/pippki.jar
-%{_datadir}/%{name}/chrome/svg.jar
+%{?with_svg:{_datadir}/%{name}/chrome/svg.jar}
 %{_datadir}/%{name}/chrome/tasks.jar
 %{_datadir}/%{name}/chrome/toolkit.jar
 
