@@ -1,13 +1,13 @@
 --- mozilla/gfx/src/gtk/nsRenderingContextGTK.cpp.orig	Wed Nov 28 16:34:04 2001
 +++ mozilla/gfx/src/gtk/nsRenderingContextGTK.cpp	Wed Nov 28 15:39:05 2001
-@@ -1980,6 +1980,10 @@
-                                          const gchar *text,
+@@ -2054,6 +2054,10 @@
                                           gint         text_length)
  {
 +
 +#define MOZ_DRAW_TEXT_WITH_GDK 
 +#ifndef MOZ_DRAW_TEXT_WITH_GDK /* gdkxft patch */
 +
+ #ifdef MOZ_WIDGET_GTK
    GdkWindowPrivate *drawable_private;
    GdkFontPrivate *font_private;
    GdkGCPrivate *gc_private;
