@@ -2,7 +2,7 @@ Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
 Version:	5.M17
-Release:	2
+Release:	3
 License:	NPL
 Group:		X11/Applications/Networking
 Group(pl):	X11/Aplikacje/Sieciowe
@@ -89,18 +89,11 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_applnkdir}/Network/WWW} \
 	$RPM_BUILD_ROOT%{_datadir}/{idl,pixmaps} \
 	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,res,icons,searchplugins} \
 	$RPM_BUILD_ROOT%{_libdir}/%{name}/{components,plugins} \
-	$RPM_BUILD_ROOT%{_includedir}
-
-cat dist/bin/defaults/pref/all.js \
-	| sed -e 's/http:\/\/www.mozilla.org\/projects\/seamonkey\/release-notes\//http:\/\/www.pld.org.pl\//g' \
-	> dist/bin/defaults/pref/all.js.new
-mv -f dist/bin/defaults/pref/all.js.new dist/bin/defaults/pref/all.js
+	$RPM_BUILD_ROOT%{_includedir}/%{name}/{obsolete,private}
 
 # creating and installing register
-LD_LIBRARY_PATH="dist/bin" \
-MOZILLA_FIVE_HOME="dist/bin" \
-dist/bin/regxpcom
-
+LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regxpcom
+LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regchrome
 install dist/bin/component.reg $RPM_BUILD_ROOT%{_libdir}/%{name}
 
 ln -s ../../share/mozilla/chrome $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome
@@ -109,22 +102,25 @@ ln -s ../../share/mozilla/res $RPM_BUILD_ROOT%{_libdir}/%{name}/res
 ln -s ../../share/mozilla/icons $RPM_BUILD_ROOT%{_libdir}/%{name}/icons
 ln -s ../../share/mozilla/searchplugins $RPM_BUILD_ROOT%{_libdir}/%{name}/searchplugins
 
-cp -fr dist/bin/chrome/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
-cp -fr dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
-cp -fr dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
-cp -fr dist/bin/icons/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/icons
-cp -fr dist/bin/searchplugins/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
-cp -fr dist/bin/components/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/components
-cp -fr dist/idl/*		$RPM_BUILD_ROOT%{_datadir}/idl
-#cp -fr dist/include/gtkmozilla.h $RPM_BUILD_ROOT%{_includedir}
+cp -frL dist/bin/chrome/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
+cp -frL dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
+cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
+cp -frL dist/bin/icons/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/icons
+cp -frL dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
+cp -frL dist/bin/components/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/components
+cp -frL dist/idl/*		$RPM_BUILD_ROOT%{_datadir}/idl
+cp -frL dist/include/*.h	$RPM_BUILD_ROOT%{_includedir}/%{name}
+cp -frL dist/include/obsolete/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/obsolete
+cp -frL dist/include/private/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/private
 
 install dist/bin/*.so		$RPM_BUILD_ROOT%{_libdir}
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/mozilla
 install %{SOURCE2} $RPM_BUILD_ROOT%{_applnkdir}/Network/WWW
-cp -fr dist/bin/icons/mozicon16.xpm $RPM_BUILD_ROOT%{_datadir}/pixmaps/mozilla-icon.xpm
+cp -frL dist/bin/icons/mozicon16.xpm $RPM_BUILD_ROOT%{_datadir}/pixmaps/mozilla-icon.xpm
 
 install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}
+install dist/bin/regchrome $RPM_BUILD_ROOT%{_bindir}
 
 strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/%{name}/components/*.so \
 	$RPM_BUILD_ROOT%{_libdir}/*.so* || :
@@ -151,12 +147,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}/res
 %dir %{_libdir}/%{name}/searchplugins
 %dir %{_datadir}/%{name}
-%dir %{_datadir}/%{name}/chrome
-%dir %{_datadir}/%{name}/chrome/packages
 
 %{_libdir}/%{name}/component.reg
 %attr(755,root,root) %{_libdir}/libcmt.so
-#%attr(755,root,root) %{_libdir}/libdocshell.so
 %attr(755,root,root) %{_libdir}/libgkgfx.so
 %attr(755,root,root) %{_libdir}/libgtkembedmoz.so
 %attr(755,root,root) %{_libdir}/libgtksuperwin.so
@@ -168,9 +161,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libplc4.so
 %attr(755,root,root) %{_libdir}/libplds4.so
 %attr(755,root,root) %{_libdir}/libprotocol.so
-#%attr(755,root,root) %{_libdir}/libraptorgfx.so
-#%attr(755,root,root) %{_libdir}/libraptorplugin.so
-#%attr(755,root,root) %{_libdir}/libraptorwebwidget.so
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
 
@@ -203,7 +193,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/components/libpref.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libprofile.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpsmglue.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libraptor*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/librdf.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libregviewer.so
 %attr(755,root,root) %{_libdir}/%{name}/components/librelated.so
@@ -279,16 +268,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{name}/components/*.js
 %{_libdir}/%{name}/components/*.dat
 
-%{_datadir}/%{name}/chrome/locales
-%{_datadir}/%{name}/chrome/packages/chatzilla
-%{_datadir}/%{name}/chrome/packages/core
-%{_datadir}/%{name}/chrome/packages/widget-toolkit
-%{_datadir}/%{name}/chrome/packages/xmlterm
-%{_datadir}/%{name}/chrome/skins
-# some discussion files
-#%{_datadir}/%{name}/chrome/overlayinfo
-#%{_datadir}/%{name}/chrome/*.rdf
-
+%{_datadir}/%{name}/chrome
 %{_datadir}/%{name}/defaults
 %{_datadir}/%{name}/icons
 %{_datadir}/%{name}/res
@@ -324,13 +304,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{name}/components/mime.xpt
 %{_libdir}/%{name}/components/msg*.xpt
 
-%{_datadir}/%{name}/chrome/packages/messenger
-
 #######################################
 ################ devel ################
 #######################################
 %files devel
 %defattr(644,root,root,755)
-#%{_libdir}/lib*.la
-#%{_includedir}/*
+%{_includedir}/%{name}
 %{_datadir}/idl/*
