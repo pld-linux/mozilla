@@ -1,12 +1,12 @@
 Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
-Version:	5.M14
+Version:	5.M15
 Release:	1
 License:	NPL
 Group:		X11/Applications/Networking
 Group(pl):	X11/Aplikacje/Sieciowe
-Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/m14/src/%{name}-source-M14-no-crypto.tar.gz
+Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/m14/src/%{name}-source-M15.tar.gz
 Source1:	mozilla.sh
 Source2:	mozilla-icon.png
 Source3:	mozilla.desktop
@@ -46,7 +46,7 @@ Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
 CFLAGS="$RPM_OPT_FLAGS" ; export CFLAGS
 CXXFLAGS="$RPM_OPT_FLAGS" ; export CXXFLAGS
 LDFLAGS="-s" ; export LDFLAGS
-./configure \
+%configure \
 	--with-pthreads \
 	--enable-toolkit=gtk \
 	--enable-x11-shm \
@@ -56,6 +56,7 @@ LDFLAGS="-s" ; export LDFLAGS
 	--disable-dtd-debug \
 	--disable-debug \
 	--disable-tests \
+	--with-x \
 	--with-jpeg \
 	--with-zlib \
 	--with-png \
@@ -83,9 +84,9 @@ cp -fr dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
 cp -fr dist/bin/icons/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/icons
 cp -fr dist/bin/components/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/components
 cp -fr dist/idl/*		$RPM_BUILD_ROOT%{_datadir}/idl
-cp -fr dist/include/gtkmozilla.h $RPM_BUILD_ROOT%{_includedir}
+#cp -fr dist/include/gtkmozilla.h $RPM_BUILD_ROOT%{_includedir}
 
-install dist/lib/libgtkmozilla.{so.0.*,la} $RPM_BUILD_ROOT%{_libdir}
+#install dist/lib/libgtkmozilla.{so.0.*,la} $RPM_BUILD_ROOT%{_libdir}
 install dist/bin/*.so		$RPM_BUILD_ROOT%{_libdir}
 
 # creating and installing register
@@ -133,6 +134,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%{_libdir}/lib*.la
-%{_includedir}/*
+#%{_libdir}/lib*.la
+#%{_includedir}/*
 %{_datadir}/idl/*
