@@ -460,7 +460,10 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 
 #%%{_libdir}/*.js
 %{_libdir}/%{name}/components/*.js
-%config %verify(not size mtime md5) %{_libdir}/%{name}/components/*.dat
+# not *.dat, so check-files can catch any new files
+# (and they won't be just silently placed empty in rpm)
+%ghost %{_libdir}/%{name}/components/compreg.dat
+%ghost %{_libdir}/%{name}/components/xpti.dat
 
 %dir %{_datadir}/%{name}/chrome
 %{_datadir}/%{name}/chrome/[!i]*
