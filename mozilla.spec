@@ -1,7 +1,7 @@
 Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
-Version:	0.8.1
+Version:	0.9
 Release:	1
 Epoch:		1
 License:	NPL
@@ -12,17 +12,14 @@ Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Patch0:		%{name}-navigator-overlay-menu.patch
-Patch1:		%{name}-prefs-debug.patch
-Patch2:		%{name}-taskbar-nomozilla.patch
-Patch3:		%{name}-fix-wrapper.patch
-Patch4:		%{name}-pld-custom-settings.patch
-Patch5:		%{name}-jar-delete-files.patch
-Patch6:		%{name}-psm.patch
-Patch7:		%{name}-alpha-compiler.patch
-Patch8:		%{name}-dlopen-plugin.patch
-Patch9:		%{name}-event.patch
-Patch10:	%{name}-libc-link.patch
-Patch11:	%{name}-norpath.patch
+Patch1:		%{name}-editor-overlay-menu.patch
+Patch2:		%{name}-prefs-debug.patch
+Patch3:		%{name}-taskbar-nomozilla.patch
+Patch4:		%{name}-fix-wrapper.patch
+Patch5:		%{name}-pld-custom-settings.patch
+Patch6:		%{name}-alpha-compiler.patch
+Patch7:		%{name}-dlopen-plugin.patch
+Patch8:		%{name}-notebook-crash.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
 BuildRequires:	libjpeg-devel
@@ -86,16 +83,11 @@ Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
-%patch9 -p1
-%patch10 -p1
-%patch11 -p1
 
 %build
-autoconf
-(cd nsprpub ; autoconf)
 CXXFLAGS="-fno-rtti -fno-exceptions" ; export CXXFLAGS
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
-# mozilla
+MOZ_NSS_AUTOCONF="1"; export MOZ_NSS_AUTOCONF
 
 %configure \
 	--with-default-mozilla-five-home=%{_libdir}/mozilla \
@@ -103,11 +95,12 @@ BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
 	--with-pthreads \
 	--enable-toolkit=gtk \
 	--enable-strip-libs \
-	--enable-nspr-autoconf \
 	--enable-new-cache \
 	--enable-mathml \
 	--enable-svg \
 	--enable-ldap \
+	--enable-crypto \
+	--enable-xsl \
 	--with-extensions \
 	--disable-dtd-debug \
 	--disable-debug \
@@ -121,38 +114,9 @@ BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
 	--with-mng \
 	--with-xprint
 
-%{__make} export
-%{__make} install
-
-# psm
-%configure \
-	--with-default-mozilla-five-home=%{_libdir}/mozilla \
-	--enable-optimize="%{rpmcflags}" \
-	--with-pthreads \
-	--enable-toolkit=gtk \
-	--enable-strip-libs \
-	--enable-modules=psm \
-	--enable-nspr-autoconf \
-	--enable-new-cache \
-	--enable-mathml \
-	--enable-svg \
-	--enable-ldap \
-	--with-extensions \
-	--disable-dtd-debug \
-	--disable-debug \
-	--disable-tests \
-	--disable-pedantic \
-	--disable-short-wchar \
-	--with-x \
-	--with-jpeg \
-	--with-zlib \
-	--with-png \
-	--with-mng \
-	--with-xprint
-
-# we can't use %{__make} here because nss/psm uses
-# the old mozilla build system
-make
+%{__make}
+# mozilla don't like openssl from PLD :(
+#%{__make} BUILD_MODULES=psm2
 
 %install
 rm -rf $RPM_BUILD_ROOT
