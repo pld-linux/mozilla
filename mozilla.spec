@@ -154,6 +154,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{name}/component.reg
 %attr(755,root,root) %{_libdir}/libcmt.so
 #%attr(755,root,root) %{_libdir}/libdocshell.so
+%attr(755,root,root) %{_libdir}/libgkgfx.so
 %attr(755,root,root) %{_libdir}/libgtkembedmoz.so
 %attr(755,root,root) %{_libdir}/libgtksuperwin.so
 %attr(755,root,root) %{_libdir}/libgtkxtbin.so
