@@ -116,6 +116,9 @@ MOZILLA_OFFICIAL="1"; export MOZILLA_OFFICIAL
 MOZ_INTERNAL_LIBART_LGPL="x"
 export MOZ_INTERNAL_LIBART_LGPL
 
+if [ -f %{_pkgconfigdir}/libpng12.pc ] ; then
+	CPPFLAGS="`pkg-config libpng12 --cflags`"; export CPPFLAGS
+fi
 %configure2_13 \
 	--disable-debug \
 	--disable-dtd-debug \
