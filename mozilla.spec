@@ -20,6 +20,7 @@ BuildRequires:	libstdc++-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	gtk+-devel
 BuildRequires:	ORBit-devel
+BuildRequires:	libmng-devel
 BuildRequires:	fileutils
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
