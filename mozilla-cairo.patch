@@ -1,0 +1,11 @@
+diff -ur mozilla.orig/layout/svg/renderer/src/cairo/nsSVGCairoCanvas.cpp mozilla/layout/svg/renderer/src/cairo/nsSVGCairoCanvas.cpp
+--- mozilla.orig/layout/svg/renderer/src/cairo/nsSVGCairoCanvas.cpp	2005-03-27 10:58:26.966712296 +0200
++++ mozilla/layout/svg/renderer/src/cairo/nsSVGCairoCanvas.cpp	2005-03-27 10:57:36.196430552 +0200
+@@ -50,6 +50,7 @@
+ #include "nsRenderingContextGTK.h"
+ #include <gdk/gdkx.h>
+ #include <cairo.h>
++#include <cairo-xlib.h>
+ 
+ /**
+  * \addtogroup cairo_renderer Cairo Rendering Engine
