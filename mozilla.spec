@@ -454,7 +454,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/ucnative.xpt
 %{_libdir}/%{name}/components/websrvcs.xpt
 %{_libdir}/%{name}/components/libipcdc.so
-#%{_libdir}/%{name}/components/libsystem-pref.so
+%{!?_with_gtk1:%{_libdir}/%{name}/components/libsystem-pref.so}
 %{_libdir}/%{name}/components/libtransmngr_client.so
 %{_libdir}/%{name}/components/libwebsrvcs.so
 
