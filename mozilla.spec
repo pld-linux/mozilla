@@ -18,7 +18,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.7.6
-Release:	2
+Release:	2.1
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -364,6 +364,7 @@ install %{SOURCE2}	$RPM_BUILD_ROOT%{_pixmapsdir}
 install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}
 install dist/bin/regchrome $RPM_BUILD_ROOT%{_bindir}
 install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
+install dist/bin/xpidl $RPM_BUILD_ROOT%{_bindir}
 
 cp $RPM_BUILD_ROOT%{_chromedir}/installed-chrome.txt \
 	$RPM_BUILD_ROOT%{_chromedir}/%{name}-installed-chrome.txt
@@ -473,7 +474,8 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/*
+%attr(755,root,root) %{_bindir}/mozilla*
+%attr(755,root,root) %{_bindir}/reg*
 %attr(744,root,root) %{_sbindir}/mozilla-chrome+xpcom-generate
 
 %dir %{_libdir}/%{name}
@@ -818,3 +820,4 @@ fi
 %defattr(644,root,root,755)
 %{_includedir}/%{name}
 %{_pkgconfigdir}/*
+%attr(755,root,root) %{_bindir}/xpidl
