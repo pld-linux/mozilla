@@ -353,5 +353,5 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %{_includedir}/%{name}
-%{_datadir}/idl
+%{_datadir}/idl/*
 %{_libdir}/libmpfilelocprovider_s.a
