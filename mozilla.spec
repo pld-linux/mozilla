@@ -99,7 +99,6 @@ MOZ_NSS_AUTOCONF="1"; export MOZ_NSS_AUTOCONF
 	--enable-mathml \
 	--enable-svg \
 	--enable-ldap \
-	--enable-crypto \
 	--enable-xsl \
 	--with-extensions \
 	--disable-dtd-debug \
@@ -122,12 +121,12 @@ MOZ_NSS_AUTOCONF="1"; export MOZ_NSS_AUTOCONF
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_bindir},%{_applnkdir}/Network/WWW} \
 	$RPM_BUILD_ROOT%{_datadir}/{idl,pixmaps} \
-	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,res,icons,searchplugins,psmdata} \
+	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,res,icons,searchplugins,profile,dtd} \
 	$RPM_BUILD_ROOT%{_libdir}/%{name}/{components,plugins} \
-	$RPM_BUILD_ROOT%{_includedir}/%{name}/{obsolete,private}
+	$RPM_BUILD_ROOT%{_includedir}/%{name}/nspr
 
 # preparing to create register
-rm -fr dist/bin/chrome/{blue,chatzilla,classic,comm,embed,en-US,messenger,modern,toolkit,xmlterm}
+rm -fr dist/bin/chrome/{blue,chatzilla,classic,comm,embed,en-US,en-win,en-unix,help,US,messenger,modern,toolkit,xmlterm}
 echo "skin,install,select,classic/1.0"	>> dist/bin/chrome/installed-chrome.txt
 echo "locale,install,select,en-US"	>> dist/bin/chrome/installed-chrome.txt
 
@@ -141,30 +140,29 @@ ln -s ../../share/mozilla/defaults $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults
 ln -s ../../share/mozilla/res $RPM_BUILD_ROOT%{_libdir}/%{name}/res
 ln -s ../../share/mozilla/icons $RPM_BUILD_ROOT%{_libdir}/%{name}/icons
 ln -s ../../share/mozilla/searchplugins $RPM_BUILD_ROOT%{_libdir}/%{name}/searchplugins
-ln -s ../../share/mozilla/psmdata $RPM_BUILD_ROOT%{_libdir}/%{name}/psmdata
+ln -s ../../share/mozilla/profile $RPM_BUILD_ROOT%{_libdir}/%{name}/profile
+ln -s ../../share/mozilla/dtd $RPM_BUILD_ROOT%{_libdir}/%{name}/dtd
 
 cp -frL dist/bin/chrome/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
 cp -frL dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
 cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
 cp -frL dist/bin/icons/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/icons
 cp -frL dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
+cp -frL dist/bin/profile/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/profile
+cp -frL dist/bin/dtd/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/dtd
 cp -frL dist/bin/components/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/components
 cp -frL dist/bin/plugins/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins
-cp -frL dist/bin/psmdata/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/psmdata
 cp -frL dist/idl/*		$RPM_BUILD_ROOT%{_datadir}/idl
 cp -frL dist/include/*.h	$RPM_BUILD_ROOT%{_includedir}/%{name}
-cp -frL dist/include/obsolete/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/obsolete
-cp -frL dist/include/private/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/private
+cp -frL dist/include/nspr/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/nspr
 
 install dist/bin/*.so		$RPM_BUILD_ROOT%{_libdir}
-install dist/lib/libmpfilelocprovider_s.a $RPM_BUILD_ROOT%{_libdir}
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Network/WWW
 install %{SOURCE2} $RPM_BUILD_ROOT%{_pixmapsdir}
 
 install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}/mozilla
 install dist/bin/regchrome $RPM_BUILD_ROOT%{_bindir}
-install dist/bin/psm $RPM_BUILD_ROOT%{_bindir}/psm
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -183,25 +181,25 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}/chrome
 %dir %{_libdir}/%{name}/components
 %dir %{_libdir}/%{name}/defaults
+%dir %{_libdir}/%{name}/dtd
 %dir %{_libdir}/%{name}/icons
 %dir %{_libdir}/%{name}/plugins
+%dir %{_libdir}/%{name}/profile
 %dir %{_libdir}/%{name}/res
 %dir %{_libdir}/%{name}/searchplugins
-%dir %{_libdir}/%{name}/psmdata
 %dir %{_datadir}/%{name}
 
 %{_libdir}/%{name}/component.reg
-%attr(755,root,root) %{_libdir}/libcmt.so
 %attr(755,root,root) %{_libdir}/libgkgfx.so
 %attr(755,root,root) %{_libdir}/libgtkembedmoz.so
 %attr(755,root,root) %{_libdir}/libgtksuperwin.so
 %attr(755,root,root) %{_libdir}/libgtkxtbin.so
 %attr(755,root,root) %{_libdir}/libjsdom.so
 %attr(755,root,root) %{_libdir}/libjsj.so
+%attr(755,root,root) %{_libdir}/liblber40.so
+%attr(755,root,root) %{_libdir}/libldap40.so
 %attr(755,root,root) %{_libdir}/libmozjs.so
 %attr(755,root,root) %{_libdir}/libnspr4.so
-%attr(755,root,root) %{_libdir}/libnssckbi.so
-%attr(755,root,root) %{_libdir}/libprotocol.so
 %attr(755,root,root) %{_libdir}/libplc4.so
 %attr(755,root,root) %{_libdir}/libplds4.so
 %attr(755,root,root) %{_libdir}/libxpcom.so
@@ -209,6 +207,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %attr(755,root,root) %{_libdir}/%{name}/plugins/libnullplugin.so
 
+%attr(755,root,root) %{_libdir}/%{name}/components/libaccessibility.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libappcomps.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libcaps.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libchardet.so
@@ -220,6 +219,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/components/libgfx*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libgk*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libhtmlpars.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libimggif.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libimgjpeg.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libimglib2.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libimgpng.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libimgppm.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjar50.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjsloader.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjsurl.so
@@ -227,14 +231,15 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/components/libmork.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmozbrwsr.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmozfind.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libmozldap.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmozucth.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmozxfer.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnecko*.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libnkcache.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libns*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/liboji.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpref.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libprofile.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libpsmglue.so
 %attr(755,root,root) %{_libdir}/%{name}/components/librdf.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libregviewer.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libshistory.so
@@ -255,20 +260,24 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/components/libxpinstall.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libxremote_client.so
 
+%{_libdir}/%{name}/components/accessibility.xpt
 %{_libdir}/%{name}/components/appshell.xpt
 %{_libdir}/%{name}/components/autocomplete.xpt
 %{_libdir}/%{name}/components/bookmarks.xpt
 %{_libdir}/%{name}/components/caps.xpt
 %{_libdir}/%{name}/components/chardet.xpt
 %{_libdir}/%{name}/components/chrome.xpt
-%{_libdir}/%{name}/components/cookieviewer.xpt
+%{_libdir}/%{name}/components/content_base.xpt
+%{_libdir}/%{name}/components/cookie.xpt
 %{_libdir}/%{name}/components/directory.xpt
 %{_libdir}/%{name}/components/docshell.xpt
 %{_libdir}/%{name}/components/dom.xpt
 %{_libdir}/%{name}/components/editor.xpt
+%{_libdir}/%{name}/components/embed_base.xpt
 %{_libdir}/%{name}/components/exthandler.xpt
-%{_libdir}/%{name}/components/gfx.xpt
+%{_libdir}/%{name}/components/gfx*.xpt
 %{_libdir}/%{name}/components/history.xpt
+%{_libdir}/%{name}/components/imglib2.xpt
 %{_libdir}/%{name}/components/intl.xpt
 %{_libdir}/%{name}/components/jar.xpt
 %{_libdir}/%{name}/components/jsurl.xpt
@@ -283,7 +292,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{name}/components/prefmigr.xpt
 %{_libdir}/%{name}/components/profile.xpt
 %{_libdir}/%{name}/components/proxyObjInst.xpt
-%{_libdir}/%{name}/components/psmglue.xpt
 %{_libdir}/%{name}/components/rdf.xpt
 %{_libdir}/%{name}/components/regviewer.xpt
 %{_libdir}/%{name}/components/related.xpt
@@ -316,7 +324,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/%{name}/icons
 %{_datadir}/%{name}/res
 %{_datadir}/%{name}/searchplugins
-%{_datadir}/%{name}/psmdata
+%{_datadir}/%{name}/profile
+%{_datadir}/%{name}/dtd
 
 %{_pixmapsdir}/mozilla.png
 %{_applnkdir}/Network/WWW/mozilla.desktop
@@ -355,4 +364,3 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_includedir}/%{name}
 %{_datadir}/idl/*
-%{_libdir}/libmpfilelocprovider_s.a
