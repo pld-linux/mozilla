@@ -4,6 +4,6 @@ Name[pl]=Mozilla
 Comment=Web browser
 Comment[pl]=Przegl±darka WWW
 Exec=mozilla
-Icon=mozilla-icon.png
+Icon=mozilla-icon.xpm
 Terminal=0
 Type=Application
