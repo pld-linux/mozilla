@@ -937,3 +937,27 @@ diff -u -r1.1 mozilla-gtkmozembed.pc.in
 -Libs: -L${libdir} -lgtkembedmoz -lgtksuperwin
 +Libs: -L${libdir} -lgtkembedmoz
  Cflags: -I${includedir}/gtkembedmoz
+Index: embedding/browser/gtk/tests/Makefile.in
+===================================================================
+RCS file: /cvsroot/mozilla/embedding/browser/gtk/tests/Makefile.in,v
+retrieving revision 1.22
+diff -u -p -r1.22 Makefile.in
+--- embedding/browser/gtk/tests/Makefile.in	24 Sep 2002 01:56:35 -0000	1.22
++++ embedding/browser/gtk/tests/Makefile.in	24 Oct 2002 19:09:08 -0000
+@@ -45,10 +45,16 @@ ifdef ENABLE_GNOME
+ CPPSRCS	       += TestGtkEmbedMDI.cpp
+ endif
+ 
++ifdef MOZ_ENABLE_GTK
+ LIBS		+= \
+ 		-lgtkembedmoz \
+ 		-lgtksuperwin \
+ 		$(NULL)
++endif
++
++ifdef MOZ_ENABLE_GTK2
++LIBS		+= -lgtkembedmoz
++endif
+ 
+ include $(topsrcdir)/config/config.mk
+ 
