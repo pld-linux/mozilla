@@ -4,18 +4,21 @@
 # _with_gtk2
 # _without_PL
 
+%define		gtk2	1
+
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
-Version:	1.1
-Release:	0.10
+Version:	1.2
+Release:	0
 Epoch:		2
 License:	GPL
 Group:		X11/Applications/Networking
-Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.gz
+#Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.gz
+Source0:	mozilla.tar.gz
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-libart.tar.bz2
@@ -38,6 +41,7 @@ Patch4:		http://people.redhat.com/blizzard/mozilla/gtk2_embedding/2002-04-11/gtk
 Patch5:		http://people.redhat.com/blizzard/mozilla/gtk2_embedding/2002-04-11/gtk2_widget.patch
 Patch6:		gtk2mozilla_head.patch
 Patch7:		%{name}-ldap-with-nss.patch
+Patch8:		%{name}-gfx.patch
 URL:		http://www.mozilla.org/
 BuildRequires:	ORBit-devel
 BuildRequires:	autoconf
@@ -146,8 +150,9 @@ Mozilla
 %patch3 -p1
 #%{?_with_gtk2:%patch4 -p1}
 #%{?_with_gtk2:%patch5 -p1}
-%{?_with_gtk2:%patch6}
+%{?_with_gtk2:%patch6 -p1}
 %patch7 -p1
+%patch8 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
