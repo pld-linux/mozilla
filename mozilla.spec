@@ -5,7 +5,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.2.1
-Release:	2
+Release:	3
 Epoch:		2
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -54,9 +54,10 @@ Provides:	mozilla(gtk1) = %{epoch}:%{version}-%{release}
 Provides:	mozilla-embedded = %{epoch}:%{version}-%{release}
 Provides:	mozilla-embedded(gtk1) = %{epoch}:%{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+Conflicts:	mozilla-Lang-PL
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
-Conflicts:	mozilla-Lang-PL
+Obsoletes:	mozilla-theme-NegativeModern
 
 %define		_chromedir	%{_libdir}/%{name}/chrome
 %define		_prefix		/usr/X11R6
