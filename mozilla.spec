@@ -1,10 +1,10 @@
 #
 # Conditional build:
 # _with_gtk1		- use gtk+ 1.2.x instead of 2.x.x
-# _with_gcc2		- compile using gcc2 to get working flash and Sun Java plugins
-#			  on nest and other gcc 3.x systems. WARNING! You have to
-#			  recompile galeon with gcc2 in order to get it working with
-#			  this release of mozilla
+# _with_gcc2		- compile using gcc2 to get working macromedia-flash and
+#			  Sun Java plugins on nest and other gcc 3.x systems.
+#			  WARNING! You have to recompile galeon with gcc2 in
+#			  order to get it working with this release of mozilla
 #
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
@@ -34,25 +34,25 @@ Patch5:		%{name}-ldap-with-nss.patch
 Patch6:		%{name}-gfx.patch
 URL:		http://www.mozilla.org/
 %{?_with_gtk1:BuildRequires:	ORBit-devel}
-BuildRequires:	Xft-devel >= 2.1-2
-BuildRequires:	autoconf
 BuildRequires:	freetype-devel >= 2.1.3
-%{?_with_gtk1:BuildRequires:	gtk+-devel}
+%{?_with_gtk1:BuildRequires:	gtk+-devel >= 1.2.0}
 %{!?_with_gtk1:BuildRequires:  gtk+2-devel >= 2.2.0}
-%{!?_with_gtk1:BuildRequires:  pkgconfig}
-%{!?_with_gtk1:BuildRequires:  libIDL-devel}
-%{!?_with_gtk1:BuildRequires:  freetype-devel >= 2.1.3}
-BuildRequires:	libjpeg-devel
+%{!?_with_gtk1:BuildRequires:  libIDL-devel >= 0.8.0}
+BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libmng-devel >= 1.0.4
-BuildRequires:	libpng-devel
+BuildRequires:	libpng-devel >= 1.2.0
 BuildRequires:	libstdc++-devel
-BuildRequires:	nss-devel >= 3.7.3
 BuildRequires:	nspr-devel >= 4.3-2.20030517
+BuildRequires:	nss-devel >= 3.8
+%{!?_with_gtk1:BuildRequires:	pango-devel >= 1.1.0}
 BuildRequires:	perl-modules >= 5.6.0
+%{!?_with_gtk1:BuildRequires:  pkgconfig}
+BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
+BuildRequires:	zlib-devel >= 1.0.0
+Requires:	nss >= 3.8
 Provides:	mozilla-embedded = %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-Requires:	nss >= 3.7.3
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
 
@@ -291,7 +291,6 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %dir %{_libdir}/%{name}/searchplugins
 %dir %{_datadir}/%{name}
 
-#%ghost %{_libdir}/%{name}/component.reg
 %attr(755,root,root) %{_libdir}/libgkgfx.so
 %attr(755,root,root) %{_libdir}/libgtkembedmoz.so
 %{?_with_gtk1:%attr(755,root,root) %{_libdir}/libgtksuperwin.so}
@@ -368,6 +367,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libwallet.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwalletviewers.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwebbrwsr.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libwebsrvcs.so
 %{?_with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk.so}
 %{!?_with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk2.so}
 %attr(755,root,root) %{_libdir}/%{name}/components/libx*.so
@@ -419,6 +419,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/prefetch.xpt
 %{_libdir}/%{name}/components/prefmigr.xpt
 %{_libdir}/%{name}/components/profile.xpt
+%{_libdir}/%{name}/components/profilesharingsetup.xpt
 %{_libdir}/%{name}/components/progressDlg.xpt
 %{_libdir}/%{name}/components/proxyObjInst.xpt
 %{_libdir}/%{name}/components/rdf.xpt
@@ -442,6 +443,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/webBrowser_core.xpt
 %{_libdir}/%{name}/components/webbrowserpersist.xpt
 %{_libdir}/%{name}/components/webshell_idls.xpt
+%{_libdir}/%{name}/components/websrvcs.xpt
 %{_libdir}/%{name}/components/widget.xpt
 %{_libdir}/%{name}/components/windowds.xpt
 %{_libdir}/%{name}/components/windowwatcher.xpt
@@ -449,16 +451,12 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 
 # Is this a correct package for these files?
 %{_libdir}/%{name}/components/ipcd.xpt
-%{_libdir}/%{name}/components/profilesharingsetup.xpt
 %{_libdir}/%{name}/components/transmngr.xpt
 %{_libdir}/%{name}/components/ucnative.xpt
-%{_libdir}/%{name}/components/websrvcs.xpt
-%{_libdir}/%{name}/components/libipcdc.so
-%{!?_with_gtk1:%{_libdir}/%{name}/components/libsystem-pref.so}
-%{_libdir}/%{name}/components/libtransmngr_client.so
-%{_libdir}/%{name}/components/libwebsrvcs.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libipcdc.so
+%{!?_with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libsystem-pref.so}
+%attr(755,root,root) %{_libdir}/%{name}/components/libtransmngr_client.so
 
-#%%{_libdir}/*.js
 %{_libdir}/%{name}/components/*.js
 # not *.dat, so check-files can catch any new files
 # (and they won't be just silently placed empty in rpm)
