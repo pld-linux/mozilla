@@ -18,7 +18,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.7.2
-Release:	2
+Release:	3
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -342,6 +342,7 @@ cp -frL dist/public/ldap{,-private} $RPM_BUILD_ROOT%{_includedir}/%{name}
 install dist/bin/*.so $RPM_BUILD_ROOT%{_libdir}
 
 ln -s %{_libdir}/libxpcom.so $RPM_BUILD_ROOT%{_libdir}/%{name}/libxpcom.so
+ln -s %{_libdir}/libnssckbi.so $RPM_BUILD_ROOT%{_libdir}/%{name}/libnssckbi.so
 
 for f in build/unix/*.pc ; do
 	sed -e 's/mozilla-%{version}/mozilla/' $f \
@@ -547,6 +548,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %attr(755,root,root) %{_libdir}/libxpistub.so
 %attr(755,root,root) %{_libdir}/libxlibrgb.so
 %attr(755,root,root) %{_libdir}/%{name}/libxpcom.so
+%attr(755,root,root) %{_libdir}/%{name}/libnssckbi.so
 
 %attr(755,root,root) %{_libdir}/%{name}/components/libaccess*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libappcomps.so
