@@ -1,0 +1,4 @@
+- updated to 1.8a
+- removed the obsolete mozilla-gfx patch
+- updated the ldap-with-nss patch
+- not tested (yet)
