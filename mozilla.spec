@@ -605,7 +605,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %{_libdir}/%{name}/components/find.xpt
 %{_libdir}/%{name}/components/filepicker.xpt
 %{_libdir}/%{name}/components/gfx*.xpt
-%{?with_svg:{_libdir}/%{name}/components/gksvgrenderer.xpt}
+%{?with_svg:%{_libdir}/%{name}/components/gksvgrenderer.xpt}
 %{_libdir}/%{name}/components/helperAppDlg.xpt
 %{_libdir}/%{name}/components/history.xpt
 %{_libdir}/%{name}/components/htmlparser.xpt
@@ -697,7 +697,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %{_datadir}/%{name}/chrome/modern.jar
 %{_datadir}/%{name}/chrome/pipnss.jar
 %{_datadir}/%{name}/chrome/pippki.jar
-%{?with_svg:{_datadir}/%{name}/chrome/svg.jar}
+%{?with_svg:%{_datadir}/%{name}/chrome/svg.jar}
 %{_datadir}/%{name}/chrome/tasks.jar
 %{_datadir}/%{name}/chrome/toolkit.jar
 
