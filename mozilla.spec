@@ -81,7 +81,6 @@ Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
 %patch3 -p1
 
 %build
-CXXFLAGS="-fno-rtti -fno-exceptions" ; export CXXFLAGS
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
 
 %configure \
