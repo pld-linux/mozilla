@@ -87,7 +87,7 @@ cp -fr dist/idl/*		$RPM_BUILD_ROOT%{_datadir}/idl
 #cp -fr dist/include/gtkmozilla.h $RPM_BUILD_ROOT%{_includedir}
 
 #install dist/lib/libgtkmozilla.{so.0.*,la} $RPM_BUILD_ROOT%{_libdir}
-install dist/bin/*.so		$RPM_BUILD_ROOT%{_libdir}
+install dist/bin/*.so		$RPM_BUILD_ROOT%{_libdir}/%{name}
 
 # creating and installing register
 LD_LIBRARY_PATH="dist/bin" \
@@ -103,6 +103,7 @@ install %{SOURCE3} $RPM_BUILD_ROOT%{_applnkdir}/Networking/WWW
 install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}
 
 strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/%{name}/components/*.so \
+	$RPM_BUILD_ROOT%{_libdir}/%{name}/*.so \
 	$RPM_BUILD_ROOT%{_libdir}/*.so* || :
 
 %clean
@@ -114,12 +115,12 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/*
-
-%attr(755,root,root) %{_libdir}/*.so*
+#%attr(755,root,root) %{_libdir}/*.so.*.*
 
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/components
 %{_libdir}/%{name}/component.reg
+%attr(755,root,root) %{_libdir}/%{name}/*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/*.so
 %{_libdir}/%{name}/components/*.xpt
 %{_libdir}/%{name}/components/*.js
