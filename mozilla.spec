@@ -326,12 +326,10 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %{_libdir}/%{name}/components/rdf.xpt
 %{_libdir}/%{name}/components/regviewer.xpt
 %{_libdir}/%{name}/components/related.xpt
-%{_libdir}/%{name}/components/remote.xpt
 %{_libdir}/%{name}/components/search.xpt
 %{_libdir}/%{name}/components/shistory.xpt
 %{_libdir}/%{name}/components/sidebar.xpt
 %{_libdir}/%{name}/components/signonviewer.xpt
-%{_libdir}/%{name}/components/timebomb.xpt
 %{_libdir}/%{name}/components/transformiix.xpt
 %{_libdir}/%{name}/components/txmgr.xpt
 %{_libdir}/%{name}/components/txtsvc.xpt
