@@ -129,12 +129,9 @@ rm -rf $RPM_BUILD_ROOT
 %post	-p /sbin/ldconfig
 %postun	-p /sbin/ldconfig
 
-%post mailnews -p /sbin/ldconfig
+%post   mailnews -p /sbin/ldconfig
 %postun mailnews -p /sbin/ldconfig
 
-#########################################
-################ mozilla ################
-#########################################
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/*
