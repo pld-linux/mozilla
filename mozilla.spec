@@ -157,9 +157,6 @@ export MOZ_INTERNAL_LIBART_LGPL
 CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 %endif
 
-%define		__cc		gcc2
-%define		__cxx		gcc2
-
 %configure2_13 \
 	--disable-debug \
 	--disable-dtd-debug \
