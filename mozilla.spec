@@ -414,7 +414,6 @@ umask 022
 cd %{_datadir}/mozilla/chrome
 cat *-installed-chrome.txt > installed-chrome.txt
 rm -f chrome.rdf overlayinfo/*/*/*.rdf
-cd -
 rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
