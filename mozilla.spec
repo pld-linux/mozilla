@@ -12,8 +12,8 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
-Version:	1.3a
-Release:	0.2
+Version:	1.3b
+Release:	0.1
 Epoch:		2
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -48,7 +48,7 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.4
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
-BuildRequires:	nss-devel >= 3.6
+BuildRequires:	nss-devel >= 3.7.1
 BuildRequires:	nspr-devel >= 4.2.2-2
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	zip >= 2.1
@@ -144,7 +144,7 @@ Mozilla
 %patch3 -p1
 %patch5 -p1
 %patch6 -p1
-#%patch7 -p0
+#%%patch7 -p0
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
