@@ -1,11 +1,8 @@
-? diff.txt
-Index: nsFontMetricsWin.cpp
-===================================================================
 RCS file: /cvsroot/mozilla/gfx/src/windows/nsFontMetricsWin.cpp,v
 retrieving revision 3.91
 diff -u -r3.91 nsFontMetricsWin.cpp
---- nsFontMetricsWin.cpp	2000/09/07 03:20:05	3.91
-+++ nsFontMetricsWin.cpp	2000/10/09 07:44:53
+--- mozilla/gfx/src/windows/nsFontMetricsWin.cpp	2000/09/07 03:20:05	3.91
++++ mozilla/gfx/src/windows/nsFontMetricsWin.cpp	2000/10/09 07:44:53
 @@ -1536,6 +1536,7 @@
                                PRUint8       aChar,
                                GLYPHMETRICS* aGlyphMetrics)
