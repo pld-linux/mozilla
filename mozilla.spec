@@ -59,11 +59,13 @@ Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
 %patch0 -p1
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" ; export CFLAGS
-CXXFLAGS="$RPM_OPT_FLAGS" ; export CXXFLAGS
-LDFLAGS="-s" ; export LDFLAGS
+CXXFLAGS="-fno-rtti -fno-exceptions"
+MOZ_OPTIMIZE_FLAGS="$RPM_OPT_FLAGS"
+LDFLAGS="-s"
+export CXXFLAGS MOZ_OPTIMIZE_FLAGS LDFLAGS
 %configure \
 	--with-pthreads \
+	--enable-optimize \
 	--enable-toolkit=gtk \
 	--enable-x11-shm \
 	--enable-optimize \
@@ -139,7 +141,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/*
-#%attr(755,root,root) %{_libdir}/*.so.*.*
 
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/chrome
