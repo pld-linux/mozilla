@@ -3,7 +3,7 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
 Version:	5.M14
 Release:	1
-Copyright:	NPL
+License:	NPL
 Group:		X11/Applications/Networking
 Group(pl):	X11/Aplikacje/Sieciowe
 Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/m14/src/%{name}-source-M14-no-crypto.tar.gz
@@ -22,7 +22,6 @@ BuildRoot:	/tmp/%{name}-%{version}-root
 %define		_prefix		/usr/X11R6
 
 %description
-
 Mozilla is an open-source web browser, designed for standards
 compliance, performance and portability. 
 
@@ -70,21 +69,11 @@ make
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT%{_bindir}
-
-install -d $RPM_BUILD_ROOT%{_datadir}/pixmaps
-install -d $RPM_BUILD_ROOT%{_datadir}/applnk/Internet
-
-install -d $RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
-install -d $RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
-install -d $RPM_BUILD_ROOT%{_datadir}/%{name}/res
-install -d $RPM_BUILD_ROOT%{_datadir}/%{name}/icons
-
-install -d $RPM_BUILD_ROOT%{_libdir}/%{name}/components
-install -d $RPM_BUILD_ROOT%{_libdir}/%{name}/plugins
-install -d $RPM_BUILD_ROOT%{_libdir}/%{name}/idl
-
-install -d $RPM_BUILD_ROOT%{_includedir}
+install -d $RPM_BUILD_ROOT%{_bindir} \
+	$RPM_BUILD_ROOT%{_datadir}/{idl,pixmaps,applnk/Internet} \
+	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,res,icons}
+	$RPM_BUILD_ROOT%{_libdir}/%{name}/{components,plugins}
+	$RPM_BUILD_ROOT%{_includedir}
 
 ln -s ../../share/mozilla/chrome $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome
 ln -s ../../share/mozilla/defaults $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults
@@ -96,7 +85,7 @@ cp -fr dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
 cp -fr dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
 cp -fr dist/bin/icons/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/icons
 cp -fr dist/bin/components/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/components
-cp -fr dist/idl/*		$RPM_BUILD_ROOT%{_libdir}/%{name}/idl
+cp -fr dist/idl/*		$RPM_BUILD_ROOT%{_datadir}/idl
 cp -fr dist/include/gtkmozilla.h $RPM_BUILD_ROOT%{_includedir}
 
 install dist/lib/libgtkmozilla.{so.0.*,la} $RPM_BUILD_ROOT%{_libdir}
@@ -114,8 +103,8 @@ install %{SOURCE3} $RPM_BUILD_ROOT%{_datadir}/applnk/Internet
 
 install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}
 
-strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/%{name}/components/*.so || :
-strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/*.so* || :
+strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/%{name}/components/*.so \
+	$RPM_BUILD_ROOT%{_libdir}/*.so* || :
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -149,4 +138,4 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_libdir}/lib*.la
 %{_includedir}/*
-%{_libdir}/%{name}/idl
+%{_datadir}/idl/*
