@@ -222,7 +222,7 @@ rm -rf $RPM_BUILD_ROOT
 /sbin/ldconfig
 umask 022
 rm -f %{_libdir}/mozilla/component.reg
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 
 %postun	-p /sbin/ldconfig
 
@@ -230,7 +230,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 /sbin/ldconfig
 umask 022
 rm -f %{_libdir}/mozilla/component.reg
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 
 %postun mailnews -p /sbin/ldconfig
 
