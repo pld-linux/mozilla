@@ -13,7 +13,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.4b
-Release:	0.2
+Release:	0.3
 Epoch:		3
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -454,7 +454,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/ucnative.xpt
 %{_libdir}/%{name}/components/websrvcs.xpt
 %{_libdir}/%{name}/components/libipcdc.so
-%{_libdir}/%{name}/components/libsystem-pref.so
+#%{_libdir}/%{name}/components/libsystem-pref.so
 %{_libdir}/%{name}/components/libtransmngr_client.so
 %{_libdir}/%{name}/components/libwebsrvcs.so
 
