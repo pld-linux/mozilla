@@ -76,8 +76,7 @@ Programs for mail and news integrated with browser.
 Programy pocztowe i obs³uga newsów zintegrowane z przegl±dark±.
 
 %package devel
-Summary:	Mozilla development crap
-Summary(es):	Headers for developing programs that will use Mozilla
+Summary:	Headers for developing programs that will use Mozilla
 Summary(pl):	Mozilla - pliki nag³ówkowe i biblioteki
 Summary(pt_BR):	Arquivos de inclusão para desenvolvimento de programas que usam o Mozilla
 Group:		X11/Development/Libraries
@@ -94,10 +93,7 @@ Provides:	mozilla-embedded-devel
 Obsoletes:	mozilla-embedded-devel
 
 %description devel
-Mozilla development libs and headers.
-
-%description devel -l es
-Development package for Mozilla.
+Mozilla development package.
 
 %description devel -l pl
 Biblioteki i pliki nag³ówkowe.
