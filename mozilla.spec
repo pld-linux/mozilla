@@ -10,6 +10,7 @@ Epoch:		2
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
+# Source0-md5:	ac11f0cf8f80e288aab7cce60fa54510
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source4:	%{name}-addressbook.desktop
@@ -21,11 +22,11 @@ Source9:	%{name}-terminal.desktop
 Source10:	%{name}-venkman.desktop
 Source14:	%{name}-antialiasing-howto.txt
 Patch0:		%{name}-pld-homepage.patch
-Patch2:		%{name}-nss.patch
-Patch3:		%{name}-ldap_nspr_includes.patch
-Patch5:		%{name}-ldap-with-nss.patch
-Patch6:		%{name}-gfx.patch
-Patch7:		%{name}-gtk2.patch
+Patch1:		%{name}-nss.patch
+Patch2:		%{name}-ldap_nspr_includes.patch
+Patch3:		%{name}-ldap-with-nss.patch
+Patch4:		%{name}-gfx.patch
+#Patch5:		%{name}-gtk2.patch
 URL:		http://www.mozilla.org/
 BuildRequires:	ORBit-devel
 BuildRequires:	Xft-devel >= 2.1-2
@@ -119,11 +120,11 @@ Mozilla
 #%setup -q -a 3 -n mozilla
 %setup -q -n mozilla
 %patch0 -p1
+%patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p0
+%patch4 -p1
+#%patch5 -p0
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
