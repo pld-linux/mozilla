@@ -69,7 +69,7 @@ Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
 %build
 autoconf
 CXXFLAGS="-fno-rtti -fno-exceptions"
-MOZ_OPTIMIZE_FLAGS="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}"
+MOZ_OPTIMIZE_FLAGS="%{?debug:-O -g}%{!?debug:$RPM_OPT_FLAGS}"
 %configure \
 	--with-default-mozilla-five-home=%{_libdir}/mozilla \
 	--with-pthreads \
