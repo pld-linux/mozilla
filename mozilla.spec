@@ -1,6 +1,5 @@
 #
 # Conditional build:
-# _with_gdkxft		- with gdkxft support (for gtk+ 1.2.x)
 # _with_gtk1		- use gtk+ 1.2.x instead of 2.x.x
 # _without_PL		- without PL language pack
 
@@ -11,11 +10,11 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.2
-Release:	0.beta.4
+Release:	0.1
 Epoch:		2
 License:	GPL
 Group:		X11/Applications/Networking
-Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}b/src/%{name}-source-%{version}b.tar.gz
+Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.gz
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source4:	%{name}-addressbook.desktop
@@ -30,7 +29,7 @@ Source12:	ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Reg-PL-Build-ID-%{
 Source13:	http://free.of.pl/a/adgor/lang_pl-installed-chrome.txt
 Source14:	%{name}-antialiasing-howto.txt
 Patch0:		%{name}-pld-homepage.patch
-Patch1:		%{name}-gdkxft.patch
+#Patch1:		%{name}-gdkxft.patch
 Patch2:		%{name}-nss.patch
 Patch3:		%{name}-ldap_nspr_includes.patch
 Patch4:		%{name}-gtk2.patch
@@ -38,6 +37,7 @@ Patch5:		%{name}-ldap-with-nss.patch
 Patch6:		%{name}-gfx.patch
 URL:		http://www.mozilla.org/
 BuildRequires:	ORBit-devel
+BuildRequires:	Xft-devel
 BuildRequires:	autoconf
 BuildRequires:	freetype-devel >= 2.0.9
 %{?_with_gtk1:BuildRequires:	gtk+-devel}
@@ -55,7 +55,6 @@ BuildRequires:	perl-modules >= 5.6.0
 %{!?_without_PL:BuildRequires: unzip}
 BuildRequires:	zip >= 2.1
 Provides:	mozilla-embedded = %{version}
-%{?_with_gdkxft:Requires:	gdkxft}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Requires:	nss >= 3.6
 Obsoletes:	mozilla-embedded
@@ -141,7 +140,6 @@ Mozilla
 #%setup -q -a 3 -n mozilla
 %setup -q -n mozilla
 %patch0 -p1
-%{?_with_gdkxft:%patch1 -p1}
 %patch2 -p1
 %patch3 -p1
 %{!?_with_gtk1:%patch4 -p0}
@@ -177,6 +175,7 @@ CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 	--enable-svg \
 	%{?_with_gtk1:--enable-toolkit-gtk} \
 	%{!?_with_gtk1:--disable-toolkit-gtk --enable-default-toolkit=gtk2} \
+	--enable-xft \
 	--enable-xinerama \
 	--enable-xprint \
 	--enable-xsl \
