@@ -236,7 +236,7 @@ for f in build/unix/*.pc ; do
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/$(basename $f)
 done
 
-sed -e 's|/%{name}-%{version}||; s|/X11R6||' mozilla-nspr.pc \
+sed -e 's|/%{name}-%{version}||; s|/X11R6||' build/unix/mozilla-nspr.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nspr.pc
 
 
