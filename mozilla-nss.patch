@@ -1,8 +1,8 @@
-diff -urN mozilla.org/config/config.mk mozilla/config/config.mk
---- mozilla.org/config/config.mk	Fri Mar 14 03:08:06 2003
-+++ mozilla/config/config.mk	Fri Mar 14 03:09:21 2003
-@@ -178,7 +178,7 @@
- else
+diff -urN mozilla.orig/config/config.mk mozilla/config/config.mk
+--- mozilla.orig/config/config.mk	Tue Mar 25 07:53:20 2003
++++ mozilla/config/config.mk	Fri Apr  4 00:12:55 2003
+@@ -169,7 +169,7 @@
+ 
  NSS_LIBS	= \
  	$(LIBS_DIR) \
 -	$(DIST)/lib/$(LIB_PREFIX)crmf.$(LIB_SUFFIX) \
@@ -10,7 +10,7 @@ diff -urN mozilla.org/config/config.mk mozilla/config/config.mk
  	-lsmime3 \
  	-lssl3 \
  	-lnss3 \
-@@ -187,11 +187,6 @@
+@@ -189,11 +189,6 @@
  endif
  
  NSS_DEP_LIBS	= \
@@ -22,42 +22,50 @@ diff -urN mozilla.org/config/config.mk mozilla/config/config.mk
  	$(NULL)
  
  MOZ_UNICHARUTIL_LIBS = $(DIST)/lib/$(LIB_PREFIX)unicharutil_s.$(LIB_SUFFIX)
-diff -urN mozilla.org/security/manager/Makefile.in mozilla/security/manager/Makefile.in
---- mozilla.org/security/manager/Makefile.in	Fri Mar 14 03:08:06 2003
-+++ mozilla/security/manager/Makefile.in	Fri Mar 14 03:09:21 2003
-@@ -110,29 +110,6 @@
+diff -urN mozilla.orig/security/manager/Makefile.in mozilla/security/manager/Makefile.in
+--- mozilla.orig/security/manager/Makefile.in	Tue Apr  1 17:07:41 2003
++++ mozilla/security/manager/Makefile.in	Fri Apr  4 00:30:14 2003
+@@ -114,37 +114,6 @@
  else
  	cd $(DIST)/lib; cp -f $(LIB_PREFIX)mozdbm_s.$(LIB_SUFFIX) $(LIB_PREFIX)dbm.$(LIB_SUFFIX); $(RANLIB) $(LIB_PREFIX)dbm.$(LIB_SUFFIX)
  endif
 -	$(MAKE) -C $(topsrcdir)/security/nss/lib $(DEFAULT_GMAKE_FLAGS)
+-	$(MAKE) -C $(topsrcdir)/security/nss/cmd/lib $(DEFAULT_GMAKE_FLAGS)
+-	$(MAKE) -C $(topsrcdir)/security/nss/cmd/shlibsign $(DEFAULT_GMAKE_FLAGS)
 -ifndef DISABLE_DIST_GRE
 -	$(INSTALL) -m 755 $(DIST)/lib/$(LOADABLE_ROOT_MODULE) $(GRE_DIST)
+-	$(INSTALL) -m 644 $(DIST)/lib/$(SOFTOKEN3_CHK) $(GRE_DIST)
 -	$(INSTALL) -m 755 $(DIST)/lib/$(SOFTOKEN3_LIB) $(GRE_DIST)
 -	$(INSTALL) -m 755 $(DIST)/lib/$(NSS3_LIB) $(GRE_DIST)
 -	$(INSTALL) -m 755 $(DIST)/lib/$(SSL3_LIB) $(GRE_DIST)
 -	$(INSTALL) -m 755 $(DIST)/lib/$(SMIME3_LIB) $(GRE_DIST)
 -ifdef HAVE_FREEBL_MODULES
+-	$(INSTALL) -m 644 $(DIST)/lib/$(FREEBL_PURE32_CHK) $(GRE_DIST)
 -	$(INSTALL) -m 755 $(DIST)/lib/$(FREEBL_PURE32_MODULE) $(GRE_DIST)
+-	$(INSTALL) -m 644 $(DIST)/lib/$(FREEBL_HYBRID_CHK) $(GRE_DIST)
 -	$(INSTALL) -m 755 $(DIST)/lib/$(FREEBL_HYBRID_MODULE) $(GRE_DIST)
 -endif
 -endif
 -ifndef _SKIP_OLD_GRE_INSTALL
 -	$(INSTALL) -m 755 $(DIST)/lib/$(LOADABLE_ROOT_MODULE) $(DIST)/bin
+-	$(INSTALL) -m 644 $(DIST)/lib/$(SOFTOKEN3_CHK) $(DIST)/bin
 -	$(INSTALL) -m 755 $(DIST)/lib/$(SOFTOKEN3_LIB) $(DIST)/bin
 -	$(INSTALL) -m 755 $(DIST)/lib/$(NSS3_LIB) $(DIST)/bin
 -	$(INSTALL) -m 755 $(DIST)/lib/$(SSL3_LIB) $(DIST)/bin
 -	$(INSTALL) -m 755 $(DIST)/lib/$(SMIME3_LIB) $(DIST)/bin
 -ifdef HAVE_FREEBL_MODULES
+-	$(INSTALL) -m 644 $(DIST)/lib/$(FREEBL_PURE32_CHK) $(DIST)/bin
 -	$(INSTALL) -m 755 $(DIST)/lib/$(FREEBL_PURE32_MODULE) $(DIST)/bin
+-	$(INSTALL) -m 644 $(DIST)/lib/$(FREEBL_HYBRID_CHK) $(DIST)/bin
 -	$(INSTALL) -m 755 $(DIST)/lib/$(FREEBL_HYBRID_MODULE) $(DIST)/bin
 -endif
 -endif
  	$(MAKE) -C boot $@
  	$(MAKE) -C ssl $@
  	$(MAKE) -C pki $@
-diff -urN mozilla.org/security/manager/ssl/src/Makefile.in mozilla/security/manager/ssl/src/Makefile.in
---- mozilla.org/security/manager/ssl/src/Makefile.in	Thu Feb 20 15:56:09 2003
-+++ mozilla/security/manager/ssl/src/Makefile.in	Fri Mar 14 03:09:46 2003
+diff -urN mozilla.orig/security/manager/ssl/src/Makefile.in mozilla/security/manager/ssl/src/Makefile.in
+--- mozilla.orig/security/manager/ssl/src/Makefile.in	Thu Feb 20 15:56:09 2003
++++ mozilla/security/manager/ssl/src/Makefile.in	Fri Apr  4 00:31:08 2003
 @@ -111,7 +111,7 @@
  
  # Use local includes because they are inserted before INCLUDES
