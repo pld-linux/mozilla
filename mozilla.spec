@@ -29,10 +29,11 @@ Source8:	%{name}-news.desktop
 Source9:	%{name}-terminal.desktop
 Source10:	%{name}-venkman.desktop
 Patch0:		%{name}-pld-homepage.patch
-Patch2:		%{name}-nss.patch
-Patch3:		%{name}-ldap_nspr_includes.patch
-Patch5:		%{name}-ldap-with-nss.patch
-Patch6:		%{name}-gfx.patch
+Patch1:		%{name}-nss.patch
+Patch2:		%{name}-ldap_nspr_includes.patch
+Patch3:		%{name}-ldap-with-nss.patch
+Patch4:		%{name}-gfx.patch
+Patch5:		%{name}-alpha-gcc3.patch
 URL:		http://www.mozilla.org/
 %{?_with_gtk1:BuildRequires:	ORBit-devel}
 BuildRequires:	freetype-devel >= 2.1.3
@@ -189,10 +190,11 @@ Mozilla
 %prep
 %setup -q -n %{name}
 %patch0 -p1
+%patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 %patch5 -p1
-%patch6 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
