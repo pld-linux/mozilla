@@ -37,7 +37,7 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
-BuildRequires:	nss-devel >= 3.4.rc1-1
+BuildRequires:	nss-devel >= 3.4.1
 BuildRequires:	nspr-devel >= 4.1.2-3
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	zip >= 2.1
