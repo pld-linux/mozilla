@@ -65,23 +65,14 @@ Summary(pl):	Mozilla - pliki nag³ówkowe i biblioteki
 Group:		X11/Development/Libraries
 Group(de):	X11/Entwicklung/Libraries
 Group(pl):	X11/Programowanie/Biblioteki
-Requires:	%{name}-embedded = %{version}
+Requires:	%{name} = %{version}
+Conflicts:	%{name}-embedded-devel
 
 %description devel
 Mozilla development libs and headers.
 
 %description -l pl devel
 Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
-
-%package embedded
-Summary:	Embedded part of mozilla
-Group:		X11/Development/Libraries
-Group(de):	X11/Entwicklung/Libraries
-Group(pl):	X11/Programowanie/Biblioteki
-Obsoletes:	mozilla
-
-%description embedded
-Embedded part of mozilla.
 
 %prep
 %setup -q -n mozilla
@@ -166,32 +157,6 @@ install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}/mozilla
 install dist/bin/regchrome $RPM_BUILD_ROOT%{_bindir}
 install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
 
-#
-# embedded part
-#
-%{__make} -C embedding/config
-(
-    cd dist/Embed
-
-    echo "%defattr(644,root,root,755)" > embedded-mozilla.list
-    # at first overwrite file list
-    # with libraries, which go to %{_libdir}
-    for f in *.so; do echo "%attr(755,root,root) %{_libdir}/$f"; done >> embedded-mozilla.list
-
-    # next all files in %{_datadir}/mozilla
-    for f in chrome defaults res; do
-        find $f -type f -printf %{_datadir}/%{name}/%p\\n ;
-    done >> embedded-mozilla.list
-
-    # and files in %{_libdir}/mozilla
-    for f in components/*.so ; do
-        echo "%attr(755,root,root) %{_libdir}/%{name}/$f"
-    done >> embedded-mozilla.list
-    for f in components/*.xpt ; do
-        echo "%{_libdir}/%{name}/$f"
-    done >> embedded-mozilla.list
-)
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -210,14 +175,6 @@ rm -f %{_libdir}/mozilla/component.reg
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 
 %postun mailnews -p /sbin/ldconfig
-
-%post   embedded 
-/sbin/ldconfig
-umask 022
-rm -f %{_libdir}/mozilla/component.reg
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
-
-%postun embedded -p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
@@ -408,35 +365,3 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %defattr(644,root,root,755)
 %{_includedir}/%{name}
 %{_datadir}/idl/*
-
-#######################################
-################ embedded #############
-#######################################
-%files -f dist/Embed/embedded-mozilla.list embedded
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/regxpcom
-%ghost %{_libdir}/%{name}/component.reg
-
-# maybe it will be needed for plugin support
-#%attr(755,root,root) %{_libdir}/libnullplugin.so
-#%attr(755,root,root) %{_libdir}/%{name}/plugins/libnullplugin.so
-
-# plugin support
-%attr(755,root,root) %{_libdir}/%{name}/components/libgkplugin.so
-%{_libdir}/%{name}/components/plugin.xpt
-%attr(755,root,root) %{_libdir}/libgtkxtbin.so
-
-%dir %{_libdir}/%{name}
-%dir %{_libdir}/%{name}/components
-%dir %{_libdir}/%{name}/plugins
-%dir %{_datadir}/%{name}
-%dir %{_datadir}/%{name}/res
-%dir %{_datadir}/%{name}/res/builtin
-%dir %{_datadir}/%{name}/defaults
-%dir %{_datadir}/%{name}/defaults/pref
-%dir %{_datadir}/%{name}/chrome
-# symlinks
-%{_libdir}/%{name}/chrome
-%{_libdir}/%{name}/defaults
-%{_libdir}/%{name}/res
-#%{_libdir}/%{name}/{searchplugins,icons,dtd} - symlinks to non-existing dirs
