@@ -49,7 +49,7 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.4
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
-BuildRequires:	nss-devel >= 3.4.1
+BuildRequires:	nss-devel >= 3.4.2
 BuildRequires:	nspr-devel >= 4.1.2-3
 BuildRequires:	perl-modules >= 5.6.0
 %{!?_without_PL:BuildRequires: unzip}
