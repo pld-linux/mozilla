@@ -1,6 +1,8 @@
 #
 # TODO:
 #  - separate sql subpackage?
+#  - look at https://bugzilla.mozilla.org/show_bug.cgi?id=58612
+#    (spellchecking as you type)
 #
 # Conditional build:
 %bcond_with	gtk1	# use gtk+ 1.2.x instead of 2.x.x
@@ -8,12 +10,11 @@
 			# gcc2-compiled Java plugins on nest and other gcc 3.x systems.
 			# WARNING! You have to recompile galeon with gcc2 in
 			# order to get it working with this release of mozilla
-%bcond_without	ft218	# compile with freetype >= 2.1.8
 %bcond_without	gnomevfs	# disable GnomeVFS support
 %bcond_without	heimdal	# disable heimdal support
 %bcond_without	svg	# disable svg support
 #
-%define	pre	a4
+%define	pre	a5
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
@@ -25,8 +26,8 @@ Release:	0.%{pre}.1
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
-Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{version}%{pre}/src/%{name}-source-%{version}%{pre}.tar.bz2
-# Source0-md5:	f1eecee3c57064d27cfecf963e268793
+Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{version}%{pre}/source/%{name}-source-%{version}%{pre}.tar.bz2
+# Source0-md5:	fa3e7a19b3ef455609ea0803b26e6e74
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-composer.desktop
@@ -42,19 +43,11 @@ Patch1:		%{name}-nss.patch
 Patch2:		%{name}-ldap_nspr_includes.patch
 Patch3:		%{name}-ldap-with-nss.patch
 Patch4:		%{name}-alpha-gcc3.patch
-# http://bugzilla.mozilla.org/show_bug.cgi?id=234035
-# http://bugzilla.mozilla.org/attachment.cgi?id=162261&action=view
-Patch5:		%{name}-freetype218.patch
+Patch5:		%{name}-const_cast.patch
 URL:		http://www.mozilla.org/
 %{?with_gtk1:BuildRequires:	ORBit-devel}
 %{?with_svg:BuildRequires:	cairo-devel >= 0.1.17}
-%if %{with ft218}
-BuildRequires:	freetype-devel >= 1:2.1.8
-%else
 BuildRequires:	freetype-devel >= 2.1.3
-BuildRequires:	freetype-devel < 1:2.1.8
-BuildConflicts:	freetype-devel = 2.1.8
-%endif
 %{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.0.0}
 %{?with_gtk1:BuildRequires:	gtk+-devel >= 1.2.0}
 %{!?with_gtk1:BuildRequires:	gtk+2-devel >= 2.2.0}
@@ -252,7 +245,7 @@ Mozilla
 %patch2 -p1
 %patch3 -p1
 #patch4 -p1
-%{?with_ft218:%patch5 -p0}
+%patch5 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
@@ -545,6 +538,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 ##%attr(755,root,root) %{_libdir}/libmoz_art_lgpl.so
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpcom_compat.so
+%attr(755,root,root) %{_libdir}/libxpcom_core.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
 %attr(755,root,root) %{_libdir}/libxlibrgb.so
 %attr(755,root,root) %{_libdir}/%{name}/libxpcom.so
@@ -601,7 +595,9 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %attr(755,root,root) %{_libdir}/%{name}/components/libx*.so
 
 %{_libdir}/%{name}/components/access*.xpt
+%{_libdir}/%{name}/components/alerts*.xpt
 %{_libdir}/%{name}/components/appshell.xpt
+%{_libdir}/%{name}/components/appstartup.xpt
 %{_libdir}/%{name}/components/autocomplete.xpt
 %{_libdir}/%{name}/components/autoconfig.xpt
 %{_libdir}/%{name}/components/bookmarks.xpt
@@ -682,6 +678,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 
 %{_libdir}/%{name}/components/jsconsole-clhandler.js
 %{_libdir}/%{name}/components/nsCloseAllWindows.js
+%{_libdir}/%{name}/components/nsComposerCmdLineHandler.js
 %{_libdir}/%{name}/components/nsDictionary.js
 %{_libdir}/%{name}/components/nsDownloadProgressListener.js
 %{_libdir}/%{name}/components/nsFilePicker.js
@@ -830,6 +827,9 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %dir %{_datadir}/%{name}/chrome/overlayinfo/global/skin
 # only chrome://chatzilla/skin/browserOverlay.css
 %ghost %{_datadir}/%{name}/chrome/overlayinfo/global/skin/stylesheets.rdf
+
+# ??
+%ghost %{_datadir}/%{name}/chrome/overlayinfo/chatzilla/content/overlays.rdf
 
 %{_desktopdir}/mozilla-chat.desktop
 
