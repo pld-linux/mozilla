@@ -7,19 +7,20 @@
 			# order to get it working with this release of mozilla
 %bcond_with	debug	# compile without \--disable-debug
 #
+%define	pre	a
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
-Version:	1.6
-Release:	2
+Version:	1.7
+Release:	0.%{pre}.1
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
-Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
-# Source0-md5:	da612f8768320dbafd0bfb3c254c2788
+Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{version}%{pre}/src/%{name}-source-%{version}%{pre}.tar.bz2
+# Source0-md5:	6ae50cc951fc112758d5c5dc6b4c3081
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-composer.desktop
@@ -30,8 +31,8 @@ Source7:	%{name}-mail.desktop
 Source8:	%{name}-news.desktop
 Source9:	%{name}-terminal.desktop
 Source10:	%{name}-venkman.desktop
-Source11:	%{name}-libart.tar.bz2
-# Source11-md5:	d6834f4881d5947b4e0540f46b7edfb6
+#Source11:	%{name}-libart.tar.bz2
+## Source11-md5:	d6834f4881d5947b4e0540f46b7edfb6
 Patch0:		%{name}-pld-homepage.patch
 Patch1:		%{name}-nss.patch
 Patch2:		%{name}-ldap_nspr_includes.patch
@@ -198,7 +199,7 @@ Mozilla.
 Mozilla
 
 %prep
-%setup -q -n %{name} -a11
+%setup -q -n %{name}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -230,6 +231,7 @@ CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 	--enable-postscript \
 	--enable-strip \
 	--enable-svg \
+	--enable-svg-renderer-libart \
 	%{?with_gtk1:--enable-toolkit-gtk} \
 	%{!?with_gtk1:--disable-toolkit-gtk --enable-default-toolkit=gtk2} \
 	--enable-xft \
@@ -290,15 +292,15 @@ install dist/bin/*.so $RPM_BUILD_ROOT%{_libdir}
 ln -s %{_libdir}/libxpcom.so $RPM_BUILD_ROOT%{_libdir}/%{name}/libxpcom.so
 
 for f in build/unix/*.pc ; do
-	sed -e 's/mozilla-%{version}/mozilla/' $f \
+	sed -e 's/mozilla-%{version}%{pre}/mozilla/' $f \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/$(basename $f)
 done
 
-sed -e 's,lib/mozilla-%{version},lib,g;s/mozilla-%{version}/mozilla/g' build/unix/mozilla-gtkmozembed.pc \
+sed -e 's,lib/mozilla-%{version}%{pre},lib,g;s/mozilla-%{version}%{pre}/mozilla/g' build/unix/mozilla-gtkmozembed.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-gtkmozembed.pc
 
 
-sed -e 's|/mozilla-%{version}||' build/unix/mozilla-nspr.pc \
+sed -e 's|/mozilla-%{version}%{pre}||' build/unix/mozilla-nspr.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nspr.pc
 
 install %{SOURCE1} %{SOURCE3} %{SOURCE4} %{SOURCE5} %{SOURCE6} %{SOURCE7} \
@@ -507,7 +509,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %{_libdir}/%{name}/components/bookmarks.xpt
 %{_libdir}/%{name}/components/caps.xpt
 %{_libdir}/%{name}/components/chardet.xpt
-%{_libdir}/%{name}/components/chrome.xpt
+#%{_libdir}/%{name}/components/chrome.xpt
 %{_libdir}/%{name}/components/commandhandler.xpt
 %{_libdir}/%{name}/components/composer.xpt
 %{_libdir}/%{name}/components/content*.xpt
@@ -522,6 +524,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %{_libdir}/%{name}/components/find.xpt
 %{_libdir}/%{name}/components/filepicker.xpt
 %{_libdir}/%{name}/components/gfx*.xpt
+%{_libdir}/%{name}/components/gksvgrenderer.xpt
 %{_libdir}/%{name}/components/helperAppDlg.xpt
 %{_libdir}/%{name}/components/history.xpt
 %{_libdir}/%{name}/components/htmlparser.xpt
@@ -562,7 +565,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %{_libdir}/%{name}/components/unicharutil.xpt
 %{_libdir}/%{name}/components/uriloader.xpt
 %{_libdir}/%{name}/components/urlbarhistory.xpt
-%{_libdir}/%{name}/components/util.xpt
+#%{_libdir}/%{name}/components/util.xpt
 %{_libdir}/%{name}/components/wallet*.xpt
 %{_libdir}/%{name}/components/webBrowser_core.xpt
 %{_libdir}/%{name}/components/webbrowserpersist.xpt
@@ -615,6 +618,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %{_datadir}/%{name}/chrome/modern.jar
 %{_datadir}/%{name}/chrome/pipnss.jar
 %{_datadir}/%{name}/chrome/pippki.jar
+%{_datadir}/%{name}/chrome/svg.jar
 %{_datadir}/%{name}/chrome/tasks.jar
 %{_datadir}/%{name}/chrome/toolkit.jar
 
