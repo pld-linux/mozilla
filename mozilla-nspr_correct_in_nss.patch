@@ -1,0 +1,18 @@
+--- mozilla/security/coreconf/Linux.mk	Sat Oct 27 02:38:08 2001
++++ mozilla/security/coreconf/Linux.mk.new	Mon Dec 17 21:25:33 2001
+@@ -99,7 +99,7 @@
+ endif
+ 
+ OS_CFLAGS		= $(DSO_CFLAGS) $(OS_REL_CFLAGS) -ansi -Wall -pipe -DLINUX -Dlinux -D_POSIX_SOURCE -D_BSD_SOURCE -DHAVE_STRERROR
+-OS_LIBS			= -L/lib $(OS_PTHREAD) -ldl -lc
++OS_LIBS			= -L/lib $(OS_PTHREAD) -ldl -lc `nspr-config --libs`
+ 
+ ifdef USE_PTHREADS
+ 	DEFINES		+= -D_REENTRANT
+@@ -111,5 +111,5 @@
+ DSO_LDOPTS		= -shared
+ DSO_LDFLAGS		=
+ 
+-# INCLUDES += -I/usr/include -Y/usr/include/linux
++INCLUDES += -I/usr/include `nspr-config --cflags`
+ G++INCLUDES		= -I/usr/include/g++
