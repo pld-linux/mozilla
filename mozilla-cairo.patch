@@ -1,6 +1,6 @@
 diff -ur mozilla.orig/layout/svg/renderer/src/cairo/nsSVGCairoCanvas.cpp mozilla/layout/svg/renderer/src/cairo/nsSVGCairoCanvas.cpp
 --- mozilla.orig/layout/svg/renderer/src/cairo/nsSVGCairoCanvas.cpp	2005-03-27 10:58:26.966712296 +0200
-+++ mozilla/layout/svg/renderer/src/cairo/nsSVGCairoCanvas.cpp	2005-03-27 10:57:36.196430552 +0200
++++ mozilla/layout/svg/renderer/src/cairo/nsSVGCairoCanvas.cpp	2005-03-27 12:51:09.120708632 +0200
 @@ -50,6 +50,7 @@
  #include "nsRenderingContextGTK.h"
  #include <gdk/gdkx.h>
@@ -11,8 +11,16 @@ diff -ur mozilla.orig/layout/svg/renderer/src/cairo/nsSVGCairoCanvas.cpp mozilla
   * \addtogroup cairo_renderer Cairo Rendering Engine
 diff -ur mozilla.orig/layout/svg/renderer/src/cairo/nsSVGCairoGlyphMetrics.cpp mozilla/layout/svg/renderer/src/cairo/nsSVGCairoGlyphMetrics.cpp
 --- mozilla.orig/layout/svg/renderer/src/cairo/nsSVGCairoGlyphMetrics.cpp	2004-03-16 22:40:07.000000000 +0100
-+++ mozilla/layout/svg/renderer/src/cairo/nsSVGCairoGlyphMetrics.cpp	2005-03-27 11:38:00.253917800 +0200
-@@ -321,7 +321,7 @@
++++ mozilla/layout/svg/renderer/src/cairo/nsSVGCairoGlyphMetrics.cpp	2005-03-27 14:09:50.268985000 +0200
+@@ -51,6 +51,7 @@
+ #include "nsSVGTypeCIDs.h"
+ #include "nsIComponentManager.h"
+ #include <cairo.h>
++#include <prmem.h>
+ 
+ /**
+  * \addtogroup gdiplus_renderer Cairo Rendering Engine
+@@ -321,7 +322,7 @@
      font.GetFirstFamily(family);
      char *f = ToNewCString(family);
      cairo_select_font(mCT, f, slant, weight);
