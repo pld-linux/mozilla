@@ -6,7 +6,7 @@ Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
 Version:	0.9.4
-Release:	1
+Release:	2
 Epoch:		1
 License:	NPL
 Group:		X11/Applications/Networking
@@ -250,7 +250,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %attr(755,root,root) %{_libdir}/libplds4.so
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
-#%attr(755,root,root) %{_libdir}/libxlibrgb.so
+%attr(755,root,root) %{_libdir}/libxlibrgb.so
 
 %attr(755,root,root) %{_libdir}/%{name}/plugins/libnullplugin.so
 
