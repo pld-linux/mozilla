@@ -159,7 +159,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/%{name}
 
 %{_libdir}/%{name}/component.reg
-%attr(755,root,root) %{_libdir}/libcmt.so
 %attr(755,root,root) %{_libdir}/libgkgfx.so
 %attr(755,root,root) %{_libdir}/libgtkembedmoz.so
 %attr(755,root,root) %{_libdir}/libgtksuperwin.so
@@ -170,7 +169,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libnspr4.so
 %attr(755,root,root) %{_libdir}/libplc4.so
 %attr(755,root,root) %{_libdir}/libplds4.so
-%attr(755,root,root) %{_libdir}/libprotocol.so
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
 
@@ -201,7 +199,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/components/liboji.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpref.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libprofile.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libpsmglue.so
 %attr(755,root,root) %{_libdir}/%{name}/components/librdf.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libregviewer.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libsample.so
@@ -249,7 +246,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{name}/components/pref.xpt
 %{_libdir}/%{name}/components/profile.xpt
 %{_libdir}/%{name}/components/proxyObjInst.xpt
-%{_libdir}/%{name}/components/psmglue.xpt
 %{_libdir}/%{name}/components/rdf.xpt
 %{_libdir}/%{name}/components/regviewer.xpt
 %{_libdir}/%{name}/components/related.xpt
