@@ -7,8 +7,8 @@ Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Name:		mozilla
-Version:	0.9.6
-Release:	4
+Version:	0.9.7
+Release:	1
 Epoch:		1
 License:	GPL
 Group:		X11/Applications/Networking
@@ -18,6 +18,7 @@ Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name
 #Mirror0:	ftp://sunsite.icm.edu.pl/pub/mozilla/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
 Source1:	%{name}.desktop
 Source2:	%{name}.png
+Source3:	%{name}-libart.tar.bz2
 Patch0:		%{name}-navigator-overlay-menu.patch
 Patch1:		%{name}-taskbar-no%{name}.patch
 Patch2:		%{name}-pld-homepage.patch
@@ -103,14 +104,17 @@ Arquivos de inclusão para desenvolvimento de programas que usam o
 Mozilla.
 
 %prep
-%setup -q -n mozilla
-%{!?_without_clearmenu:%patch0 -p1}
-%{!?_without_clearmenu:%patch1 -p1}
+%setup -q -a 3 -n mozilla
+%{?_with_clearmenu:%patch0 -p1}
+%{?_with_clearmenu:%patch1 -p1}
 %patch2 -p1
 %patch3 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
+
+MOZ_INTERNAL_LIBART_LGPL="x"
+export MOZ_INTERNAL_LIBART_LGPL
 
 %configure2_13 \
 	--with-default-mozilla-five-home=%{_libdir}/mozilla \
@@ -232,6 +236,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %attr(755,root,root) %{_libdir}/libmozjs.so
 %attr(755,root,root) %{_libdir}/libmozpango.so
 %attr(755,root,root) %{_libdir}/libmozpango-thaix.so
+%attr(755,root,root) %{_libdir}/libmoz_art_lgpl.so
 %attr(755,root,root) %{_libdir}/libnssckbi.so
 %attr(755,root,root) %{_libdir}/libnullplugin.so
 %attr(755,root,root) %{_libdir}/libxpcom.so
@@ -251,6 +256,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libdocshell.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libeditor.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libembedcomponents.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libfileview.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libgfx*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libgk*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libhtmlpars.so
@@ -268,6 +274,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkcache.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libns*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/liboji.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libpipboot.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpipnss.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpippki.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpref.so
@@ -275,7 +282,6 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/librdf.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libregviewer.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libshistory.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libsmimestb.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libstrres.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtimer_gtk.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtransformiix.so
@@ -308,6 +314,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %{_libdir}/%{name}/components/embed_base.xpt
 %{_libdir}/%{name}/components/exthandler.xpt
 %{_libdir}/%{name}/components/find.xpt
+%{_libdir}/%{name}/components/filepicker.xpt
 %{_libdir}/%{name}/components/gfx*.xpt
 %{_libdir}/%{name}/components/helperAppDlg.xpt
 %{_libdir}/%{name}/components/history.xpt
@@ -322,6 +329,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %{_libdir}/%{name}/components/moz*.xpt
 %{_libdir}/%{name}/components/necko*.xpt
 %{_libdir}/%{name}/components/oji.xpt
+%{_libdir}/%{name}/components/pipboot.xpt
 %{_libdir}/%{name}/components/pipnss.xpt
 %{_libdir}/%{name}/components/pippki.xpt
 %{_libdir}/%{name}/components/plugin.xpt
