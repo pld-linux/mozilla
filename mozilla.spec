@@ -11,7 +11,7 @@ Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.0
 Release:	1
-Epoch:		1
+Epoch:		2
 License:	GPL
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
