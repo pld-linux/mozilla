@@ -1,9 +1,3 @@
-
-#
-# todo:
-# - svg support
-#
-
 #
 # Conditional build:
 # _with_gtk1		- use gtk+ 1.2.x instead of 2.x.x
@@ -36,6 +30,8 @@ Source7:	%{name}-mail.desktop
 Source8:	%{name}-news.desktop
 Source9:	%{name}-terminal.desktop
 Source10:	%{name}-venkman.desktop
+Source11:	%{name}-libart.tar.bz2
+# Source11-md5:	d6834f4881d5947b4e0540f46b7edfb6
 Patch0:		%{name}-pld-homepage.patch
 Patch1:		%{name}-nss.patch
 Patch2:		%{name}-ldap_nspr_includes.patch
@@ -49,7 +45,6 @@ BuildRequires:	freetype-devel >= 2.1.3
 %{!?_with_gtk1:BuildRequires:	gtk+2-devel >= 2.2.0}
 %{!?_with_gtk1:BuildRequires:	libIDL-devel >= 0.8.0}
 BuildRequires:	libjpeg-devel >= 6b
-BuildRequires:	libmng-devel >= 1.0.4
 BuildRequires:	libpng-devel >= 1.2.0
 BuildRequires:	libstdc++-devel
 BuildRequires:	nspr-devel >= 1:4.3-2.20030517
@@ -199,7 +194,7 @@ Mozilla.
 Mozilla
 
 %prep
-%setup -q -n %{name}
+%setup -q -n %{name} -a11
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -211,7 +206,7 @@ cp -f security/coreconf/Linux2.5.mk security/coreconf/Linux2.6.mk
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
 MOZILLA_OFFICIAL="1"; export MOZILLA_OFFICIAL
-#MOZ_INTERNAL_LIBART_LGPL="1"; export MOZ_INTERNAL_LIBART_LGPL
+MOZ_INTERNAL_LIBART_LGPL="1"; export MOZ_INTERNAL_LIBART_LGPL
 
 %if %{_gcc_ver} > 2
 CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
@@ -229,7 +224,7 @@ CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 	--enable-optimize="%{rpmcflags}" \
 	--enable-postscript \
 	--enable-strip \
-	--disable-svg \
+	--enable-svg \
 	%{?_with_gtk1:--enable-toolkit-gtk} \
 	%{!?_with_gtk1:--disable-toolkit-gtk --enable-default-toolkit=gtk2} \
 	--enable-xft \
@@ -398,7 +393,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/libprldap50.so
 %attr(755,root,root) %{_libdir}/libssldap50.so
 %attr(755,root,root) %{_libdir}/libmozjs.so
-#%attr(755,root,root) %{_libdir}/libmoz_art_lgpl.so
+%attr(755,root,root) %{_libdir}/libmoz_art_lgpl.so
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpcom_compat.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
