@@ -5,7 +5,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.2.1
-Release:	1.2
+Release:	2
 Epoch:		2
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -31,6 +31,8 @@ Patch1:		%{name}-nss.patch
 Patch2:		%{name}-ldap_nspr_includes.patch
 Patch3:		%{name}-ldap-with-nss.patch
 Patch4:		%{name}-gfx.patch
+Patch5:		%{name}-alpha-gcc3.patch
+Patch6:		%{name}-64bit.patch
 #Patch5:		%{name}-gtk2.patch
 URL:		http://www.mozilla.org/
 BuildRequires:	ORBit-devel
@@ -48,7 +50,9 @@ BuildRequires:	unzip
 BuildRequires:	zip >= 2.1
 Requires(post,postun):	/sbin/ldconfig
 Requires:	nss >= 3.6
-Provides:	mozilla-embedded = %{version}
+Provides:	mozilla(gtk1) = %{epoch}:%{version}-%{release}
+Provides:	mozilla-embedded = %{epoch}:%{version}-%{release}
+Provides:	mozilla-embedded(gtk1) = %{epoch}:%{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
@@ -91,8 +95,8 @@ Summary(pl):	Mozilla - programy do poczty i newsСw
 Summary(ru):	Почтовая система на основе Mozilla
 Group:		X11/Applications/Networking
 Requires(post,postun):	/sbin/ldconfig
-Requires(post,postun):	%{name} = %{version}
-Requires:	%{name} = %{version}
+Requires(post,postun):	%{name} = %{epoch}:%{version}
+Requires:	%{name} = %{epoch}:%{version}
 Obsoletes:	mozilla-mail
 
 %description mailnews
@@ -111,9 +115,9 @@ Summary(pl):	Mozilla - pliki nagЁСwkowe i biblioteki
 Summary(pt_BR):	Arquivos de inclusЦo para desenvolvimento de programas que usam o Mozilla
 Summary(ru):	Файлы, необходимые для использования программ, включающих Mozilla
 Group:		X11/Development/Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{epoch}:%{version}
 Requires:	nspr-devel
-Provides:	mozilla-embedded-devel = %{version}
+Provides:	mozilla-embedded-devel = %{epoch}:%{version}-%{release}
 Obsoletes:	mozilla-embedded-devel
 
 %description devel
@@ -137,6 +141,10 @@ Mozilla
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
+%ifarch alpha sparc64
+%patch6 -p1
+%endif
 #%patch5 -p0
 
 %build
