@@ -1,7 +1,6 @@
-diff -uNr mozilla.org/xpfe/browser/resources/content/navigatorOverlay.xul mozilla/xpfe/browser/resources/content/navigatorOverlay.xul
---- mozilla.org/xpfe/browser/resources/content/navigatorOverlay.xul	Fri Oct  5 20:36:46 2001
-+++ mozilla/xpfe/browser/resources/content/navigatorOverlay.xul	Sun Oct 14 14:47:34 2001
-@@ -343,120 +343,6 @@
+--- mozilla/xpfe/browser/resources/content/navigatorOverlay.xul.orig	Mon Nov  5 15:14:16 2001
++++ mozilla/xpfe/browser/resources/content/navigatorOverlay.xul	Wed Nov 21 17:01:54 2001
+@@ -347,120 +347,6 @@
    <menu id="tasksMenu"/>
    
    <menu accesskey="&helpMenuCmd.accesskey;" id="menu_Help"/>
@@ -78,12 +77,12 @@ diff -uNr mozilla.org/xpfe/browser/resources/content/navigatorOverlay.xul mozill
 -         <menuitem label="#2 Popups" oncommand="window._content.location.href='http://www.mozilla.org/projects/xul/tests/popups.xul'"/>
 -         <menuitem label="#3 Descriptions and Labels" oncommand="window._content.location.href='http://www.mozilla.org/projects/xul/tests/label.xul'"/>
 -         <menuitem label="#4 Dialog Buttons" oncommand="window._content.location.href='http://www.mozilla.org/projects/xul/tests/buttons.xul'"/>
+-         <menuitem label="#5 Tabindex" oncommand="window._content.location.href='http://www.mozilla.org/projects/xul/tests/tabindex.xul'"/>
 -        </menupopup>
 -      </menu>
 -
 -     <menuitem label="Form Manager Samples" oncommand="window._content.location.href='chrome://communicator/locale/wallet/index.html';"/>
 -
--     <menuitem label="&domviewer.label;" oncommand="window._content.location.href='chrome://communicator/content/domviewer/DOMDataSourceViewer.xul'"/>
 -     <menuitem label="&browserbuster.label;" oncommand="window._content.location.href='http://komodo.mozilla.org/buster/'"/>
 -     <menuitem label="&editor-test-page.label;" oncommand="window.openDialog('chrome://editor/content','_blank','chrome,all,dialog=no','chrome://editor/content/EditorInitPage.html')"/>
 -     <menuitem label="&flush-memory.label;" oncommand="Components.classes['@mozilla.org/xpcom/memory-service;1'].getService(Components.interfaces.nsIMemory).heapMinimize(true);" />
