@@ -15,7 +15,7 @@ Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.6
 Release:	3
-Epoch:		6
+Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
