@@ -2,7 +2,7 @@ Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
 Version:	0.7
-Release:	1
+Release:	2
 Epoch:		1
 License:	NPL
 Group:		X11/Applications/Networking
@@ -69,8 +69,8 @@ Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
 
 %build
 autoconf
-CXXFLAGS="-fno-rtti -fno-exceptions"
-MOZ_OPTIMIZE_FLAGS="%{?debug:-O -g}%{!?debug:$RPM_OPT_FLAGS}"
+CXXFLAGS="-fno-rtti -fno-exceptions" ; export CXXFLAGS
+MOZ_OPTIMIZE_FLAGS="%{?debug:-O -g}%{!?debug:$RPM_OPT_FLAGS}" ; export MOZ_OPTIMIZE_FLAGS
 %configure \
 	--with-default-mozilla-five-home=%{_libdir}/mozilla \
 	--with-pthreads \
@@ -128,6 +128,7 @@ cp -frL dist/include/obsolete/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/obsolete
 cp -frL dist/include/private/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/private
 
 install dist/bin/*.so		$RPM_BUILD_ROOT%{_libdir}
+install dist/lib/libmpfilelocprovider_s.a $RPM_BUILD_ROOT%{_libdir}
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Network/WWW
 install %{SOURCE2} $RPM_BUILD_ROOT%{_pixmapsdir}
@@ -315,3 +316,4 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_includedir}/%{name}
 %{_datadir}/idl/*
+%{_libdir}/libmpfilelocprovider_s.a
