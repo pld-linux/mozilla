@@ -10,7 +10,7 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Name:		mozilla
 Version:	1.0.rc1
-Release:	0.2
+Release:	1
 Epoch:		1
 License:	GPL
 Group:		X11/Applications/Networking
