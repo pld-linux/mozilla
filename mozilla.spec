@@ -428,7 +428,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/sidebar.xpt
 %{_libdir}/%{name}/components/signonviewer.xpt
 %{_libdir}/%{name}/components/timebomb.xpt
-#%{_libdir}/%{name}/components/transformiix.xpt
+#%%{_libdir}/%{name}/components/transformiix.xpt
 %{_libdir}/%{name}/components/txmgr.xpt
 %{_libdir}/%{name}/components/txtsvc.xpt
 %{_libdir}/%{name}/components/typeaheadfind.xpt
@@ -446,7 +446,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/windowwatcher.xpt
 %{_libdir}/%{name}/components/x*.xpt
 
-#%{_libdir}/*.js
+#%%{_libdir}/*.js
 %{_libdir}/%{name}/components/*.js
 %config %verify(not size mtime md5) %{_libdir}/%{name}/components/*.dat
 
