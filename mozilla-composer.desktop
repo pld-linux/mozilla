@@ -7,5 +7,5 @@ Exec=mozilla -edit
 Icon=mozilla.png
 Terminal=false
 Type=Application
-Categories=Office;X-Misc
+Categories=Office;X-Misc;
 # vi: encoding=utf-8

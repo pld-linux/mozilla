@@ -6,5 +6,5 @@ Exec=mozilla -chat
 Icon=mozilla.png
 Terminal=false
 Type=Application
-Categories=Network;X-Communication
+Categories=Network;X-Communication;
 # vi: encoding=utf-8
