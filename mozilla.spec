@@ -12,6 +12,7 @@ Source2:	mozilla-icon.png
 Source3:	mozilla.desktop
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
+BuildRequires:	libjpeg-devel
 BuildRequires:	gtk+-devel
 BuildRequires:	ORBit-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
