@@ -1,5 +1,5 @@
---- mozilla/xpfe/browser/resources/locale/en-US/region.properties.orig	Wed May  8 00:16:13 2002
-+++ mozilla/xpfe/browser/resources/locale/en-US/region.properties	Mon May 13 14:00:49 2002
+--- mozilla/xpfe/browser/resources/locale/en-US/region.properties.orig	Fri Aug  2 02:53:34 2002
++++ mozilla/xpfe/browser/resources/locale/en-US/region.properties	Sat Oct 19 20:18:20 2002
 @@ -1,5 +1,5 @@
  # navigator.properties
 -homePageDefault=http://www.mozilla.org/
@@ -11,16 +11,16 @@
  #
  # all.js
  #
--browser.startup.homepage=http://www.mozilla.org/start/1.0/
+-browser.startup.homepage=http://www.mozilla.org/start/
 -browser.throbber.url=http://www.mozilla.org/
 +browser.startup.homepage=http://www.pld.org.pl/
 +browser.throbber.url=http://www.pld.org.pl/
  browser.search.defaulturl=http://search.netscape.com/cgi-bin/search?search=
+ general.useragent.contentlocale=US
  
- wallet.Server=http://www.mozilla.org/wallet/tables/
-@@ -20,4 +20,4 @@
+@@ -21,4 +21,4 @@
  
  #config.js
  #
--startup.homepage_override_url=http://www.mozilla.org/start/1.0/
+-startup.homepage_override_url=http://www.mozilla.org/start/
 +startup.homepage_override_url=http://www.pld.org.pl/
