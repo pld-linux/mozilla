@@ -63,6 +63,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
 Obsoletes:	mozilla-theme-NegativeModern
+Obsoletes:	mozilla-theme-gold
 
 %define		_chromedir	%{_libdir}/%{name}/chrome
 
