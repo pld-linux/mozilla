@@ -21,7 +21,7 @@ Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{version}%{pre}/src/%{name}-source-%{version}%{pre}.tar.bz2
-# Source0-md5:	731f0892685a637f195d7e99a359f9ad
+# Source0-md5:	a78b2e2dc2c8fa9b22c9e406e3cde808
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-composer.desktop
