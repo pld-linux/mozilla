@@ -36,8 +36,9 @@ BuildRequires:	nss-static
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	zip >= 2.1
 Provides:	mozilla-embedded
-Obsoletes:	mozilla-embedded
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+Obsoletes:	mozilla-embedded
+Obsoletes:	mozilla-irc
 
 %define		_prefix		/usr/X11R6
 %define		_mandir		%{_prefix}/man
@@ -67,6 +68,7 @@ Group:		X11/Applications/Networking
 Group(de):	X11/Applikationen/Netzwerkwesen
 Group(pl):	X11/Aplikacje/Sieciowe
 Requires:	%{name} = %{version}
+Obsoletes:	mozilla-mail
 
 %description mailnews
 Programs for mail and news integrated with browser.
