@@ -1,5 +1,5 @@
---- mozilla/xpfe/browser/resources/locale/en-US/region.properties.orig	Thu Sep  6 23:24:43 2001
-+++ mozilla/xpfe/browser/resources/locale/en-US/region.properties	Wed Nov 21 17:17:29 2001
+--- mozilla.orig/xpfe/browser/resources/locale/en-US/region.properties	Thu Sep  6 23:24:43 2001
++++ mozilla/xpfe/browser/resources/locale/en-US/region.properties	Sat Jan 26 23:11:47 2002
 @@ -1,5 +1,5 @@
  # navigator.properties
 -homePageDefault=http://www.mozilla.org/

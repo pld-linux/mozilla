@@ -1,6 +1,6 @@
---- mozilla/xpfe/communicator/resources/locale/en-US/taskbar.rdf.non-mozilla	Mon Jan 15 14:41:41 2001
-+++ mozilla/xpfe/communicator/resources/locale/en-US/taskbar.rdf	Mon Jan 15 14:42:10 2001
-@@ -1,47 +1,12 @@
+--- mozilla.orig/xpfe/communicator/resources/locale/en-US/taskbar.rdf	Sat Jun 17 05:06:34 2000
++++ mozilla/xpfe/communicator/resources/locale/en-US/taskbar.rdf	Sat Jan 26 23:08:46 2002
+@@ -1,15 +1,6 @@
  <?xml version="1.0"?>
  <!DOCTYPE RDF 
  [
@@ -13,10 +13,10 @@
 -<!ENTITY  tinderboxButton.label "Look at Tinderbox">
 -<!-- LOCALIZATION NOTE  (bonsai.label): Do NOT translate "Bonsai" -->
 -<!ENTITY  bonsai.label "Look at Bonsai">
--
+ 
  ]
  >
- <RDF:RDF xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+@@ -17,31 +8,6 @@
           xmlns:NC="http://home.netscape.com/NC-rdf#">
  
  <!-- root start  -->
