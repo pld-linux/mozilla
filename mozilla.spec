@@ -160,7 +160,12 @@ rm -rf $RPM_BUILD_ROOT
 %post	-p /sbin/ldconfig
 %postun	-p /sbin/ldconfig
 
-%post   mailnews -p /sbin/ldconfig
+%post   mailnews 
+/sbin/ldconfig
+umask 022
+rm -f %{_libdir}/mozilla/component.reg
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla /usr/lib/mozilla/regxpcom
+
 %postun mailnews -p /sbin/ldconfig
 
 %files
