@@ -14,7 +14,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.5
-Release:	0.2
+Release:	1
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -302,12 +302,28 @@ install %{SOURCE1} %{SOURCE3} %{SOURCE4} %{SOURCE5} %{SOURCE6} %{SOURCE7} \
 
 install %{SOURCE2}	$RPM_BUILD_ROOT%{_pixmapsdir}
 
-install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}/mozilla
+install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}
 install dist/bin/regchrome $RPM_BUILD_ROOT%{_bindir}
 install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
 
 cp $RPM_BUILD_ROOT%{_chromedir}/installed-chrome.txt \
 	$RPM_BUILD_ROOT%{_chromedir}/%{name}-installed-chrome.txt
+
+cat << EOF > $RPM_BUILD_ROOT%{_bindir}/mozilla
+#!/bin/sh
+# (c) vip at linux.pl, wolf at pld-linux.org
+
+DUPA=\`%{_bindir}/mozilla-bin -remote 'ping()' 2>&1 >/dev/null\`
+if [ -n "\$DUPA" ]; then
+	%{_bindir}/mozilla-bin "\$1"
+else
+	if [ -z "\$1" ]; then
+		%{_bindir}/mozilla-bin -remote 'xfeDoCommand (openBrowser)'
+	else
+		%{_bindir}/mozilla-bin -remote "OpenUrl(\$1,new-tab)"
+	fi
+fi
+EOF
 
 %clean
 rm -rf $RPM_BUILD_ROOT
