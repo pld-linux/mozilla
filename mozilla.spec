@@ -283,7 +283,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 
 #%ghost %{_libdir}/%{name}/component.reg
 %attr(755,root,root) %{_libdir}/libgkgfx.so
-%attr(755,root,root) %{_libdir}/libgtkembedmoz.so
+%{?_with_gtk1:%attr(755,root,root) %{_libdir}/libgtkembedmoz.so}
 %{?_with_gtk1:%attr(755,root,root) %{_libdir}/libgtksuperwin.so}
 %attr(755,root,root) %{_libdir}/libgtkxtbin.so
 %attr(755,root,root) %{_libdir}/libjsj.so
