@@ -14,7 +14,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.6
-Release:	0.2
+Release:	1
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -327,7 +327,12 @@ else
 	elif [ "\$1" == "-edit" ]; then
 		%{_bindir}/mozilla-bin -remote 'xfeDoCommand (composeMessage)'
 	else
-		%{_bindir}/mozilla-bin -remote "OpenUrl($1,new-window)"
+		grep browser.tabs.opentabfor.middleclick ~/.mozilla/default/*/prefs.js | grep true > /dev/null
+		if [ $? -eq 0 ]; then
+			%{_bindir}/mozilla-bin -remote "OpenUrl(\$1,new-tab)"
+		else
+			%{_bindir}/mozilla-bin -remote "OpenUrl(\$1,new-window)"
+		fi
 	fi
 fi
 EOF
