@@ -62,6 +62,7 @@ Provides:	mozilla-embedded = %{epoch}:%{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
+Obsoletes:	mozilla-theme-NegativeModern
 
 %define		_chromedir	%{_libdir}/%{name}/chrome
 
