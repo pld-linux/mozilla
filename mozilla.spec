@@ -13,7 +13,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.4b
-Release:	0.1
+Release:	0.2
 Epoch:		3
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -47,7 +47,7 @@ BuildRequires:	libmng-devel >= 1.0.4
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	nss-devel >= 3.7.3
-BuildRequires:	nspr-devel >= 4.3
+BuildRequires:	nspr-devel >= 4.3-2.20030517
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	zip >= 2.1
 Provides:	mozilla-embedded = %{version}
@@ -304,7 +304,6 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 #%attr(755,root,root) %{_libdir}/libmozpango.so
 #%attr(755,root,root) %{_libdir}/libmozpango-thaix.so
 %attr(755,root,root) %{_libdir}/libmoz_art_lgpl.so
-%{!?_with_gtk1:%attr(755,root,root) %{_libdir}/libmai.so}
 #%attr(755,root,root) %{_libdir}/libnullplugin.so
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpcom_compat.so
@@ -446,9 +445,18 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/widget.xpt
 %{_libdir}/%{name}/components/windowds.xpt
 %{_libdir}/%{name}/components/windowwatcher.xpt
-%{_libdir}/%{name}/components/wsdl.xpt
-%{_libdir}/%{name}/components/wsproxy.xpt
 %{_libdir}/%{name}/components/x*.xpt
+
+# Is this a correct package for these files?
+%{_libdir}/%{name}/components/ipcd.xpt
+%{_libdir}/%{name}/components/profilesharingsetup.xpt
+%{_libdir}/%{name}/components/transmngr.xpt
+%{_libdir}/%{name}/components/ucnative.xpt
+%{_libdir}/%{name}/components/websrvcs.xpt
+%{_libdir}/%{name}/components/libipcdc.so
+%{_libdir}/%{name}/components/libsystem-pref.so
+%{_libdir}/%{name}/components/libtransmngr_client.so
+%{_libdir}/%{name}/components/libwebsrvcs.so
 
 #%%{_libdir}/*.js
 %{_libdir}/%{name}/components/*.js
