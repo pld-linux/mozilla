@@ -5,6 +5,6 @@ Exec=mozilla -news
 Icon=mozilla.png
 Terminal=false
 Type=Application
-Categories=Network;News
+Categories=Network;News;
 Encoding=UTF-8
 # vi: encoding=utf-8

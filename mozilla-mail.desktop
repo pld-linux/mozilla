@@ -6,5 +6,5 @@ Exec=mozilla -mail
 Icon=mozilla.png
 Terminal=false
 Type=Application
-Categories=Network;Email
+Categories=Network;Email;
 # vi: encoding=utf-8

@@ -8,5 +8,5 @@ Exec=mozilla -jconsole
 Icon=mozilla.png
 Terminal=false
 Type=Application
-Categories=Network;X-Misc
+Categories=Network;X-Misc;
 # vi: encoding=utf-8
