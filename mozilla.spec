@@ -295,7 +295,7 @@ done
 sed -e 's,lib/mozilla-%{version},lib,g;s/mozilla-%{version}/mozilla/g' build/unix/mozilla-gtkmozembed.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-gtkmozembed.pc
 
-		
+
 sed -e 's|/mozilla-%{version}||' build/unix/mozilla-nspr.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nspr.pc
 
