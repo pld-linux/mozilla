@@ -75,7 +75,7 @@ LDFLAGS="-s" ; export LDFLAGS
 	--with-zlib \
 	--with-png
 
-make
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
