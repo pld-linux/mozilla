@@ -319,10 +319,14 @@ DUPA=\`%{_bindir}/mozilla-bin -remote 'ping()' 2>&1 >/dev/null\`
 if [ -n "\$DUPA" ]; then
 	%{_bindir}/mozilla-bin "\$1"
 else
-	if [ -z "\$1" ]; then
-		%{_bindir}/mozilla-bin -remote 'xfeDoCommand (openBrowser)'
+	if [ -z "$1" ]; then
+		/usr/bin/mozilla-bin -remote 'xfeDoCommand (openBrowser)'
+	elif [ "$1" == "-mail" ]; then
+		/usr/bin/mozilla-bin -remote 'xfeDoCommand (openInbox)'
+	elif [ "$1" == "-edit" ]; then
+		/usr/bin/mozilla-bin -remote 'xfeDoCommand (composeMessage)'
 	else
-		%{_bindir}/mozilla-bin -remote "OpenUrl(\$1,new-tab)"
+		/usr/bin/mozilla-bin -remote "OpenUrl($1,new-window)"
 	fi
 fi
 EOF
