@@ -8,9 +8,9 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Name:		mozilla
 Version:	0.9.6
-Release:	1
+Release:	2
 Epoch:		1
-License:	NPL
+License:	GPL
 # Mirror0:	ftp://sunsite.icm.edu.pl/pub/mozilla/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
 Group:		X11/Applications/Networking
 Group(de):	X11/Applikationen/Netzwerkwesen
@@ -227,6 +227,8 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %attr(755,root,root) %{_libdir}/liblber40.so
 %attr(755,root,root) %{_libdir}/libldap40.so
 %attr(755,root,root) %{_libdir}/libmozjs.so
+%attr(755,root,root) %{_libdir}/libmozpango.so
+%attr(755,root,root) %{_libdir}/libmozpango-thaix.so
 %attr(755,root,root) %{_libdir}/libnspr4.so
 %attr(755,root,root) %{_libdir}/libnssckbi.so
 %attr(755,root,root) %{_libdir}/libnullplugin.so
@@ -243,7 +245,9 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libcaps.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libchardet.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libchrome.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libcomposer.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libcookie.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libctl.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libdocshell.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libeditor.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libembedcomponents.so
@@ -253,6 +257,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libimg*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libinspector.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjar50.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libjsd.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjsdom.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjsloader.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjsurl.so
@@ -294,6 +299,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %{_libdir}/%{name}/components/chardet.xpt
 %{_libdir}/%{name}/components/chrome.xpt
 %{_libdir}/%{name}/components/content_base.xpt
+%{_libdir}/%{name}/components/content_xsl.xpt
 %{_libdir}/%{name}/components/cookie.xpt
 %{_libdir}/%{name}/components/directory.xpt
 %{_libdir}/%{name}/components/docshell.xpt
@@ -340,6 +346,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %{_libdir}/%{name}/components/util.xpt
 %{_libdir}/%{name}/components/wallet*.xpt
 %{_libdir}/%{name}/components/webBrowser*.xpt
+%{_libdir}/%{name}/components/webbrowserpersist.xpt
 %{_libdir}/%{name}/components/webshell_idls.xpt
 %{_libdir}/%{name}/components/widget.xpt
 %{_libdir}/%{name}/components/windowwatcher.xpt
