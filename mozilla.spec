@@ -18,7 +18,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.7.3
-Release:	2
+Release:	3
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -301,7 +301,7 @@ cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d \
-	$RPM_BUILD_ROOT{%{_bindir},%{_datadir}/idl} \
+	$RPM_BUILD_ROOT{%{_bindir},%{_sbindir},%{_datadir}/idl} \
 	$RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}} \
 	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,icons,res,searchplugins,greprefs} \
 	$RPM_BUILD_ROOT%{_libdir}/%{name}/{components,plugins} \
@@ -406,120 +406,75 @@ else
 fi
 EOF
 
+cat << EOF > $RPM_BUILD_ROOT%{_sbindir}/mozilla-chrome+xpcom-generate
+#!/bin/sh
+umask 022
+cd %{_datadir}/mozilla/chrome
+cat *-installed-chrome.txt > installed-chrome.txt
+rm -f chrome.rdf overlayinfo/*/*/*.rdf
+cd -
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
+exit 0
+EOF
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/ldconfig
 umask 022
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
-	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf} ||:
-cd %{_chromedir}
-cat *-installed-chrome.txt >installed-chrome.txt ||:
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom ||:
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome ||:
+%{_sbindir}/mozilla-chrome+xpcom-generate
 
 %postun
 /sbin/ldconfig
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
-	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
 if [ "$1" = "1" ]; then
-	umask 022
-	cd %{_chromedir}
-	cat *-installed-chrome.txt >installed-chrome.txt
-	MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
-	MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
+	%{_sbindir}/mozilla-chrome+xpcom-generate
 fi
 
 %post mailnews
 /sbin/ldconfig
-umask 022
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
-	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf} ||:
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom ||:
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome ||:
+%{_sbindir}/mozilla-chrome+xpcom-generate
 
 %postun mailnews
 /sbin/ldconfig
-umask 022
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
-	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
+%{_sbindir}/mozilla-chrome+xpcom-generate
 
 %post chat
-umask 022
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
-	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf} ||:
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom ||:
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome ||:
+%{_sbindir}/mozilla-chrome+xpcom-generate
 
 %postun chat
-umask 022
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
-	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
+%{_sbindir}/mozilla-chrome+xpcom-generate
 
 %post js-debugger
-umask 022
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
-	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf} ||:
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom ||:
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome ||:
+%{_sbindir}/mozilla-chrome+xpcom-generate
 
 %postun js-debugger
-umask 022
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
-	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
+%{_sbindir}/mozilla-chrome+xpcom-generate
 
 %post dom-inspector
-umask 022
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
-	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf} ||:
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom ||:
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome ||:
+%{_sbindir}/mozilla-chrome+xpcom-generate
 
 %postun dom-inspector
-umask 022
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
-	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
+%{_sbindir}/mozilla-chrome+xpcom-generate
 
 %post gnomevfs
-umask 022
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
-	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf} ||:
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom ||:
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome ||:
+%{_sbindir}/mozilla-chrome+xpcom-generate
 
 %postun gnomevfs
-umask 022
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
-	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
+%{_sbindir}/mozilla-chrome+xpcom-generate
 
 %post calendar
-umask 022
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
-	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf} ||:
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom ||:
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome ||:
+%{_sbindir}/mozilla-chrome+xpcom-generate
 
 %postun calendar
-umask 022
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
-	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
+%{_sbindir}/mozilla-chrome+xpcom-generate
 
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/*
+%attr(744,root,root) %{_sbindir}/mozilla-chrome+xpcom-generate
 
 %dir %{_libdir}/%{name}
 %dir %{_chromedir}
