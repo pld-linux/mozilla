@@ -1,10 +1,6 @@
-Index: build//unix/mozilla-gtkmozembed.pc.in
-===================================================================
-RCS file: /cvsroot/mozilla/build/unix/mozilla-gtkmozembed.pc.in,v
-retrieving revision 1.1
-diff -u -r1.1 mozilla-gtkmozembed.pc.in
---- build//unix/mozilla-gtkmozembed.pc.in	28 May 2002 20:20:40 -0000	1.1
-+++ build//unix/mozilla-gtkmozembed.pc.in	28 Jun 2002 16:08:30 -0000
+diff -ruN mozilla-cvs/build/unix/mozilla-gtkmozembed.pc.in mozilla/build/unix/mozilla-gtkmozembed.pc.in
+--- mozilla-cvs/build/unix/mozilla-gtkmozembed.pc.in	2002-09-27 08:18:58.000000000 +0200
++++ mozilla/build/unix/mozilla-gtkmozembed.pc.in	2002-09-27 08:18:25.000000000 +0200
 @@ -7,5 +7,5 @@
  Description: Mozilla Embedding Widget for Gtk+
  Version: %MOZILLA_VERSION%
@@ -12,13 +8,23 @@ diff -u -r1.1 mozilla-gtkmozembed.pc.in
 -Libs: -L${libdir} -lgtkembedmoz -lgtksuperwin
 +Libs: -L${libdir} -lgtkembedmoz
  Cflags: -I${includedir}/gtkembedmoz
-Index: embedding/browser/gtk//src/EmbedWindow.cpp
-===================================================================
-RCS file: /cvsroot/mozilla/embedding/browser/gtk/src/EmbedWindow.cpp,v
-retrieving revision 1.25
-diff -u -r1.25 EmbedWindow.cpp
---- embedding/browser/gtk//src/EmbedWindow.cpp	29 Jan 2002 21:39:31 -0000	1.25
-+++ embedding/browser/gtk//src/EmbedWindow.cpp	28 Jun 2002 16:09:15 -0000
+diff -ruN mozilla-cvs/embedding/browser/Makefile.in mozilla/embedding/browser/Makefile.in
+--- mozilla-cvs/embedding/browser/Makefile.in	2002-09-27 08:19:09.000000000 +0200
++++ mozilla/embedding/browser/Makefile.in	2002-09-27 08:18:36.000000000 +0200
+@@ -27,6 +27,10 @@
+ 
+ DIRS=webBrowser build chrome
+ 
++ifdef MOZ_ENABLE_GTK2
++DIRS += gtk
++endif
++
+ ifdef MOZ_ENABLE_GTK
+ DIRS += gtk
+ endif
+diff -ruN mozilla-cvs/embedding/browser/gtk/src/EmbedWindow.cpp mozilla/embedding/browser/gtk/src/EmbedWindow.cpp
+--- mozilla-cvs/embedding/browser/gtk/src/EmbedWindow.cpp	2002-09-27 08:19:10.000000000 +0200
++++ mozilla/embedding/browser/gtk/src/EmbedWindow.cpp	2002-09-27 08:18:37.000000000 +0200
 @@ -226,9 +226,11 @@
  {
    GtkWidget* parent = GTK_WIDGET(mOwner->mOwningWidget)->parent;
@@ -53,13 +59,9 @@ diff -u -r1.25 EmbedWindow.cpp
    
    nsMemory::Free( (void*)tipString );
  
-Index: embedding/browser/gtk//src/Makefile.in
-===================================================================
-RCS file: /cvsroot/mozilla/embedding/browser/gtk/src/Makefile.in,v
-retrieving revision 1.31
-diff -u -r1.31 Makefile.in
---- embedding/browser/gtk//src/Makefile.in	11 Apr 2002 14:30:28 -0000	1.31
-+++ embedding/browser/gtk//src/Makefile.in	28 Jun 2002 16:09:16 -0000
+diff -ruN mozilla-cvs/embedding/browser/gtk/src/Makefile.in mozilla/embedding/browser/gtk/src/Makefile.in
+--- mozilla-cvs/embedding/browser/gtk/src/Makefile.in	2002-09-27 08:19:10.000000000 +0200
++++ mozilla/embedding/browser/gtk/src/Makefile.in	2002-09-27 08:18:37.000000000 +0200
 @@ -56,6 +56,11 @@
  		EmbedWindowCreator.cpp \
  		EmbedStream.cpp
@@ -72,29 +74,32 @@ diff -u -r1.31 Makefile.in
  ifdef BUILD_STATIC_LIBS
  # Static build stuff
  DEFINES         += -D_BUILD_STATIC_BIN=1
-@@ -88,12 +93,20 @@
+@@ -88,6 +93,7 @@
  		gtkmozembed.h \
  		gtkmozembed_internal.h
  
 +ifdef MOZ_ENABLE_GTK
  EXTRA_DSO_LDOPTS = \
  		$(MOZ_COMPONENT_LIBS) \
- 		-lgtksuperwin \
+ 		$(XPCOM_GLUE_LIBS) \
+@@ -95,6 +101,16 @@
  		$(NULL)
+ 
+ EXTRA_DSO_LDOPTS += $(MOZ_GTK_LDFLAGS)
 +endif
 +
 +ifdef MOZ_ENABLE_GTK2
 +EXTRA_DSO_LDOPTS = \
 +		$(MOZ_COMPONENT_LIBS) \
++		$(XPCOM_GLUE_LIBS) \
 +		$(NULL)
-+endif
- 
--EXTRA_DSO_LDOPTS += $(MOZ_GTK_LDFLAGS)
++
 +EXTRA_DSO_LDOPTS += $(MOZ_GTK_LDFLAGS) $(MOZ_GTK2_LIBS)
++endif
  
  include $(topsrcdir)/config/rules.mk
  
-@@ -108,7 +121,8 @@
+@@ -109,7 +125,8 @@
  endif
  endif
  
@@ -104,13 +109,9 @@ diff -u -r1.31 Makefile.in
  
  ifdef BUILD_STATIC_LIBS
  
-Index: embedding/browser/gtk//src/gtkmozembed2.cpp
-===================================================================
-RCS file: /cvsroot/mozilla/embedding/browser/gtk/src/gtkmozembed2.cpp,v
-retrieving revision 1.23
-diff -u -r1.23 gtkmozembed2.cpp
---- embedding/browser/gtk//src/gtkmozembed2.cpp	12 Jan 2002 05:04:57 -0000	1.23
-+++ embedding/browser/gtk//src/gtkmozembed2.cpp	28 Jun 2002 16:09:21 -0000
+diff -ruN mozilla-cvs/embedding/browser/gtk/src/gtkmozembed2.cpp mozilla/embedding/browser/gtk/src/gtkmozembed2.cpp
+--- mozilla-cvs/embedding/browser/gtk/src/gtkmozembed2.cpp	2002-09-27 08:19:10.000000000 +0200
++++ mozilla/embedding/browser/gtk/src/gtkmozembed2.cpp	2002-09-27 08:18:37.000000000 +0200
 @@ -36,11 +36,32 @@
  #include <nsXPIDLString.h>
  #include <nsReadableUtils.h>
@@ -471,15 +472,9 @@ diff -u -r1.23 gtkmozembed2.cpp
  }
  
  static void
---- /dev/null	Thu Apr 11 16:25:15 2002
-+++ embedding/browser/gtk/src/gtkmozembedmarshal.txt	Sat Jun 29 01:44:04 2002
-@@ -0,0 +1,4 @@
-+NONE:INT,UINT
-+NONE:POINTER,INT,INT
-+NONE:POINTER,INT,UINT
-+NONE:POINTER,INT,POINTER
---- /dev/null	Thu Apr 11 16:25:15 2002
-+++ embedding/browser/gtk/src/gtkmozembedmarshal.c	Sat Jun 29 01:44:02 2002
+diff -ruN mozilla-cvs/embedding/browser/gtk/src/gtkmozembedmarshal.c mozilla/embedding/browser/gtk/src/gtkmozembedmarshal.c
+--- mozilla-cvs/embedding/browser/gtk/src/gtkmozembedmarshal.c	1970-01-01 01:00:00.000000000 +0100
++++ mozilla/embedding/browser/gtk/src/gtkmozembedmarshal.c	2002-09-27 08:18:37.000000000 +0200
 @@ -0,0 +1,203 @@
 +
 +#include	<glib-object.h>
@@ -684,8 +679,9 @@ diff -u -r1.23 gtkmozembed2.cpp
 +            data2);
 +}
 +
---- /dev/null	Thu Apr 11 16:25:15 2002
-+++ embedding/browser/gtk/src/gtkmozembedmarshal.h	Wed Jun 26 21:06:15 2002
+diff -ruN mozilla-cvs/embedding/browser/gtk/src/gtkmozembedmarshal.h mozilla/embedding/browser/gtk/src/gtkmozembedmarshal.h
+--- mozilla-cvs/embedding/browser/gtk/src/gtkmozembedmarshal.h	1970-01-01 01:00:00.000000000 +0100
++++ mozilla/embedding/browser/gtk/src/gtkmozembedmarshal.h	2002-09-27 08:18:37.000000000 +0200
 @@ -0,0 +1,48 @@
 +
 +#ifndef __gtkmozembed_MARSHAL_H__
@@ -735,21 +731,118 @@ diff -u -r1.23 gtkmozembed2.cpp
 +
 +#endif /* __gtkmozembed_MARSHAL_H__ */
 +
-Index: embedding/browser/Makefile.in
+diff -ruN mozilla-cvs/embedding/browser/gtk/src/gtkmozembedmarshal.txt mozilla/embedding/browser/gtk/src/gtkmozembedmarshal.txt
+--- mozilla-cvs/embedding/browser/gtk/src/gtkmozembedmarshal.txt	1970-01-01 01:00:00.000000000 +0100
++++ mozilla/embedding/browser/gtk/src/gtkmozembedmarshal.txt	2002-09-27 08:18:37.000000000 +0200
+@@ -0,0 +1,4 @@
++NONE:INT,UINT
++NONE:POINTER,INT,INT
++NONE:POINTER,INT,UINT
++NONE:POINTER,INT,POINTER
+diff -ruN mozilla-cvs/widget/src/gtk2/nsWindow.cpp mozilla/widget/src/gtk2/nsWindow.cpp
+--- mozilla-cvs/widget/src/gtk2/nsWindow.cpp	2002-09-27 08:19:24.000000000 +0200
++++ mozilla/widget/src/gtk2/nsWindow.cpp	2002-09-27 08:18:51.000000000 +0200
+@@ -425,7 +425,8 @@
+         gtk_widget_destroy(GTK_WIDGET(mContainer));
+         mContainer = nsnull;
+     }
+-    else if (mDrawingarea) {
++    
++    if (mDrawingarea) {
+         g_object_unref(mDrawingarea);
+         mDrawingarea = nsnull;
+     }
+diff -ruN mozilla-cvs/widget/src/gtk2/nsWindow.cpp mozilla/widget/src/gtk2/nsWindow.cpp
+--- mozilla-cvs/widget/src/gtk2/nsWindow.cpp	2002-09-27 08:46:48.000000000 +0200
++++ mozilla/widget/src/gtk2/nsWindow.cpp	2002-09-27 08:45:57.000000000 +0200
+@@ -145,7 +145,6 @@
+ 
+ /* initialization static functions */
+ static nsresult    initialize_prefs        (void);
+-static nsresult    initialize_default_icon (void);
+   
+ // this is the last window that had a drag event happen on it.
+ nsWindow *nsWindow::mLastDragMotionWindow = NULL;
+@@ -221,7 +220,6 @@
+ 
+         // It's OK if either of these fail, but it may not be one day.
+         initialize_prefs();
+-        initialize_default_icon();
+     }
+     
+     if (mLastDragMotionWindow == this)
+@@ -1997,6 +1995,7 @@
+         mIsTopLevel = PR_TRUE;
+         if (mWindowType == eWindowType_dialog) {
+             mShell = gtk_window_new(GTK_WINDOW_TOPLEVEL);
++            SetupWindowIcon(mShell); 
+             gtk_window_set_type_hint(GTK_WINDOW(mShell),
+                                      GDK_WINDOW_TYPE_HINT_DIALOG);
+             gtk_window_set_transient_for(GTK_WINDOW(mShell),
+@@ -2033,6 +2032,7 @@
+         }
+         else { // must be eWindowType_toplevel
+             mShell = gtk_window_new(GTK_WINDOW_TOPLEVEL);
++            SetupWindowIcon(mShell);
+             // each toplevel window gets its own window group
+             mWindowGroup = gtk_window_group_new();
+             // and add ourselves to the window group
+@@ -3150,11 +3150,10 @@
+     return NS_OK;
+ }
+ 
+-/* static */
+ nsresult
+-initialize_default_icon(void)
++nsWindow::SetupWindowIcon(GtkWidget *window)
+ {
+-    // Set up the default icon for all windows
++    // Set up the window icon
+     nsresult rv;
+     nsCOMPtr<nsIFile> chromeDir;
+     rv = NS_GetSpecialDirectory(NS_APP_CHROME_DIR,
+@@ -3184,7 +3183,7 @@
+ 
+     GList *list = NULL;
+     list = g_list_append(list, defaultIcon);
+-    gtk_window_set_default_icon_list(list);
++    gtk_window_set_icon_list(GTK_WINDOW(window), list);
+     g_object_unref(G_OBJECT(defaultIcon));
+     g_list_free(list);
+ 
+diff -ruN mozilla-cvs/widget/src/gtk2/nsWindow.h mozilla/widget/src/gtk2/nsWindow.h
+--- mozilla-cvs/widget/src/gtk2/nsWindow.h	2002-09-27 08:46:48.000000000 +0200
++++ mozilla/widget/src/gtk2/nsWindow.h	2002-09-27 08:45:57.000000000 +0200
+@@ -252,6 +252,7 @@
+ #endif
+ 
+ private:
++    nsresult           SetupWindowIcon(GtkWidget *window);
+     void               GetToplevelWidget(GtkWidget **aWidget);
+     void              *SetupPluginPort(void);
+ 
+Index: widget/src/gtk2/nsCommonWidget.h
 ===================================================================
-RCS file: /cvsroot/mozilla/embedding/browser/Makefile.in,v
-retrieving revision 1.10
-diff -u -r1.10 Makefile.in
---- embedding/browser/Makefile.in	18 Dec 2001 09:10:33 -0000	1.10
-+++ embedding/browser/Makefile.in	29 Jun 2002 15:44:54 -0000
-@@ -27,6 +27,10 @@
+RCS file: /cvsroot/mozilla/widget/src/gtk2/nsCommonWidget.h,v
+retrieving revision 1.13
+diff -u -p -r1.13 nsCommonWidget.h
+--- mozilla/widget/src/gtk2/nsCommonWidget.h	8 May 2002 07:42:33 -0000	1.13
++++ mozilla/widget/src/gtk2/nsCommonWidget.h	29 Sep 2002 14:18:37 -0000
+@@ -42,17 +42,9 @@
+ #include "nsBaseWidget.h"
+ #include "nsGUIEvent.h"
+ #include <gdk/gdkevents.h>
+-
+-#ifdef MOZ_LOGGING
+-
+-// make sure that logging is enabled before including prlog.h
+-#define FORCE_PR_LOG
+-
+ #include "prlog.h"
  
- DIRS=webBrowser build chrome
+ extern PRLogModuleInfo *gWidgetLog;
+-
+-#endif /* MOZ_LOGGING */
  
-+ifdef MOZ_ENABLE_GTK2
-+DIRS += gtk
-+endif
-+
- ifdef MOZ_ENABLE_GTK
- DIRS += gtk
- endif
+ #define LOG(args) PR_LOG(gWidgetLog, 4, args)
+ 
