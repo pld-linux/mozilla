@@ -18,7 +18,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.7.6
-Release:	2.1
+Release:	2.2
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -354,6 +354,10 @@ sed -e 's,lib/mozilla-%{version},lib,g;s/mozilla-%{version}/mozilla/g' build/uni
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-gtkmozembed.pc
 
 sed -i -e 's#mozilla-nspr =.*#mozilla-nspr#g' -e 's#mozilla-nss =.*#mozilla-nss#g' $RPM_BUILD_ROOT%{_pkgconfigdir}/*.pc
+
+# add includir/dom to Cflags, for openvrml.spec, perhaps others
+sed -i -e '/Cflags:/{/{includedir}\/dom/!s,$, -I${includedir}/dom,}' $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-plugin.pc
+
 rm -f $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nss.pc $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nspr.pc
 
 install %{SOURCE1} %{SOURCE3} %{SOURCE5} %{SOURCE6} %{SOURCE7} \
