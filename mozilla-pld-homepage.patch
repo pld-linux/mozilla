@@ -1,5 +1,5 @@
---- mozilla/xpfe/browser/resources/locale/en-US/region.properties.orig	Fri Aug  2 02:53:34 2002
-+++ mozilla/xpfe/browser/resources/locale/en-US/region.properties	Sat Oct 19 20:18:20 2002
+--- mozilla.orig/xpfe/browser/resources/locale/en-US/region.properties	2004-05-18 00:35:29.000000000 +0000
++++ mozilla.patched/xpfe/browser/resources/locale/en-US/region.properties	2004-06-09 22:28:19.000000000 +0000
 @@ -1,5 +1,5 @@
  # navigator.properties
 -homePageDefault=http://www.mozilla.org/
@@ -15,10 +15,10 @@
 -browser.throbber.url=http://www.mozilla.org/
 +browser.startup.homepage=http://www.pld-linux.org/
 +browser.throbber.url=http://www.pld-linux.org/
- browser.search.defaulturl=http://www.google.com/search?q=
+ browser.search.defaulturl=http://www.google.com/search?sourceid=mozilla-search&q=
  general.useragent.contentlocale=US
  
-@@ -21,4 +21,4 @@
+@@ -24,4 +24,4 @@
  
  #config.js
  #
