@@ -232,10 +232,6 @@ for f in build/unix/*.pc ; do
 	sed -e 's/%{name}-%{version}b/%{name}/' $f \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/$(basename $f)
 done
-#for f in build/unix/*.pc ; do
-#	sed -e 's/%{name}b/%{name}/' $f \
-#		> $RPM_BUILD_ROOT%{_pkgconfigdir}/$(basename $f)
-#done
 
 sed -e 's,lib/mozilla-1.2b,lib,g;s/mozilla-1.2b/mozilla/g' build/unix/mozilla-gtkmozembed.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-gtkmozembed.pc
