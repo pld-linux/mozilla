@@ -14,7 +14,7 @@ Patch0:		%{name}-no_libnsl.patch
 Patch1:		%{name}-default-home.patch
 Patch2:		%{name}-user-agent.patch
 Patch3:		%{name}-psm.patch
-Patch4:		mathml.diff
+Patch4:		ftp://ftp.mozilla.org/pub/mozilla/releases/m18/src/mathml.diff
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
 BuildRequires:	libjpeg-devel
