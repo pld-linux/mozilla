@@ -350,7 +350,7 @@ done
 sed -e 's,lib/mozilla-%{version},lib,g;s/mozilla-%{version}/mozilla/g' build/unix/mozilla-gtkmozembed.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-gtkmozembed.pc
 
-sed -e -i 's#mozilla-nspr =.*#mozilla-nspr#g' -e 's#mozilla-nss =.*#mozilla-nss#g' $RPM_BUILD_ROOT%{_pkgconfigdir}/*.pc
+sed -i -e 's#mozilla-nspr =.*#mozilla-nspr#g' -e 's#mozilla-nss =.*#mozilla-nss#g' $RPM_BUILD_ROOT%{_pkgconfigdir}/*.pc
 rm -f $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nss.pc $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nspr.pc
 
 install %{SOURCE1} %{SOURCE3} %{SOURCE5} %{SOURCE6} %{SOURCE7} \
