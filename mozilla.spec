@@ -14,9 +14,6 @@ URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	gtk+-devel
 BuildRequires:	glib-devel
 BuildRequires:	ORBit-devel
-Requires:	gtk+ >= 1.2.0
-Requires:	glib >= 1.2.0
-Requires:	ORBit >= 0.5.0
 BuildRoot:	/tmp/%{name}-%{version}-root
 
 %define		_prefix		/usr/X11R6
