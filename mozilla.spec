@@ -5,8 +5,8 @@
 			# gcc2-compiled Java plugins on nest and other gcc 3.x systems.
 			# WARNING! You have to recompile galeon with gcc2 in
 			# order to get it working with this release of mozilla
-%bcond_with	debug	# compile without --disable-debug
-
+%bcond_with	debug	# compile without \--disable-debug
+#
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
@@ -14,7 +14,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.6
-Release:	0.1
+Release:	0.2
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -315,8 +315,8 @@ cat << EOF > $RPM_BUILD_ROOT%{_bindir}/mozilla
 #!/bin/sh
 # (c) vip at linux.pl, wolf at pld-linux.org
 
-DUPA=\`%{_bindir}/mozilla-bin -remote 'ping()' 2>&1 >/dev/null\`
-if [ -n "\$DUPA" ]; then
+PING=\`%{_bindir}/mozilla-bin -remote 'ping()' 2>&1 >/dev/null\`
+if [ -n "\$PING" ]; then
 	%{_bindir}/mozilla-bin "\$1"
 else
 	if [ -z "\$1" ]; then
@@ -337,61 +337,82 @@ rm -rf $RPM_BUILD_ROOT
 %post
 /sbin/ldconfig
 umask 022
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
-
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
+	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
 cd %{_chromedir}
 cat *-installed-chrome.txt >installed-chrome.txt
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 
 %postun
 /sbin/ldconfig
-if [ "$1" = "2" ]; then
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
+	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
+if [ "$1" = "1" ]; then
 	umask 022
-	rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
+	cd %{_chromedir}
+	cat *-installed-chrome.txt >installed-chrome.txt
 	MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+	MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 fi
 
 %post mailnews
 /sbin/ldconfig
 umask 022
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
+	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 
 %postun mailnews
 /sbin/ldconfig
 umask 022
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
+	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 
 %post chat
 umask 022
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
+	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 
 %postun chat
 umask 022
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
+	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 
 %post js-debugger
 umask 022
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
+	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 
 %postun js-debugger
 umask 022
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
+	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 
 %post dom-inspector
 umask 022
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
+	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 
 %postun dom-inspector
 umask 022
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
+	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 
 %files
 %defattr(644,root,root,755)
@@ -547,11 +568,9 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 
 # Is this a correct package for these files?
 %{_libdir}/%{name}/components/ipcd.xpt
-#%{_libdir}/%{name}/components/transmngr.xpt
 %{_libdir}/%{name}/components/ucnative.xpt
 %attr(755,root,root) %{_libdir}/%{name}/components/libipcdc.so
 %{!?with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libsystem-pref.so}
-#%attr(755,root,root) %{_libdir}/%{name}/components/libtransmngr_client.so
 
 %{_libdir}/%{name}/components/jsconsole-clhandler.js
 %{_libdir}/%{name}/components/nsCloseAllWindows.js
@@ -567,7 +586,6 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/nsSidebar.js
 %{_libdir}/%{name}/components/nsUpdateNotifier.js
 %{_libdir}/%{name}/components/nsXmlRpcClient.js
-%{_libdir}/%{name}/components/offlineStartup.js
 
 # not *.dat, so check-files can catch any new files
 # (and they won't be just silently placed empty in rpm)
@@ -593,7 +611,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_datadir}/%{name}/chrome/tasks.jar
 %{_datadir}/%{name}/chrome/toolkit.jar
 
-%{_datadir}/%{name}/chrome/chrome.rdf
+%ghost %{_datadir}/%{name}/chrome/chrome.rdf
 %{_datadir}/%{name}/chrome/chromelist.txt
 %{_datadir}/%{name}/chrome/icons
 %exclude %{_datadir}/%{name}/chrome/icons/default/abcardWindow*.xpm
@@ -604,7 +622,20 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %exclude %{_datadir}/%{name}/chrome/icons/default/venkman-window*.xpm
 %exclude %{_datadir}/%{name}/chrome/icons/default/winInspectorMain*.xpm
 
-%{_datadir}/%{name}/chrome/overlayinfo
+%dir %{_datadir}/%{name}/chrome/overlayinfo
+%dir %{_datadir}/%{name}/chrome/overlayinfo/communicator
+%dir %{_datadir}/%{name}/chrome/overlayinfo/communicator/content
+%ghost %{_datadir}/%{name}/chrome/overlayinfo/communicator/content/overlays.rdf
+%dir %{_datadir}/%{name}/chrome/overlayinfo/editor
+%dir %{_datadir}/%{name}/chrome/overlayinfo/editor/content
+# chatzilla and messenger entries in editor/content dir
+%dir %{_datadir}/%{name}/chrome/overlayinfo/messenger
+%dir %{_datadir}/%{name}/chrome/overlayinfo/messenger/content
+%ghost %{_datadir}/%{name}/chrome/overlayinfo/messenger/content/overlays.rdf
+%dir %{_datadir}/%{name}/chrome/overlayinfo/navigator
+%dir %{_datadir}/%{name}/chrome/overlayinfo/navigator/content
+%ghost %{_datadir}/%{name}/chrome/overlayinfo/navigator/content/overlays.rdf
+
 %{_datadir}/%{name}/chrome/mozilla-installed-chrome.txt
 %ghost %{_datadir}/%{name}/chrome/installed-chrome.txt
 
@@ -648,6 +679,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 
 %{_libdir}/%{name}/components/mdn-service.js
 %{_libdir}/%{name}/components/nsLDAPPrefsService.js
+%{_libdir}/%{name}/components/offlineStartup.js
 %{_libdir}/%{name}/components/smime-service.js
 
 %{_datadir}/%{name}/chrome/messenger.jar
@@ -656,6 +688,12 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_datadir}/%{name}/chrome/icons/default/addressbookWindow*.xpm
 %{_datadir}/%{name}/chrome/icons/default/messengerWindow*.xpm
 %{_datadir}/%{name}/chrome/icons/default/msgcomposeWindow*.xpm
+
+%dir %{_datadir}/%{name}/chrome/overlayinfo/cookie
+%dir %{_datadir}/%{name}/chrome/overlayinfo/cookie/content
+# only chrome://messenger/content/mailPrefsOverlay.xul
+%ghost %{_datadir}/%{name}/chrome/overlayinfo/cookie/content/overlays.rdf
+%ghost %{_datadir}/%{name}/chrome/overlayinfo/editor/content/overlays.rdf
 
 %{_desktopdir}/mozilla-addressbook.desktop
 %{_desktopdir}/mozilla-mail.desktop
@@ -666,6 +704,20 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/chatzilla-service.js
 %{_datadir}/%{name}/chrome/chatzilla.jar
 %{_datadir}/%{name}/chrome/icons/default/chatzilla-window*.xpm
+
+%dir %{_datadir}/%{name}/chrome/overlayinfo/browser
+%dir %{_datadir}/%{name}/chrome/overlayinfo/browser/content
+# only chrome://chatzilla/content/browserOverlay.xul
+%ghost %{_datadir}/%{name}/chrome/overlayinfo/browser/content/overlays.rdf
+%dir %{_datadir}/%{name}/chrome/overlayinfo/browser/skin
+# only chrome://chatzilla/skin/browserOverlay.css
+%ghost %{_datadir}/%{name}/chrome/overlayinfo/browser/skin/stylesheets.rdf
+%ghost %{_datadir}/%{name}/chrome/overlayinfo/editor/content/overlays.rdf
+%dir %{_datadir}/%{name}/chrome/overlayinfo/global
+%dir %{_datadir}/%{name}/chrome/overlayinfo/global/skin
+# only chrome://chatzilla/skin/browserOverlay.css
+%ghost %{_datadir}/%{name}/chrome/overlayinfo/global/skin/stylesheets.rdf
+
 %{_desktopdir}/mozilla-chat.desktop
 
 %files js-debugger
@@ -682,6 +734,10 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/inspector-cmdline.js
 %{_datadir}/%{name}/chrome/inspector.jar
 %{_datadir}/%{name}/chrome/icons/default/winInspectorMain*.xpm
+%dir %{_datadir}/%{name}/chrome/overlayinfo/inspector
+%dir %{_datadir}/%{name}/chrome/overlayinfo/inspector/content
+# only chrome://inspector/content/* entries
+%ghost %{_datadir}/%{name}/chrome/overlayinfo/inspector/content/overlays.rdf
 %{_datadir}/%{name}/defaults/pref/inspector.js
 %{_datadir}/%{name}/res/inspector
 
