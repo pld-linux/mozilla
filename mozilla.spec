@@ -1,15 +1,15 @@
 #
 # Conditional build:
-# _with_clearmenu
 # _with_gdkxft
+# _with_gtk2
 
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl╠darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Name:		mozilla
-Version:	0.9.8
-Release:	4
+Version:	1.0.rc1
+Release:	1
 Epoch:		1
 License:	GPL
 Group:		X11/Applications/Networking
@@ -18,26 +18,31 @@ Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-libart.tar.bz2
-Patch0:		%{name}-navigator-overlay-menu.patch
-Patch1:		%{name}-taskbar-no%{name}.patch
-Patch2:		%{name}-pld-homepage.patch
-Patch3:		%{name}-nspr_correct_in_nss.patch
-Patch4:		%{name}-gdkxft.patch
+Patch0:		%{name}-pld-homepage.patch
+Patch1:		%{name}-gdkxft.patch
+Patch2:		%{name}-nss.patch
+Patch3:		%{name}-ldap_nspr_includes.patch
+Patch4:		http://people.redhat.com/blizzard/mozilla/gtk2_embedding/2002-04-11/gtk2_embed.patch
+Patch5:		http://people.redhat.com/blizzard/mozilla/gtk2_embedding/2002-04-11/gtk2_widget.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	ORBit-devel
 BuildRequires:	autoconf
-BuildRequires:	gtk+-devel
+BuildRequires:	freetype-devel >= 2.0.9
+%{!?_with_gtk2:BuildRequires:	gtk+-devel}
+%{?_with_gtk2:BuildRequires:	gtk+2-devel >= 2.0.2}
+%{?_with_gtk2:BuildRequires:	pkgconfig}
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
-BuildRequires:	nspr-devel
-BuildRequires:	nss-static
+BuildRequires:	nss-devel >= 3.4.rc1-1
+BuildRequires:  nspr-devel >= 4.1.2-3
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	zip >= 2.1
 Provides:	mozilla-embedded = %{version}
 %{?_with_gdkxft:Requires:	gdkxft}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+Requires:	nss >= 3.4
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
 
@@ -62,9 +67,15 @@ O Mozilla И um web browser baseado numa versЦo inicial do Netscape
 Communicator. Este software estА em fase de desenvolvimento, portanto,
 ainda nЦo estАvel.
 
+%description -l ru
+Mozilla - полнофункциональный web-browser с открытыми исходными
+текстами, разработанный для максимального соотвествия стандартам,
+максмимальной переносимости и скорости работы
+
 %package mailnews
 Summary:	Mozilla - programs for mail and news
 Summary(pl):	Mozilla - programy do poczty i newsСw
+Summary(ru): Почтовая система на основе Mozilla
 Group:		X11/Applications/Networking
 Requires:	%{name} = %{version}
 Obsoletes:	mozilla-mail
@@ -75,10 +86,15 @@ Programs for mail and news integrated with browser.
 %description mailnews -l pl
 Programy pocztowe i obsЁuga newsСw zintegrowane z przegl╠dark╠.
 
+%description mail -l ru
+Клиент почты и новостей, на основе Mozilla. Поддерживает IMAP, POP
+и NNTP и имеет простой интерфейс пользователя.
+
 %package devel
 Summary:	Headers for developing programs that will use Mozilla
 Summary(pl):	Mozilla - pliki nagЁСwkowe i biblioteki
 Summary(pt_BR):	Arquivos de inclusЦo para desenvolvimento de programas que usam o Mozilla
+Summary(ru):	Файлы, необходимые для использования программ, включающих Mozilla
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}
 Requires:	nspr-devel
@@ -95,47 +111,58 @@ Biblioteki i pliki nagЁСwkowe.
 Arquivos de inclusЦo para desenvolvimento de programas que usam o
 Mozilla.
 
+%description devel -l ru
+Заголовочные файлы и программы, необходимые для разработки программ,
+испеользующих Mozilla
+
 %prep
 %setup -q -a 3 -n mozilla
-%{?_with_clearmenu:%patch0 -p1}
-%{?_with_clearmenu:%patch1 -p1}
+%patch0 -p1
+%{?_with_gdkxft:%patch1 -p1}
 %patch2 -p1
 %patch3 -p1
-%{?_with_gdkxft:%patch4 -p1}
+%{?_with_gtk2:%patch4 -p1}
+%{?_with_gtk2:%patch5 -p1}
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
+MOZILLA_OFFICIAL="1"; export MOZILLA_OFFICIAL
 
 MOZ_INTERNAL_LIBART_LGPL="x"
 export MOZ_INTERNAL_LIBART_LGPL
 
+if [ -f %{_pkgconfigdir}/libpng12.pc ] ; then
+	CPPFLAGS="`pkg-config libpng12 --cflags`"; export CPPFLAGS
+fi
 %configure2_13 \
-	--with-default-mozilla-five-home=%{_libdir}/mozilla \
-	--with-nspr-prefix="/usr" \
-	--enable-optimize="%{rpmcflags}" \
-	--with-pthreads \
-	--enable-toolkit=gtk \
-	--enable-strip-libs \
-	--enable-new-cache \
-	--enable-mathml \
-	--enable-svg \
-	--enable-ldap \
-	--enable-xsl \
-	--enable-xinerama \
-	--disable-elf-dynstr-gc \
-	--enable-crypto \
-	--with-extensions \
-	--disable-dtd-debug \
 	--disable-debug \
-	--disable-tests \
+	--disable-dtd-debug \
+	--disable-elf-dynstr-gc \
 	--disable-pedantic \
 	--disable-short-wchar \
-	--with-x \
-	--with-jpeg \
-	--with-zlib \
-	--with-png \
-	--with-mng \
-	--with-xprint
+	--disable-tests \
+	--enable-crypto \
+	--enable-extensions \
+	--enable-ldap \
+	--enable-mathml \
+	--enable-new-cache \
+	--enable-optimize="%{rpmcflags}" \
+	--enable-postscript \
+	--enable-strip-libs \
+	--enable-svg \
+	%{!?_with_gtk2:--enable-toolkit-gtk} \
+	%{?_with_gtk2:--disable-toolkit-gtk --enable-default-toolkit=gtk2} \
+	--enable-xinerama \
+	--enable-xprint \
+	--enable-xsl \
+	--with-default-mozilla-five-home=%{_libdir}/mozilla \
+	--with-system-nspr \
+	--with-pthreads \
+	--with-system-jpeg \
+	--with-system-mng \
+	--with-system-png \
+	--with-system-zlib \
+	--with-x
 
 %{__make}
 
@@ -143,7 +170,7 @@ export MOZ_INTERNAL_LIBART_LGPL
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_bindir},%{_applnkdir}/Network/WWW} \
 	$RPM_BUILD_ROOT%{_datadir}/{idl,pixmaps} \
-	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,dtd,icons,res,searchplugins} \
+	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,icons,res,searchplugins} \
 	$RPM_BUILD_ROOT%{_libdir}/%{name}/{components,plugins} \
 	$RPM_BUILD_ROOT%{_includedir}/%{name}
 
@@ -159,7 +186,6 @@ install dist/bin/component.reg $RPM_BUILD_ROOT%{_libdir}/%{name}
 
 ln -sf ../../share/mozilla/chrome $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome
 ln -sf ../../share/mozilla/defaults $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults
-ln -sf ../../share/mozilla/dtd $RPM_BUILD_ROOT%{_libdir}/%{name}/dtd
 ln -sf ../../share/mozilla/icons $RPM_BUILD_ROOT%{_libdir}/%{name}/icons
 ln -sf ../../share/mozilla/res $RPM_BUILD_ROOT%{_libdir}/%{name}/res
 ln -sf ../../share/mozilla/searchplugins $RPM_BUILD_ROOT%{_libdir}/%{name}/searchplugins
@@ -167,9 +193,7 @@ ln -sf ../../share/mozilla/searchplugins $RPM_BUILD_ROOT%{_libdir}/%{name}/searc
 cp -frL dist/bin/chrome/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
 cp -frL dist/bin/components/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/components
 cp -frL dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
-cp -frL dist/bin/dtd/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/dtd
-cp -frL dist/bin/icons/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/icons
-cp -frL dist/bin/plugins/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins
+%{!?_with_gtk2:cp -frL dist/bin/icons/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/icons}
 cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
 cp -frL dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
 cp -frL dist/idl/*		$RPM_BUILD_ROOT%{_datadir}/idl
@@ -211,7 +235,6 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %dir %{_libdir}/%{name}/chrome
 %dir %{_libdir}/%{name}/components
 %dir %{_libdir}/%{name}/defaults
-%dir %{_libdir}/%{name}/dtd
 %dir %{_libdir}/%{name}/icons
 %dir %{_libdir}/%{name}/plugins
 %dir %{_libdir}/%{name}/res
@@ -220,23 +243,20 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 
 %ghost %{_libdir}/%{name}/component.reg
 %attr(755,root,root) %{_libdir}/libgkgfx.so
-%attr(755,root,root) %{_libdir}/libgtkembedmoz.so
-%attr(755,root,root) %{_libdir}/libgtksuperwin.so
-%attr(755,root,root) %{_libdir}/libgtkxtbin.so
+%{!?_with_gtk2:%attr(755,root,root) %{_libdir}/libgtkembedmoz.so}
+%{!?_with_gtk2:%attr(755,root,root) %{_libdir}/libgtksuperwin.so}
+%{!?_with_gtk2:%attr(755,root,root) %{_libdir}/libgtkxtbin.so}
 %attr(755,root,root) %{_libdir}/libjsj.so
-%attr(755,root,root) %{_libdir}/liblber40.so
-%attr(755,root,root) %{_libdir}/libldap40.so
+%attr(755,root,root) %{_libdir}/libldap50.so
+%attr(755,root,root) %{_libdir}/libprldap50.so
 %attr(755,root,root) %{_libdir}/libmozjs.so
 %attr(755,root,root) %{_libdir}/libmozpango.so
 %attr(755,root,root) %{_libdir}/libmozpango-thaix.so
 %attr(755,root,root) %{_libdir}/libmoz_art_lgpl.so
-%attr(755,root,root) %{_libdir}/libnssckbi.so
-%attr(755,root,root) %{_libdir}/libnullplugin.so
+%{!?_with_gtk2:%attr(755,root,root) %{_libdir}/libnullplugin.so}
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
 %attr(755,root,root) %{_libdir}/libxlibrgb.so
-
-%attr(755,root,root) %{_libdir}/%{name}/plugins/libnullplugin.so
 
 %attr(755,root,root) %{_libdir}/%{name}/components/libaccess*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libappcomps.so
@@ -277,7 +297,6 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libregviewer.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libshistory.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libstrres.so
-#attr(755,root,root) %{_libdir}/%{name}/components/libtimer_gtk.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtransformiix.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtxmgr.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtxtsvc.so
@@ -288,7 +307,8 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libwallet.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwalletviewers.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwebbrwsr.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk.so
+%{!?_with_gtk2:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk.so}
+%{?_with_gtk2:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk2.so}
 %attr(755,root,root) %{_libdir}/%{name}/components/libx*.so
 
 %{_libdir}/%{name}/components/access*.xpt
@@ -363,7 +383,6 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %{_datadir}/%{name}/icons
 %{_datadir}/%{name}/res
 %{_datadir}/%{name}/searchplugins
-%{_datadir}/%{name}/dtd
 %{_datadir}/idl/*
 
 %{_pixmapsdir}/mozilla.png
