@@ -98,7 +98,7 @@ Embedded part of mozilla.
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
 
-%configure \
+%configure2_13 \
 	--with-default-mozilla-five-home=%{_libdir}/mozilla \
 	--enable-optimize="%{rpmcflags}" \
 	--with-pthreads \
