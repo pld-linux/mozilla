@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Mozilla Terminal
+Name[pl]=Terminal Mozilli
+Exec=mozilla -splash -terminal
+Icon=mozilla.png
+Terminal=0
+Type=Application
+# vi: encoding=utf-8
