@@ -1,20 +1,18 @@
 Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
-Version:	0.0.M18
+Version:	0.6
 Epoch:		1
-Release:	3
+Release:	1
 License:	NPL
 Group:		X11/Applications/Networking
 Group(de):	X11/Applikationen/Netzwerkwesen
 Group(pl):	X11/Aplikacje/Sieciowe
-Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/m18/src/%{name}-source-M18.tar.bz2
+Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source.tar.bz2
 Source1:	%{name}.desktop
 Patch0:		%{name}-no_libnsl.patch
 Patch1:		%{name}-default-home.patch
 Patch2:		%{name}-user-agent.patch
-Patch3:		%{name}-psm.patch
-Patch4:	ftp://ftp.mozilla.org/pub/mozilla/releases/m18/src/mathml.diff
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
 BuildRequires:	libjpeg-devel
@@ -67,10 +65,6 @@ Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
 %patch0 -p1
 %patch1 -p0
 %patch2 -p0
-%patch3 -p1
-# cd gfx/src/windows
-# %patch4 -p0
-%patch4 -p1
 
 %build
 autoconf
@@ -88,6 +82,7 @@ MOZ_OPTIMIZE_FLAGS="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}"
 	--disable-dtd-debug \
 	--disable-debug \
 	--disable-tests \
+	--disable-pedantic \
 	--with-x \
 	--with-jpeg \
 	--with-zlib \
@@ -102,6 +97,9 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_applnkdir}/Network/WWW} \
 	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,res,icons,searchplugins} \
 	$RPM_BUILD_ROOT%{_libdir}/%{name}/{components,plugins} \
 	$RPM_BUILD_ROOT%{_includedir}/%{name}/{obsolete,private}
+
+# preparing to create register
+rm -fr dist/bin/chrome/{blue,chatzilla,classic,comm,embed,en-US,messenger,modern,toolkit,xmlterm}
 
 # creating and installing register
 LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regxpcom
@@ -167,7 +165,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libjsj.so
 %attr(755,root,root) %{_libdir}/libmozjs.so
 %attr(755,root,root) %{_libdir}/libnspr4.so
-%attr(755,root,root) %{_libdir}/libnullplugin.so
 %attr(755,root,root) %{_libdir}/libplc4.so
 %attr(755,root,root) %{_libdir}/libplds4.so
 %attr(755,root,root) %{_libdir}/libprotocol.so
