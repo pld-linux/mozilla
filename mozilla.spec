@@ -53,7 +53,11 @@ BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.0.0
 Requires(post,postun):	/sbin/ldconfig
 Requires:	nss >= 3.8
-Provides:	mozilla-embedded = %{version}
+%{?_with_gtk1:Provides:	mozilla(gtk1) = %{epoch}:%{version}-%{release}}
+%{!?_with_gtk1:Provides:	mozilla(gtk2) = %{epoch}:%{version}-%{release}}
+Provides:	mozilla-embedded = %{epoch}:%{version}-%{release}
+%{?_with_gtk1:Provides:	mozilla-embedded(gtk1) = %{epoch}:%{version}-%{release}}
+%{!?_with_gtk1:Provides:	mozilla-embedded(gtk2) = %{epoch}:%{version}-%{release}}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
@@ -99,8 +103,8 @@ Summary(pl):	Mozilla - programy do poczty i newsÛw
 Summary(ru):	œﬁ‘œ◊¡— ”…”‘≈Õ¡ Œ¡ œ”Œœ◊≈ Mozilla
 Group:		X11/Applications/Networking
 Requires(post,postun):	/sbin/ldconfig
-Requires(post,postun):	%{name} = %{version}
-Requires:	%{name} = %{version}
+Requires(post,postun):	%{name} = %{epoch}:%{version}
+Requires:	%{name} = %{epoch}:%{version}
 Obsoletes:	mozilla-mail
 
 %description mailnews
@@ -117,8 +121,8 @@ NNTP … …Õ≈≈‘ –“œ”‘œ  …Œ‘≈“∆≈ ” –œÃÿ⁄œ◊¡‘≈Ã—.
 Summary:	Mozilla Chat - IRC client integrated with Mozilla
 Summary(pl):	Mozilla Chat - zintegrowany z Mozill± klient IRC-a
 Group:		X11/Applications/Networking
-Requires(post,postun):	%{name} = %{version}
-Requires:	%{name} = %{version}
+Requires(post,postun):	%{name} = %{epoch}:%{version}
+Requires:	%{name} = %{epoch}:%{version}
 
 %description chat
 Mozilla Chat - IRC client that is integrated with the Mozilla web
@@ -131,8 +135,8 @@ Mozilla Chat - klient IRC-a zintegrowany z przegl±dark± Mozilla.
 Summary:	JavaScript debugger for use with Mozilla
 Summary(pl):	Odpluskwiacz JavaScriptu do uøywania z Mozill±
 Group:		X11/Applications/Networking
-Requires(post,postun):	%{name} = %{version}
-Requires:	%{name} = %{version}
+Requires(post,postun):	%{name} = %{epoch}:%{version}
+Requires:	%{name} = %{epoch}:%{version}
 
 %description js-debugger
 JavaScript debugger for use with Mozilla.
@@ -144,8 +148,8 @@ Odpluskwiacz JavaScriptu do uøywania z Mozill±.
 Summary:	A tool for inspecting the DOM of pages in Mozilla
 Summary(pl):	NarzÍdzie do ogl±dania DOM stron w Mozilli
 Group:		X11/Applications/Networking
-Requires(post,postun):	%{name} = %{version}
-Requires:	%{name} = %{version}
+Requires(post,postun):	%{name} = %{epoch}:%{version}
+Requires:	%{name} = %{epoch}:%{version}
 
 %description dom-inspector
 This is a tool that allows you to inspect the DOM for web pages in
@@ -163,9 +167,9 @@ Summary(pl):	Mozilla - pliki nag≥Ûwkowe i biblioteki
 Summary(pt_BR):	Arquivos de inclus„o para desenvolvimento de programas que usam o Mozilla
 Summary(ru):	Ê¡ ÃŸ, Œ≈œ¬»œƒ…ÕŸ≈ ƒÃ— …”–œÃÿ⁄œ◊¡Œ…— –“œ«“¡ÕÕ, ◊ÀÃ¿ﬁ¡¿›…» Mozilla
 Group:		X11/Development/Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{epoch}:%{version}
 Requires:	nspr-devel
-Provides:	mozilla-embedded-devel = %{version}
+Provides:	mozilla-embedded-devel = %{epoch}:%{version}-%{release}
 Obsoletes:	mozilla-embedded-devel
 
 %description devel
@@ -183,7 +187,7 @@ Mozilla.
 Mozilla
 
 %prep
-%setup -q -n mozilla
+%setup -q -n %{name}
 %patch0 -p1
 %patch2 -p1
 %patch3 -p1
