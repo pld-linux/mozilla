@@ -2,7 +2,7 @@ Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
 Version:	0.6
-Release:	1
+Release:	2
 Epoch:		1
 License:	NPL
 Group:		X11/Applications/Networking
@@ -100,6 +100,8 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_applnkdir}/Network/WWW} \
 
 # preparing to create register
 rm -fr dist/bin/chrome/{blue,chatzilla,classic,comm,embed,en-US,messenger,modern,toolkit,xmlterm}
+echo "skin,install,select,classic/1.0"	>> dist/bin/chrome/installed-chrome.txt
+echo "locale,install,select,en-US"	>> dist/bin/chrome/installed-chrome.txt
 
 # creating and installing register
 LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regxpcom
