@@ -6,8 +6,9 @@
 			# WARNING! You have to recompile galeon with gcc2 in
 			# order to get it working with this release of mozilla
 %bcond_with	debug	# compile without \--disable-debug
+%bcond_without	gnomevfs	# disable GnomeVFS support
 #
-%define	pre	a
+%define	pre	b
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
@@ -19,8 +20,8 @@ Release:	0.%{pre}.1
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
-Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{version}%{pre}/src/%{name}-source-%{version}%{pre}.tar.bz2
-# Source0-md5:	6ae50cc951fc112758d5c5dc6b4c3081
+Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{version}%{pre}/src/%{name}-source-%{version}%{pre}-source.tar.bz2
+# Source0-md5:	ee564ecbc7f443f9e49eca1d9ff57296
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-composer.desktop
@@ -40,9 +41,12 @@ Patch3:		%{name}-ldap-with-nss.patch
 Patch4:		%{name}-gfx.patch
 Patch5:		%{name}-alpha-gcc3.patch
 Patch6:		%{name}-amd64.patch
+Patch7:		%{name}-gssapi.patch
 URL:		http://www.mozilla.org/
 %{?with_gtk1:BuildRequires:	ORBit-devel}
+BuildRequires:	cairo-devel >= 0.1.17
 BuildRequires:	freetype-devel >= 2.1.3
+%{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.0.0}
 %{?with_gtk1:BuildRequires:	gtk+-devel >= 1.2.0}
 %{!?with_gtk1:BuildRequires:	gtk+2-devel >= 2.2.0}
 %{!?with_gtk1:BuildRequires:	libIDL-devel >= 0.8.0}
@@ -84,6 +88,10 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_gcc_ver	%(%{__cc} -dumpversion | cut -b 1)
 %if %{_gcc_ver} == 2
 %define		__cxx		"%{__cc}"
+%endif
+
+%if %{with gtk1}
+%undefine	with_gnomevfs
 %endif
 
 %description
@@ -173,6 +181,19 @@ To narzêdzie pozwala na ogl±danie DOM dla stron WWW w Mozilli. Jest
 bardzo przydatne dla ludzi rozwijaj±cych chrome w Mozilli lub
 tworz±cych strony WWW.
 
+%package gnomevfs
+Summary:	Gnome-VFS module providing support for smb:// URLs
+Summary(pl):	Modu³ Gnome-VFS dodaj±cy wsparcie dla URLi smb://
+Group:		X11/Applications/Networking
+Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+
+%description gnomevfs
+Gnome-VFS module providing support for smb:// URLs.
+
+%description gnomevfs -l pl
+Modu³ Gnome-VFS dodaj±cy wsparcie dla URLi smb://.
+
 %package devel
 Summary:	Headers for developing programs that will use Mozilla
 Summary(pl):	Mozilla - pliki nag³ówkowe i biblioteki
@@ -206,13 +227,14 @@ Mozilla
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-%patch6 -p1 
+%patch6 -p1
+%patch7 -p1
 cp -f security/coreconf/Linux2.5.mk security/coreconf/Linux2.6.mk
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
 MOZILLA_OFFICIAL="1"; export MOZILLA_OFFICIAL
-MOZ_INTERNAL_LIBART_LGPL="1"; export MOZ_INTERNAL_LIBART_LGPL
+#MOZ_INTERNAL_LIBART_LGPL="1"; export MOZ_INTERNAL_LIBART_LGPL
 
 %if %{_gcc_ver} > 2
 CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
@@ -231,9 +253,10 @@ CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 	--enable-postscript \
 	--enable-strip \
 	--enable-svg \
-	--enable-svg-renderer-libart \
+	--enable-svg-renderer-cairo \
 	%{?with_gtk1:--enable-toolkit-gtk} \
 	%{!?with_gtk1:--disable-toolkit-gtk --enable-default-toolkit=gtk2} \
+	%{!?with_gnomevfs:--disable-gnomevfs} \
 	--enable-xft \
 	--enable-xinerama \
 	--enable-xprint \
@@ -423,6 +446,20 @@ rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 
+%post gnomevfs
+umask 022
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
+	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
+
+%postun gnomevfs
+umask 022
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
+	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
+
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/*
@@ -446,7 +483,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %attr(755,root,root) %{_libdir}/libprldap50.so
 %attr(755,root,root) %{_libdir}/libssldap50.so
 %attr(755,root,root) %{_libdir}/libmozjs.so
-%attr(755,root,root) %{_libdir}/libmoz_art_lgpl.so
+##%attr(755,root,root) %{_libdir}/libmoz_art_lgpl.so
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpcom_compat.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
@@ -471,11 +508,12 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %attr(755,root,root) %{_libdir}/%{name}/components/libimg*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjar50.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjsd.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libjsdom.so
+##%attr(755,root,root) %{_libdir}/%{name}/components/libjsdom.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmork.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmoz*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmyspell.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnecko*.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libnegotiateauth.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkdatetime.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkfinger.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libns*.so
@@ -751,6 +789,10 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %ghost %{_datadir}/%{name}/chrome/overlayinfo/inspector/content/overlays.rdf
 %{_datadir}/%{name}/defaults/pref/inspector.js
 %{_datadir}/%{name}/res/inspector
+
+%files gnomevfs
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/components/libnkgnomevfs.so
 
 %files devel
 %defattr(644,root,root,755)
