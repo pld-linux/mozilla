@@ -298,6 +298,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/libgtkxtbin.so
 %attr(755,root,root) %{_libdir}/libjsj.so
 %attr(755,root,root) %{_libdir}/libldap50.so
+%attr(755,root,root) %{_libdir}/libmsgbaseutil.so
 %attr(755,root,root) %{_libdir}/libprldap50.so
 %attr(755,root,root) %{_libdir}/libssldap50.so
 %attr(755,root,root) %{_libdir}/libmozjs.so
@@ -470,7 +471,6 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 ##########################################
 %files mailnews
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libmsgbaseutil.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libabsyncsvc.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libaddrbook.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libbayesflt.so
