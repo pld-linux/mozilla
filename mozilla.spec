@@ -16,12 +16,12 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.7
-Release:	0.%{pre}.1
+Release:	0.9
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
-Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{version}%{pre}/src/%{name}-source-%{version}%{pre}.tar.bz2
-# Source0-md5:	8dfee28c027db903aab8f826ee594f75
+Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{version}%{pre}/src/%{name}-source-%{version}.tar.bz2
+# Source0-md5:	5b4494934c4ffaee83bc79a8b181a8c3
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-composer.desktop
