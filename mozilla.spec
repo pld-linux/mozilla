@@ -103,7 +103,10 @@ dist/bin/regxpcom
 install dist/bin/component.reg $RPM_BUILD_ROOT%{_libdir}/%{name}
 
 # discussion feature: it's need to create some files (skin overview and others)
-#dist/bin/mozilla
+#LD_LIBRARY_PATH="dist/bin" \
+#MOZILLA_FIVE_HOME="dist/bin" \
+#dist/bin/mozilla-bin &
+#sleep 20
 
 ln -s ../../share/mozilla/chrome $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome
 ln -s ../../share/mozilla/defaults $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults
