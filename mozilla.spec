@@ -1,11 +1,15 @@
-Summary:	Mozilla
+Summary:	Mozilla - web browser
+Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
-Version:	0.M13
+Version:	5.M14
 Release:	1
 Copyright:	NPL
 Group:		X11/Applications/Networking
 Group(pl):	X11/Aplikacje/Sieciowe
-Source:		%{name}-source-M13.tar.bz2
+Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/m14/src/%{name}-source-M14-no-crypto.tar.gz
+Source1:	mozilla.sh
+Source2:	mozilla-icon.png
+Source3:	mozilla.desktop
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	gtk+-devel
 BuildRequires:	glib-devel
@@ -15,23 +19,38 @@ Requires:	glib >= 1.2.0
 Requires:	ORBit >= 0.5.0
 BuildRoot:	/tmp/%{name}-%{version}-root
 
+%define		_prefix		/usr/X11R6
+
 %description
-Mozilla
+
+Mozilla is an open-source web browser, designed for standards
+compliance, performance and portability. 
+
+%description -l pl
+Mozilla jest potê¿n± graficzn± przegl±dark± WWW, która jest
+nastêpc± Netscape Navigatora.
 
 %package devel
 Summary:	Mozilla development crap
+Summary(pl):	Mozilla - pliki nag³ówkowe i biblioteki
 Group:		X11/Development/Libraries
+Group(pl):	X11/Programowanie/Biblioteki
 Requires:	%{name} = %{version}
 
 %description devel
 Mozilla development libs and headers
 
+%description -l pl devel
+Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
+
 %prep
 %setup -q -n mozilla
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" ; export CFLAGS
-CXXFLAGS="$RPM_OPT_FLAGS" ; export CXXFLAGS
+#CFLAGS="$RPM_OPT_FLAGS" ; export CFLAGS
+#CXXFLAGS="$RPM_OPT_FLAGS" ; export CXXFLAGS
+CFLAGS="-march=pentium -O6 -funroll-loops -ffast-math -mpentium" ; export CFLAGS
+CXXFLAGS="-march=pentium -O6 -funroll-loops -ffast-math -mpentium" ; export CXXFLAGS
 LDFLAGS="-s" ; export LDFLAGS
 ./configure \
 	--with-pthreads \
@@ -52,60 +71,84 @@ make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_libdir}/mozilla/idl,%{_includedir},%{_bindir}}
 
-cp -rp dist/bin/* $RPM_BUILD_ROOT/%{_libdir}/mozilla/
-cp -rp dist/include/gtkmozilla.h $RPM_BUILD_ROOT%{_includedir}/
-cp -rp dist/lib/libgtkmozilla.{so.0.0.0,la} $RPM_BUILD_ROOT%{_libdir}/
-cp -rp dist/idl/* $RPM_BUILD_ROOT/%{_libdir}/mozilla/idl/
+install -d $RPM_BUILD_ROOT%{_bindir}
 
-rm -rf $RPM_BUILD_ROOT/%{_libdir}/mozilla/*{Test,test}*
+install -d $RPM_BUILD_ROOT%{_datadir}/pixmaps
+install -d $RPM_BUILD_ROOT%{_datadir}/applnk/Internet
 
-ln -sf %{_libdir}/mozilla/mozilla $RPM_BUILD_ROOT%{_bindir}/mozilla
-(cd $RPM_BUILD_ROOT%{_libdir} ; ln -s libgtkmozilla.so.0.0.0 libgtkmozilla.so)
+install -d $RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
+install -d $RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
+install -d $RPM_BUILD_ROOT%{_datadir}/%{name}/res
+install -d $RPM_BUILD_ROOT%{_datadir}/%{name}/icons
 
-perl -p -i -e "s|^dist_bin.*|dist_bin=%{_libdir}/mozilla/|" \
-	$RPM_BUILD_ROOT%{_libdir}/mozilla/mozilla
+install -d $RPM_BUILD_ROOT%{_libdir}/%{name}/components
+install -d $RPM_BUILD_ROOT%{_libdir}/%{name}/plugins
+install -d $RPM_BUILD_ROOT%{_libdir}/%{name}/idl
 
-perl -p -i -e 's|^MOZILLA_BIN.*|MOZILLA_BIN=\"\$dist_bin/mozilla-bin\"|' \
-	$RPM_BUILD_ROOT%{_libdir}/mozilla/mozilla
+install -d $RPM_BUILD_ROOT%{_includedir}
 
-perl -p -i -e "s|^MOZ_DIST_BIN.*|MOZ_DIST_BIN=\"%{_libdir}/mozilla/\"|" \
-	$RPM_BUILD_ROOT%{_libdir}/mozilla/run-mozilla.sh
+ln -s ../../share/mozilla/chrome $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome
+ln -s ../../share/mozilla/defaults $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults
+ln -s ../../share/mozilla/res $RPM_BUILD_ROOT%{_libdir}/%{name}/res
+ln -s ../../share/mozilla/icons $RPM_BUILD_ROOT%{_libdir}/%{name}/icons
+
+cp -fr dist/bin/chrome/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
+cp -fr dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
+cp -fr dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
+cp -fr dist/bin/icons/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/icons
+cp -fr dist/bin/components/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/components
+cp -fr dist/idl/*		$RPM_BUILD_ROOT%{_libdir}/%{name}/idl
+cp -fr dist/include/gtkmozilla.h $RPM_BUILD_ROOT%{_includedir}
+
+install dist/lib/libgtkmozilla.{so.0.*,la} $RPM_BUILD_ROOT%{_libdir}
+install dist/bin/*.so		$RPM_BUILD_ROOT%{_libdir}
+
+# creating and installing register
+LD_LIBRARY_PATH="dist/bin" \
+MOZILLA_FIVE_HOME="dist/bin" \
+    dist/bin/regxpcom
+install dist/bin/component.reg $RPM_BUILD_ROOT%{_libdir}/%{name}
+
+install %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/mozilla
+install %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/pixmaps
+install %{SOURCE3} $RPM_BUILD_ROOT%{_datadir}/applnk/Internet
+
+install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}
+
+strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/%{name}/components/*.so || :
+strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/*.so* || :
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-/sbin/ldconfig
-cd %{_libdir}/mozilla ; LD_LIBRARY_PATH=. ./regxpcom
-
-%preun
-rm -f %{_libdir}/mozilla/component.reg
-
-%postun -p /sbin/ldconfig
+%post	-p /sbin/ldconfig
+%postun	-p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
-%attr(755,root,root)%{_bindir}/mozilla
-%dir %{_libdir}/mozilla
-%dir %{_libdir}/mozilla/plugins
-%attr(755,root,root) %{_libdir}/lib*.so.*.*
-%{_libdir}/mozilla/chrome
-%{_libdir}/mozilla/components/*.xpt
-%attr(755,root,root) %{_libdir}/mozilla/components/*.so
-%{_libdir}/mozilla/defaults
-%{_libdir}/mozilla/res
-%attr(755,root,root) %{_libdir}/mozilla/*.so
-%attr(755,root,root) %{_libdir}/mozilla/*mozilla*
-%attr(755,root,root) %{_libdir}/mozilla/*reg*
-%attr(755,root,root) %{_libdir}/mozilla/xp*
-%attr(755,root,root) %{_libdir}/mozilla/*browser
-%attr(755,root,root) %{_libdir}/mozilla/nsinstall
+%attr(755,root,root) %{_bindir}/*
+
+%attr(755,root,root) %{_libdir}/*.so*
+
+%dir %{_libdir}/%{name}
+%dir %{_libdir}/%{name}/components
+%{_libdir}/%{name}/component.reg
+%attr(755,root,root) %{_libdir}/%{name}/components/*.so
+%{_libdir}/%{name}/components/*.xpt
+%{_libdir}/%{name}/components/*.js
+%{_libdir}/%{name}/plugins
+%{_libdir}/%{name}/chrome
+%{_libdir}/%{name}/defaults
+%{_libdir}/%{name}/res
+%{_libdir}/%{name}/icons
+
+%{_datadir}/%{name}
+%{_datadir}/pixmaps/mozilla-icon.png
+%{_datadir}/applnk/Internet/mozilla.desktop
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/lib*.so
-%attr(755,root,root) %{_libdir}/lib*.la
+%{_libdir}/lib*.la
 %{_includedir}/*
-%{_libdir}/mozilla/idl
+%{_libdir}/%{name}/idl
