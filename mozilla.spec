@@ -19,12 +19,12 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_prefix		/usr/X11R6
 
 %description
-Mozilla is an open-source web browser, designed for standards
-compliance, performance and portability. 
+Mozilla is an open-source web browser, designed for standards compliance,
+performance and portability.
 
 %description -l pl
-Mozilla jest potê¿n± graficzn± przegl±dark± WWW, która jest
-nastêpc± Netscape Navigatora.
+Mozilla jest potê¿n± graficzn± przegl±dark± WWW, która jest nastêpc±
+Netscape Navigatora.
 
 %package devel
 Summary:	Mozilla development crap
@@ -67,8 +67,8 @@ make
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT%{_bindir} \
-	$RPM_BUILD_ROOT%{_datadir}/{idl,pixmaps,applnk/Internet} \
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_applnkdir}/Networking/WWW} \
+	$RPM_BUILD_ROOT%{_datadir}/{idl,pixmaps} \
 	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,res,icons} \
 	$RPM_BUILD_ROOT%{_libdir}/%{name}/{components,plugins} \
 	$RPM_BUILD_ROOT%{_includedir}
@@ -92,12 +92,13 @@ install dist/bin/*.so		$RPM_BUILD_ROOT%{_libdir}
 # creating and installing register
 LD_LIBRARY_PATH="dist/bin" \
 MOZILLA_FIVE_HOME="dist/bin" \
-    dist/bin/regxpcom
+dist/bin/regxpcom
+
 install dist/bin/component.reg $RPM_BUILD_ROOT%{_libdir}/%{name}
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/mozilla
 install %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/pixmaps
-install %{SOURCE3} $RPM_BUILD_ROOT%{_datadir}/applnk/Internet
+install %{SOURCE3} $RPM_BUILD_ROOT%{_applnkdir}/Networking/WWW
 
 install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}
 
@@ -130,7 +131,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %{_datadir}/%{name}
 %{_datadir}/pixmaps/mozilla-icon.png
-%{_datadir}/applnk/Internet/mozilla.desktop
+%{_applnkdir}/Networking/WWW/mozilla.desktop
 
 %files devel
 %defattr(644,root,root,755)
