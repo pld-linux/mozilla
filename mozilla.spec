@@ -11,7 +11,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.0
-Release:	5
+Release:	6
 Epoch:		2
 License:	GPL
 Group:		X11/Applications/Networking
@@ -51,14 +51,14 @@ BuildRequires:	nss-devel >= 3.4.1
 BuildRequires:	nspr-devel >= 4.1.2-3
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	zip >= 2.1
-%{!?_with_no_PL:BuildRequires: unzip}
+%{!?_without_PL:BuildRequires: unzip}
 Provides:	mozilla-embedded = %{version}
 %{?_with_gdkxft:Requires:	gdkxft}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Requires:	nss >= 3.4.1
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
-Obsoletes:	mozilla-Lang-PL
+%{!?_without_PL:Conflicts: mozilla-Lang-PL}
 
 %define		_prefix		/usr/X11R6
 %define		_mandir		%{_prefix}/man
