@@ -12,12 +12,12 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
-Version:	1.2.1
-Release:	0.10
+Version:	1.3a
+Release:	0.1
 Epoch:		2
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
-Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
+Source0:	http://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.gz
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source4:	%{name}-addressbook.desktop
@@ -33,9 +33,9 @@ Patch2:		%{name}-nss.patch
 Patch3:		%{name}-ldap_nspr_includes.patch
 Patch5:		%{name}-ldap-with-nss.patch
 Patch6:		%{name}-gfx.patch
-Patch7:		%{name}-gtk2.patch
+#Patch7:		%{name}-gtk2.patch
 URL:		http://www.mozilla.org/
-%{_with_gtk1:BuildRequires:	ORBit-devel}
+%{?_with_gtk1:BuildRequires:	ORBit-devel}
 BuildRequires:	Xft-devel >= 2.1-2
 BuildRequires:	autoconf
 BuildRequires:	freetype-devel >= 2.1.3
@@ -144,7 +144,7 @@ Mozilla
 %patch3 -p1
 %patch5 -p1
 %patch6 -p1
-%patch7 -p0
+#%patch7 -p0
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
@@ -305,13 +305,14 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 #%attr(755,root,root) %{_libdir}/libmozpango-thaix.so
 %attr(755,root,root) %{_libdir}/libmoz_art_lgpl.so
 %{!?_with_gtk1:%attr(755,root,root) %{_libdir}/libmai.so}
-%{?_with_gtk1:%attr(755,root,root) %{_libdir}/libnullplugin.so}
+%attr(755,root,root) %{_libdir}/libnullplugin.so
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
 %attr(755,root,root) %{_libdir}/libxlibrgb.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libaccess*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libappcomps.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libautoconfig.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libbayesflt.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libcaps.so
 #%attr(755,root,root) %{_libdir}/%{name}/components/libchardet.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libchrome.so
@@ -370,6 +371,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{!?_with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk2.so}
 %attr(755,root,root) %{_libdir}/%{name}/components/libx*.so
 
+
 %{_libdir}/%{name}/components/access*.xpt
 %{_libdir}/%{name}/components/appshell.xpt
 %{_libdir}/%{name}/components/autocomplete.xpt
@@ -403,6 +405,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/js*.xpt
 %{_libdir}/%{name}/components/layout*.xpt
 %{_libdir}/%{name}/components/locale.xpt
+%{_libdir}/%{name}/components/lwbrk.xpt
 %{_libdir}/%{name}/components/mimetype.xpt
 %{_libdir}/%{name}/components/moz*.xpt
 %{_libdir}/%{name}/components/necko*.xpt
@@ -428,7 +431,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/timebomb.xpt
 #%{_libdir}/%{name}/components/transformiix.xpt
 %{_libdir}/%{name}/components/txmgr.xpt
-#%{_libdir}/%{name}/components/txtsvc.xpt
+%{_libdir}/%{name}/components/txtsvc.xpt
 %{_libdir}/%{name}/components/typeaheadfind.xpt
 %{_libdir}/%{name}/components/uconv.xpt
 %{_libdir}/%{name}/components/unicharutil.xpt
@@ -476,6 +479,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libimport.so
 %attr(755,root,root) %{_libdir}/%{name}/components/liblocalmail.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmailnews.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libmailview.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmimeemitter.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmime.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmsg*.so
@@ -486,6 +490,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/impComm4xMail.xpt
 %{_libdir}/%{name}/components/import.xpt
 %{_libdir}/%{name}/components/mailnews.xpt
+%{_libdir}/%{name}/components/mailview.xpt
 %{_libdir}/%{name}/components/mime.xpt
 %{_libdir}/%{name}/components/msg*.xpt
 
