@@ -1,7 +1,7 @@
 Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
-Version:	0.8
+Version:	0.8.1
 Release:	1
 Epoch:		1
 License:	NPL
@@ -11,10 +11,9 @@ Group(pl):	X11/Aplikacje/Sieciowe
 Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
 Source1:	%{name}.desktop
 Source2:	%{name}.png
-Patch0:		%{name}-editor-overlay-menu.patch
-Patch1:		%{name}-navigator-overlay-menu0.8.patch
-Patch2:		%{name}-prefs-debug.patch
-Patch3:		%{name}-taskbar-nomozilla.patch
+Patch0:		%{name}-navigator-overlay-menu.patch
+Patch1:		%{name}-prefs-debug.patch
+Patch2:		%{name}-taskbar-nomozilla.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
 BuildRequires:	libjpeg-devel
@@ -68,12 +67,10 @@ Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 
 %build
-autoconf
 CXXFLAGS="-fno-rtti -fno-exceptions" ; export CXXFLAGS
-
+BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
 # mozilla
 %configure \
 	--with-default-mozilla-five-home=%{_libdir}/mozilla \
@@ -81,11 +78,15 @@ CXXFLAGS="-fno-rtti -fno-exceptions" ; export CXXFLAGS
 	--with-pthreads \
 	--enable-toolkit=gtk \
 	--enable-strip-libs \
+	--enable-nspr-autoconf \
+	--enable-new-cache \
 	--with-extensions \
 	--disable-dtd-debug \
 	--disable-debug \
 	--disable-tests \
 	--disable-pedantic \
+	--disable-short-wchar \
+	--disable-md \
 	--with-x \
 	--with-jpeg \
 	--with-zlib \
@@ -93,7 +94,8 @@ CXXFLAGS="-fno-rtti -fno-exceptions" ; export CXXFLAGS
 	--with-mng \
 	--with-xprint
 
-%{__make}
+%{__make} export
+%{__make} install
 
 # psm
 %configure \
@@ -103,11 +105,15 @@ CXXFLAGS="-fno-rtti -fno-exceptions" ; export CXXFLAGS
 	--enable-toolkit=gtk \
 	--enable-strip-libs \
 	--enable-modules=psm \
+	--enable-nspr-autoconf \
+	--enable-new-cache \
 	--with-extensions \
 	--disable-dtd-debug \
 	--disable-debug \
 	--disable-tests \
 	--disable-pedantic \
+	--disable-short-wchar \
+	--disable-md \
 	--with-x \
 	--with-jpeg \
 	--with-zlib \
