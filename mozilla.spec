@@ -68,9 +68,9 @@ Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
 %patch1 -p0
 %patch2 -p0
 %patch3 -p1
-cd gfx/src/windows
-%patch4 -p0
-
+# cd gfx/src/windows
+# %patch4 -p0
+%patch4 -p1
 
 %build
 autoconf
