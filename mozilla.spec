@@ -641,7 +641,6 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 
 # Is this a correct package for these files?
 %{_libdir}/%{name}/components/ipcd.xpt
-%{_libdir}/%{name}/components/ucnative.xpt
 %attr(755,root,root) %{_libdir}/%{name}/components/libipcdc.so
 %{!?with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libsystem-pref.so}
 
