@@ -47,7 +47,7 @@ Patch7:		%{name}-cairo.patch
 URL:		http://www.mozilla.org/
 BuildRequires:	automake
 %{?with_gtk1:BuildRequires:	ORBit-devel}
-%{?with_svg:BuildRequires:	cairo-devel >= 0.1.17}
+%{?with_svg:BuildRequires:	cairo-devel >= 0.3.0}
 %if %{with ft218}
 BuildRequires:	freetype-devel >= 1:2.1.8
 %else
@@ -281,8 +281,7 @@ cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
 	--enable-optimize="%{rpmcflags}" \
 	--enable-postscript \
 	%{!?debug:--enable-strip} \
-	%{?with_svg:--enable-svg} \
-	%{?with_svg:--enable-svg-renderer-cairo} \
+	%{?with_svg:--enable-svg --enable-svg-renderer-cairo} \
 	%{?with_gtk1:--enable-toolkit-gtk} \
 	%{!?with_gtk1:--disable-toolkit-gtk --enable-default-toolkit=gtk2} \
 	%{!?with_gnomevfs:--disable-gnomevfs} \
