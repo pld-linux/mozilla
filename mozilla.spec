@@ -10,6 +10,7 @@ Group(de):	X11/Applikationen/Netzwerkwesen
 Group(pl):	X11/Aplikacje/Sieciowe
 Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
 Source1:	%{name}.desktop
+Source2:	%{name}.png
 Patch0:		%{name}-editor-overlay-menu.patch
 Patch1:		%{name}-navigator-overlay-menu.patch
 Patch2:		%{name}-psm-sparc-config.patch
@@ -129,9 +130,9 @@ cp -frL dist/include/private/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/private
 install dist/bin/*.so		$RPM_BUILD_ROOT%{_libdir}
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Network/WWW
-cp -frL dist/bin/icons/mozicon16.xpm $RPM_BUILD_ROOT%{_datadir}/pixmaps/mozilla-icon.xpm
+install %{SOURCE2} $RPM_BUILD_ROOT%{_pixmapsdir}
 
-install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}
+install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}/mozilla
 install dist/bin/regchrome $RPM_BUILD_ROOT%{_bindir}
 
 %clean
@@ -281,7 +282,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/%{name}/res
 %{_datadir}/%{name}/searchplugins
 
-%{_datadir}/pixmaps/mozilla-icon.xpm
+%{_pixmapsdir}/mozilla.png
 %{_applnkdir}/Network/WWW/mozilla.desktop
 
 ##########################################
