@@ -2,6 +2,7 @@
 # Conditional build:
 # _with_gdkxft
 # _with_gtk2
+# _with_no_PL
 
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
@@ -10,7 +11,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.0
-Release:	1
+Release:	2
 Epoch:		2
 License:	GPL
 Group:		X11/Applications/Networking
@@ -25,12 +26,16 @@ Source7:	%{name}-mail.desktop
 Source8:	%{name}-news.desktop
 Source9:	%{name}-terminal.desktop
 Source10:	%{name}-venkman.desktop
+%{!?_with_no_PL:Source11: ftp://ftp.icm.edu.pl/site/mozillapl/Lang-PL-Build-ID-%{version}.xpi}
+%{!?_with_no_PL:Source12: ftp://ftp.icm.edu.pl/site/mozillapl/Reg-PL-Build-ID-%{version}.xpi}
+%{!?_with_no_PL:Source13: http://free.of.pl/a/adgor/%{name}-installed-chrome.txt.PL}
 Patch0:		%{name}-pld-homepage.patch
 Patch1:		%{name}-gdkxft.patch
 Patch2:		%{name}-nss.patch
 Patch3:		%{name}-ldap_nspr_includes.patch
 Patch4:		http://people.redhat.com/blizzard/mozilla/gtk2_embedding/2002-04-11/gtk2_embed.patch
 Patch5:		http://people.redhat.com/blizzard/mozilla/gtk2_embedding/2002-04-11/gtk2_widget.patch
+%{!?_with_no_PL:Patch6: %{name}-pld-homepage-PL.patch}
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	ORBit-devel
 BuildRequires:	autoconf
@@ -46,12 +51,14 @@ BuildRequires:	nss-devel >= 3.4.1
 BuildRequires:	nspr-devel >= 4.1.2-3
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	zip >= 2.1
+%{!?_with_no_PL:BuildRequires: unzip}
 Provides:	mozilla-embedded = %{version}
 %{?_with_gdkxft:Requires:	gdkxft}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Requires:	nss >= 3.4.1
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
+Obsoletes:	mozilla-Lang-PL
 
 %define		_prefix		/usr/X11R6
 %define		_mandir		%{_prefix}/man
@@ -180,6 +187,8 @@ CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 
 %{__make}
 
+
+
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_bindir},%{_datadir}/idl,%{_pixmapsdir}} \
@@ -229,6 +238,22 @@ install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}/mozilla
 install dist/bin/regchrome $RPM_BUILD_ROOT%{_bindir}
 install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
 
+%if %{!?_with_no_PL:1}%{?_with_no_PL:0}
+unzip %{SOURCE11} -d $RPM_BUILD_ROOT%{_libdir}
+unzip -n %{SOURCE12} -d $RPM_BUILD_ROOT%{_libdir}
+mv $RPM_BUILD_ROOT%{_libdir}/bin/chrome/* $RPM_BUILD_ROOT%{_libdir}/mozilla/chrome
+mv $RPM_BUILD_ROOT%{_libdir}/bin/searchplugins/* $RPM_BUILD_ROOT%{_libdir}/mozilla/searchplugins
+install %{SOURCE13} $RPM_BUILD_ROOT%{_libdir}/mozilla/chrome
+mv $RPM_BUILD_ROOT%{_libdir}/mozilla/chrome/mozilla-installed-chrome.txt.PL \
+                        $RPM_BUILD_ROOT%{_libdir}/mozilla/chrome/installed-chrome.txt.PL
+cd $RPM_BUILD_ROOT%{_libdir}/mozilla/chrome
+unzip PL.jar
+patch -p0  < %{PATCH6}
+zip -r PL.jar locale
+rm -rf locale
+cd -
+%endif
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -237,6 +262,10 @@ rm -rf $RPM_BUILD_ROOT
 umask 022
 rm -f %{_libdir}/mozilla/component.reg
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+if [ -f %{_libdir}/mozilla/chrome/installed-chrome.txt.PL ]; then
+	cd %{_libdir}/mozilla/chrome
+        cat installed-chrome.txt.PL >> installed-chrome.txt
+fi
 
 %postun	-p /sbin/ldconfig
 
@@ -409,7 +438,16 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/*.js
 %{_libdir}/%{name}/components/*.dat
 
-%{_datadir}/%{name}/chrome
+%{_datadir}/%{name}/chrome/[!ipP]*
+%{_datadir}/%{name}/chrome/inspector.jar
+%{_datadir}/%{name}/chrome/installed-chrome.txt
+%{_datadir}/%{name}/chrome/pipnss.jar
+%{_datadir}/%{name}/chrome/pippki.jar
+%{!?_with_no_PL:%lang(pl) %{_datadir}/%{name}/chrome/installed-chrome.txt.PL}
+%{!?_with_no_PL:%lang(pl) %{_datadir}/%{name}/chrome/PL.jar}
+%{!?_with_no_PL:%lang(pl) %{_datadir}/%{name}/chrome/pl-PL.jar}
+%{!?_with_no_PL:%lang(pl) %{_datadir}/%{name}/chrome/pl-unix.jar}
+
 %{_datadir}/%{name}/defaults
 %{_datadir}/%{name}/icons
 %{_datadir}/%{name}/res
