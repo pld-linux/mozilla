@@ -8,7 +8,7 @@
 %bcond_with	debug	# compile without \--disable-debug
 %bcond_without	gnomevfs	# disable GnomeVFS support
 #
-%define	pre	rc1
+%define	pre	rc2
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
@@ -16,12 +16,12 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.7
-Release:	0.%{pre}.2
+Release:	0.%{pre}.1
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{version}%{pre}/src/%{name}-source-%{version}%{pre}.tar.bz2
-# Source0-md5:	a78b2e2dc2c8fa9b22c9e406e3cde808
+# Source0-md5:	da2215a6281cc56bcf805fe0d5e4b6c0
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-composer.desktop
@@ -40,8 +40,6 @@ Patch2:		%{name}-ldap_nspr_includes.patch
 Patch3:		%{name}-ldap-with-nss.patch
 Patch4:		%{name}-gfx.patch
 Patch5:		%{name}-alpha-gcc3.patch
-Patch6:		%{name}-amd64.patch
-Patch7:		%{name}-gssapi.patch
 URL:		http://www.mozilla.org/
 %{?with_gtk1:BuildRequires:	ORBit-devel}
 BuildRequires:	cairo-devel >= 0.1.17
@@ -49,6 +47,8 @@ BuildRequires:	freetype-devel >= 2.1.3
 %{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.0.0}
 %{?with_gtk1:BuildRequires:	gtk+-devel >= 1.2.0}
 %{!?with_gtk1:BuildRequires:	gtk+2-devel >= 2.2.0}
+# for libnegotiateauth
+BuildRequires:	heimdal-devel
 %{!?with_gtk1:BuildRequires:	libIDL-devel >= 0.8.0}
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.0
@@ -240,8 +240,6 @@ Mozilla
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-#%patch6 -p1 # already included?
-#%patch7 -p1 # outdated
 cp -f security/coreconf/Linux2.5.mk security/coreconf/Linux2.6.mk
 
 %build
