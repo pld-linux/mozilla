@@ -221,7 +221,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/components/libwalletviewers.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwebbrwsr.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libxmlterm.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libxml*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libxpconnect.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libxpinstall.so
 
