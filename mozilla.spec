@@ -11,11 +11,12 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.0.2
-Release:	1
+Release:	2
 Epoch:		2
 License:	GPL
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
+# Source0-md5:	faddffb99f6566771e3accc0043e49a5
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-libart.tar.bz2
@@ -27,8 +28,11 @@ Source8:	%{name}-news.desktop
 Source9:	%{name}-terminal.desktop
 Source10:	%{name}-venkman.desktop
 Source11:	ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Lang-PL-Build-ID-%{version}.xpi
+# Source11-md5:	c9a595e50f245cba407813e01d34bd9f
 Source12:	ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Reg-PL-Build-ID-%{version}.xpi
+# Source12-md5:	9fcf4fabb73b618a60b4a1bd7fc40602
 Source13:	http://free.of.pl/a/adgor/lang_pl-installed-chrome.txt
+# Source13-md5:	72ec9f5cdd03be565cf585a8db713154
 Source14:	%{name}-antialiasing-howto.txt
 Patch0:		%{name}-pld-homepage.patch
 Patch1:		%{name}-gdkxft.patch
