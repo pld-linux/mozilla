@@ -26,13 +26,14 @@ Patch4:		%{name}-gdkxft.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	ORBit-devel
 BuildRequires:	autoconf
+BuildRequires:	freetype-devel
 BuildRequires:	gtk+-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	nspr-devel
-BuildRequires:	nss-static
+#BuildRequires:	nss-static
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	zip >= 2.1
 Provides:	mozilla-embedded = %{version}
@@ -100,7 +101,7 @@ Mozilla.
 %{?_with_clearmenu:%patch0 -p1}
 %{?_with_clearmenu:%patch1 -p1}
 %patch2 -p1
-%patch3 -p1
+#%patch3 -p1
 %{?_with_gdkxft:%patch4 -p1}
 
 %build
