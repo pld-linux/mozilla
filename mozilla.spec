@@ -7,7 +7,7 @@ Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Name:		mozilla
-Version:	0.9.7
+Version:	0.9.8
 Release:	1
 Epoch:		1
 License:	GPL
@@ -247,6 +247,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 
 %attr(755,root,root) %{_libdir}/%{name}/components/libaccess*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libappcomps.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libautoconfig.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libcaps.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libchardet.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libchrome.so
@@ -283,7 +284,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libregviewer.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libshistory.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libstrres.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libtimer_gtk.so
+#attr(755,root,root) %{_libdir}/%{name}/components/libtimer_gtk.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtransformiix.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtxmgr.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtxtsvc.so
@@ -300,12 +301,12 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %{_libdir}/%{name}/components/access*.xpt
 %{_libdir}/%{name}/components/appshell.xpt
 %{_libdir}/%{name}/components/autocomplete.xpt
+%{_libdir}/%{name}/components/autoconfig.xpt
 %{_libdir}/%{name}/components/bookmarks.xpt
 %{_libdir}/%{name}/components/caps.xpt
 %{_libdir}/%{name}/components/chardet.xpt
 %{_libdir}/%{name}/components/chrome.xpt
-%{_libdir}/%{name}/components/content_base.xpt
-%{_libdir}/%{name}/components/content_xsl.xpt
+%{_libdir}/%{name}/components/content*.xpt
 %{_libdir}/%{name}/components/cookie.xpt
 %{_libdir}/%{name}/components/directory.xpt
 %{_libdir}/%{name}/components/docshell.xpt
@@ -318,6 +319,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %{_libdir}/%{name}/components/gfx*.xpt
 %{_libdir}/%{name}/components/helperAppDlg.xpt
 %{_libdir}/%{name}/components/history.xpt
+%{_libdir}/%{name}/components/htmlparser.xpt
 %{_libdir}/%{name}/components/imglib2.xpt
 %{_libdir}/%{name}/components/inspector.xpt
 %{_libdir}/%{name}/components/intl.xpt
@@ -353,7 +355,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %{_libdir}/%{name}/components/urlbarhistory.xpt
 %{_libdir}/%{name}/components/util.xpt
 %{_libdir}/%{name}/components/wallet*.xpt
-%{_libdir}/%{name}/components/webBrowser*.xpt
+%{_libdir}/%{name}/components/webBrowser_core.xpt
 %{_libdir}/%{name}/components/webbrowserpersist.xpt
 %{_libdir}/%{name}/components/webshell_idls.xpt
 %{_libdir}/%{name}/components/widget.xpt
