@@ -198,18 +198,18 @@ Gnome-VFS module providing support for smb:// URLs.
 %description gnomevfs -l pl
 Modu³ Gnome-VFS dodaj±cy wsparcie dla URLi smb://.
 
-%package calendar
-Summary:	Mozilla calendar
-Summary(pl):	Kalendarz Mozilli
-Group:		X11/Applications/Networking
-Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
-Requires:	%{name} = %{epoch}:%{version}-%{release}
+#%package calendar
+#Summary:	Mozilla calendar
+#Summary(pl):	Kalendarz Mozilli
+#Group:		X11/Applications/Networking
+#Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
+#Requires:	%{name} = %{epoch}:%{version}-%{release}
 
-%description calendar
-This package contains the calendar application from the Mozilla suite.
+#%description calendar
+#This package contains the calendar application from the Mozilla suite.
 
-%description calendar -l pl
-Ten pakiet zawiera kalendarz z zestawu aplikacji Mozilla.
+#%description calendar -l pl
+#Ten pakiet zawiera kalendarz z zestawu aplikacji Mozilla.
 
 %package devel
 Summary:	Headers for developing programs that will use Mozilla
@@ -242,7 +242,7 @@ Mozilla
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-#patch4 -p1
+#%patch4 -p1
 %patch5 -p1
 
 %build
@@ -261,7 +261,7 @@ cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
 	--disable-pedantic \
 	--disable-tests \
 	--disable-freetype2 \
-	--enable-calendar \
+#	--enable-calendar \
 	--enable-crypto \
 	--enable-extensions \
 	--enable-ldap \
@@ -493,19 +493,19 @@ rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 
-%post calendar
-umask 022
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
-	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
+#%post calendar
+#umask 022
+#rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
+#	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
+#MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+#MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 
-%postun calendar
-umask 022
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
-	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
+#%postun calendar
+#umask 022
+#rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
+#	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
+#MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+#MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 
 %files
 %defattr(644,root,root,755)
@@ -856,13 +856,13 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkgnomevfs.so
 %endif
 
-%files calendar
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/components/libxpical.so
-%{_libdir}/%{name}/components/calendar.xpt
-%{_libdir}/%{name}/components/calendarService.js
-%{_datadir}/%{name}/chrome/calendar.jar
-%{_datadir}/%{name}/chrome/icons/default/calendar-window*.xpm
+#%files calendar
+#%defattr(644,root,root,755)
+#%attr(755,root,root) %{_libdir}/%{name}/components/libxpical.so
+#%{_libdir}/%{name}/components/calendar.xpt
+#%{_libdir}/%{name}/components/calendarService.js
+#%{_datadir}/%{name}/chrome/calendar.jar
+#%{_datadir}/%{name}/chrome/icons/default/calendar-window*.xpm
 
 %files devel
 %defattr(644,root,root,755)
