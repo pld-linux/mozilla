@@ -1,0 +1,11 @@
+--- mozilla.orig/config/make-jars.pl	Fri Dec 15 03:50:39 2000
++++ mozilla/config/make-jars.pl	Thu Feb 15 04:02:56 2001
+@@ -78,7 +78,7 @@
+ 	    
+ 	    #print "zip -u ../$jarfile.jar $subargs\n";	    
+ 	    #print "Length of subargs: " . length($subargs) . "\n";
+-	    system("zip -u ../$jarfile.jar $subargs") == 0 or
++	    system("zip -m -u ../$jarfile.jar $subargs") == 0 or
+ 		$err = $? >> 8;
+ 	    zipErrorCheck($err);
+ 	}
