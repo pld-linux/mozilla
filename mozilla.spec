@@ -182,7 +182,7 @@ fi
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_bindir},%{_applnkdir}/Network/{Communications,Mail,Misc,News,WWW} \
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_applnkdir}/Network/{Communications,Mail,Misc,News,WWW}} \
 	$RPM_BUILD_ROOT%{_datadir}/{idl,pixmaps} \
 	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,icons,res,searchplugins} \
 	$RPM_BUILD_ROOT%{_libdir}/%{name}/{components,plugins} \
