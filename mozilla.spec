@@ -1,5 +1,3 @@
-# TODO:
-# - mark pl-files as lang
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
@@ -22,9 +20,9 @@ Source7:	%{name}-mail.desktop
 Source8:	%{name}-news.desktop
 Source9:	%{name}-terminal.desktop
 Source10:	%{name}-venkman.desktop
-Source11:	ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Lang-PL-Build-ID-%{version}.xpi
+Source11:	http://dl.sourceforge.net/mozillapl/Lang-PL-Build-ID-%{version}.xpi
 # Source11-md5:	ff815e9e9a5b2b2184a46ce0ab3dd94e
-Source12:	ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Reg-PL-Build-ID-%{version}.xpi
+Source12:	http://dl.sourceforge.net/mozillapl/Reg-PL-Build-ID-%{version}.xpi
 # Source12-md5:	251dc06cc99b6b9d55bf66af743a34d4
 Source13:	lang_pl-installed-chrome.txt
 Source14:	%{name}-antialiasing-howto.txt
@@ -48,8 +46,8 @@ BuildRequires:	nspr-devel >= 4.2.2-2
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	unzip
 BuildRequires:	zip >= 2.1
-Provides:	mozilla-embedded = %{version}
 Requires:	nss >= 3.6
+Provides:	mozilla-embedded = %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
@@ -57,6 +55,11 @@ Conflicts:	mozilla-Lang-PL
 
 %define		_chromedir	%{_libdir}/%{name}/chrome
 %define		_prefix		/usr/X11R6
+
+%define		_gcc_ver	%(%{__cc} -dumpversion | cut -b 1)
+%if %{_gcc_ver} == 2
+%define		__cxx		"%{__cc}"
+%endif
 
 %description
 Mozilla is an open-source web browser, designed for standards
@@ -140,7 +143,9 @@ MOZILLA_OFFICIAL="1"; export MOZILLA_OFFICIAL
 MOZ_INTERNAL_LIBART_LGPL="x"
 export MOZ_INTERNAL_LIBART_LGPL
 
+%if %{_gcc_ver} > 2
 CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
+%endif
 
 %configure2_13 \
 	--disable-debug \
@@ -244,7 +249,7 @@ unzip %{SOURCE11} -d $RPM_BUILD_ROOT%{_libdir}
 unzip -n %{SOURCE12} -d $RPM_BUILD_ROOT%{_libdir}
 mv $RPM_BUILD_ROOT%{_libdir}/bin/chrome/* $RPM_BUILD_ROOT%{_chromedir}
 mv $RPM_BUILD_ROOT%{_libdir}/bin/searchplugins/* $RPM_BUILD_ROOT%{_libdir}/mozilla/searchplugins
-install %{SOURCE13} $RPM_BUILD_ROOT%{_chromedir}/installed-chrome.txt
+install %{SOURCE13} $RPM_BUILD_ROOT%{_chromedir}/lang_pl-installed-chrome.txt
 cd $RPM_BUILD_ROOT%{_chromedir}
 unzip PL.jar
 zip -r PL.jar locale
@@ -438,19 +443,19 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 
 %{_libdir}/*.js
 %{_libdir}/%{name}/components/*.js
-%config %verify(not size mtime md5) %{_libdir}/%{name}/components/*.dat
+%ghost %{_libdir}/%{name}/components/*.dat
 
-%{_datadir}/%{name}/chrome
+%dir %{_datadir}/%{name}/chrome
 %{_datadir}/%{name}/defaults
 %{_datadir}/%{name}/icons
 %{_datadir}/%{name}/res
 %{_datadir}/%{name}/searchplugins
 %{_datadir}/idl/*
 
-#%lang(pl) %{_chromedir}/lang_pl-installed-chrome.txt
-#%lang(pl) %{_chromedir}/PL.jar
-#%lang(pl) %{_chromedir}/pl-PL.jar
-#%lang(pl) %{_chromedir}/pl-unix.jar
+%lang(pl) %{_chromedir}/lang_pl-installed-chrome.txt
+%lang(pl) %{_chromedir}/PL.jar
+%lang(pl) %{_chromedir}/pl-PL.jar
+%lang(pl) %{_chromedir}/pl-unix.jar
 
 %{_pixmapsdir}/mozilla.png
 %{_applnkdir}/Network/WWW/mozilla.desktop
