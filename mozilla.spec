@@ -1,5 +1,5 @@
 %define ver		5.0
-%define rel		SeaMonkey_M3_BRANCH_19990319
+%define rel		SeaMonkey_M3_BRANCH_19990323
 %define prefix	/usr
 %define tmp		/builds/tmp
 
@@ -34,11 +34,11 @@ Mozilla development libs and headers
 %setup -n mozilla
 
 %build
-./configure %{_target} \
+./configure \
 			--with-pthreads \
 			--enable-toolkit=gtk \
 			--disable-build-nspr \
-			--disable-debug \
+			--enable-debug \
 			--with-insure=no
 
 make
@@ -62,8 +62,8 @@ cp -rpv dist/bin/apprunner $RPM_BUILD_ROOT%{prefix}/lib/mozilla/bin
 cp -rpv dist/bin/viewer $RPM_BUILD_ROOT%{prefix}/lib/mozilla/bin
 cp -rpv dist/bin/vreg $RPM_BUILD_ROOT%{prefix}/lib/mozilla/bin
 
-cp -rpv /etc/netscape/scripts/mozilla-viewer.sh $RPM_BUILD_ROOT/usr/bin/mozilla-viewer
-cp -rpv /etc/netscape/scripts/mozilla-apprunner.sh $RPM_BUILD_ROOT/usr/bin/mozilla-apprunner
+cp -rpv build/mozilla-viewer.sh $RPM_BUILD_ROOT/usr/bin/mozilla-viewer
+cp -rpv build/mozilla-apprunner.sh $RPM_BUILD_ROOT/usr/bin/mozilla-apprunner
 
 %clean
 rm -rf $RPM_BUILD_ROOT
