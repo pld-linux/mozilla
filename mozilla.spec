@@ -5,6 +5,7 @@
 #			  Sun Java plugins on nest and other gcc 3.x systems.
 #			  WARNING! You have to recompile galeon with gcc2 in
 #			  order to get it working with this release of mozilla
+# _with_debug		- compile without --disable-debug
 #
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
@@ -13,7 +14,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.5b
-Release:	0.2
+Release:	0.3
 Epoch:		4
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -213,7 +214,7 @@ CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 %endif
 
 %configure2_13 \
-	--disable-debug \
+	%{!?_with_debug:--disable-debug} \
 	--disable-dtd-debug \
 	--disable-elf-dynstr-gc \
 	--disable-pedantic \
