@@ -332,15 +332,15 @@ install dist/bin/*.so $RPM_BUILD_ROOT%{_libdir}
 ln -s %{_libdir}/libxpcom.so $RPM_BUILD_ROOT%{_libdir}/%{name}/libxpcom.so
 
 for f in build/unix/*.pc ; do
-	sed -e 's/mozilla-%{version}%{pre}/mozilla/' $f \
+	sed -e 's/mozilla-%{version}/mozilla/' $f \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/$(basename $f)
 done
 
-sed -e 's,lib/mozilla-%{version}%{pre},lib,g;s/mozilla-%{version}%{pre}/mozilla/g' build/unix/mozilla-gtkmozembed.pc \
+sed -e 's,lib/mozilla-%{version},lib,g;s/mozilla-%{version}/mozilla/g' build/unix/mozilla-gtkmozembed.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-gtkmozembed.pc
 
 
-sed -e 's|/mozilla-%{version}%{pre}||' build/unix/mozilla-nspr.pc \
+sed -e 's|/mozilla-%{version}||' build/unix/mozilla-nspr.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nspr.pc
 
 install %{SOURCE1} %{SOURCE3} %{SOURCE4} %{SOURCE5} %{SOURCE6} %{SOURCE7} \
