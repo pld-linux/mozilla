@@ -9,7 +9,7 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Name:		mozilla
 Version:	0.9.9
-Release:	0.1
+Release:	0.2
 Epoch:		1
 License:	GPL
 Group:		X11/Applications/Networking
@@ -32,9 +32,8 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
-BuildRequires:	nss-devel >= 3.4
+BuildRequires:	nss-devel >= 3.4.rc1-0.2
 BuildRequires:  nspr-devel >= 4.1.2-3
-BuildRequires:	nspr-static >= 4.1.2-3
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	zip >= 2.1
 Provides:	mozilla-embedded = %{version}
@@ -235,13 +234,14 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %attr(755,root,root) %{_libdir}/libmozpango.so
 %attr(755,root,root) %{_libdir}/libmozpango-thaix.so
 %attr(755,root,root) %{_libdir}/libmoz_art_lgpl.so
-%attr(755,root,root) %{_libdir}/libnssckbi.so
 %attr(755,root,root) %{_libdir}/libnullplugin.so
-%attr(755,root,root) %{_libdir}/libsoftokn3.so
-%attr(755,root,root) %{_libdir}/libsmime3.so
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
 %attr(755,root,root) %{_libdir}/libxlibrgb.so
+# these are in nss:
+#%attr(755,root,root) %{_libdir}/libnssckbi.so
+#%attr(755,root,root) %{_libdir}/libsoftokn3.so
+#%attr(755,root,root) %{_libdir}/libsmime3.so
 
 %attr(755,root,root) %{_libdir}/%{name}/plugins/libnullplugin.so
 
