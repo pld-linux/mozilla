@@ -1,6 +1,6 @@
 #
 # Conditional build:
-%bcond_with	gtk1	# use gtk+ 1.2.x instead of 2.x.x
+%bcond_with	gtk1	# use GTK+ 1.2.x instead of 2.x.x
 %bcond_with	gcc2	# compile using gcc2 to get working macromedia-flash and
 			# gcc2-compiled Java plugins on nest and other gcc 3.x systems.
 			# WARNING! You have to recompile galeon with gcc2 in
