@@ -56,7 +56,7 @@ BuildRequires:	zip >= 2.1
 Provides:	mozilla-embedded = %{version}
 %{?_with_gdkxft:Requires:	gdkxft}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-Requires:	nss >= 3.4.2-3.20020929
+Requires:	nss >= 3.6
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
 %{!?_without_PL:Conflicts: mozilla-Lang-PL}
@@ -468,7 +468,10 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %config %verify(not size mtime md5) %{_libdir}/%{name}/components/*.dat
 
 %dir %{_datadir}/%{name}/chrome
-%{_datadir}/%{name}/chrome/[!lpP]*
+%{_datadir}/%{name}/chrome/[^ilpP]*
+%{_datadir}/%{name}/chrome/i[^n]*
+%{_datadir}/%{name}/chrome/ins[^t]*
+%ghost %{_datadir}/%{name}/chrome/installed-chrome.txt
 %{_datadir}/%{name}/chrome/pipnss.jar
 %{_datadir}/%{name}/chrome/pippki.jar
 %{!?_without_PL:%lang(pl) %{_datadir}/%{name}/chrome/lang_pl-installed-chrome.txt}
