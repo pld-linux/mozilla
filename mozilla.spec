@@ -133,7 +133,7 @@ export MOZ_INTERNAL_LIBART_LGPL
 	--enable-xprint \
 	--enable-xsl \
 	--with-default-mozilla-five-home=%{_libdir}/mozilla \
-	--witht-system-nspr \
+	--with-system-nspr \
 	--with-pthreads \
 	--with-system-jpeg \
 	--with-system-mng \
