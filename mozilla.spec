@@ -1,7 +1,6 @@
 #
 # Conditional build:
 # _with_gtk1		- use gtk+ 1.2.x instead of 2.x.x
-# _without_PL		- without PL language pack
 #
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
@@ -26,7 +25,6 @@ Source9:	%{name}-terminal.desktop
 Source10:	%{name}-venkman.desktop
 Source11:	http://osdn.dl.sourceforge.net/mozillapl/Lang-PL-Build-ID-%{version}.xpi
 Source12:	http://osdn.dl.sourceforge.net/mozillapl/Reg-PL-Build-ID-%{version}.xpi
-Source13:	http://free.of.pl/a/adgor/lang_pl-installed-chrome.txt
 Source14:	%{name}-antialiasing-howto.txt
 Patch0:		%{name}-pld-homepage.patch
 Patch2:		%{name}-nss.patch
@@ -50,14 +48,12 @@ BuildRequires:	libstdc++-devel
 BuildRequires:	nss-devel >= 3.6
 BuildRequires:	nspr-devel >= 4.2.2-2
 BuildRequires:	perl-modules >= 5.6.0
-%{!?_without_PL:BuildRequires: unzip}
 BuildRequires:	zip >= 2.1
 Provides:	mozilla-embedded = %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Requires:	nss >= 3.6
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
-%{!?_without_PL:Conflicts: mozilla-Lang-PL}
 
 %define		_prefix		/usr/X11R6
 %define		_mandir		%{_prefix}/man
@@ -250,23 +246,6 @@ install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}/mozilla
 install dist/bin/regchrome $RPM_BUILD_ROOT%{_bindir}
 install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
 
-cp $RPM_BUILD_ROOT%{_chromedir}/installed-chrome.txt \
-	$RPM_BUILD_ROOT%{_chromedir}/%{name}-installed-chrome.txt
-
-%if %{!?_without_PL:1}%{?_without_PL:0}
-unzip %{SOURCE11} -d $RPM_BUILD_ROOT%{_libdir}
-unzip -n %{SOURCE12} -d $RPM_BUILD_ROOT%{_libdir}
-mv $RPM_BUILD_ROOT%{_libdir}/bin/chrome/* $RPM_BUILD_ROOT%{_chromedir}
-mv $RPM_BUILD_ROOT%{_libdir}/bin/searchplugins/* $RPM_BUILD_ROOT%{_libdir}/mozilla/searchplugins
-install %{SOURCE13} $RPM_BUILD_ROOT%{_chromedir}
-cd $RPM_BUILD_ROOT%{_chromedir}
-unzip PL.jar
-#patch -p0  < %{PATCH6}
-zip -r PL.jar locale
-rm -rf locale
-cd -
-%endif
-
 cp %{SOURCE14} .
 
 %clean
@@ -277,9 +256,6 @@ rm -rf $RPM_BUILD_ROOT
 umask 022
 rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
-
-cd %{_chromedir}
-cat *-installed-chrome.txt >installed-chrome.txt
 
 %postun	-p /sbin/ldconfig
 
@@ -464,18 +440,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/*.js
 %config %verify(not size mtime md5) %{_libdir}/%{name}/components/*.dat
 
-%dir %{_datadir}/%{name}/chrome
-%{_datadir}/%{name}/chrome/[^ilpP]*
-%{_datadir}/%{name}/chrome/i[^n]*
-%{_datadir}/%{name}/chrome/ins[^t]*
-%ghost %{_datadir}/%{name}/chrome/installed-chrome.txt
-%{_datadir}/%{name}/chrome/pipnss.jar
-%{_datadir}/%{name}/chrome/pippki.jar
-%{!?_without_PL:%lang(pl) %{_datadir}/%{name}/chrome/lang_pl-installed-chrome.txt}
-%{!?_without_PL:%lang(pl) %{_datadir}/%{name}/chrome/PL.jar}
-%{!?_without_PL:%lang(pl) %{_datadir}/%{name}/chrome/pl-PL.jar}
-%{!?_without_PL:%lang(pl) %{_datadir}/%{name}/chrome/pl-unix.jar}
-
+%{_datadir}/%{name}/chrome
 %{_datadir}/%{name}/defaults
 %{_datadir}/%{name}/icons
 %{_datadir}/%{name}/res
