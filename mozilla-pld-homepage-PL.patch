@@ -1,0 +1,26 @@
+--- locale/PL/navigator-region/region.properties.orig	Thu Jun  6 00:28:30 2002
++++ locale/PL/navigator-region/region.properties	Wed Jun 19 10:52:07 2002
+@@ -1,5 +1,5 @@
+ # navigator.properties
+-homePageDefault = http://mozillapl.org/
++homePageDefault = http://www.pld-linux.org/
+ shopKeyword = s\u0142owo kluczowe:zakupy [Produkt]
+ quoteKeyword = s\u0142owo kluczowe:notowania [Wprowad\u017a symbol sp\u00f3\u0142ki]
+ localKeyword = s\u0142owo kluczowe:kod [Wybrany kod pocztowy]
+@@ -11,8 +11,8 @@
+ #
+ # all.js
+ #
+-browser.startup.homepage = http://mozillapl.org/start/
+-browser.throbber.url = http://mozillapl.org/
++browser.startup.homepage = http://www.pld-linux.org/
++browser.throbber.url = http://www.pld-linux.org/
+ browser.search.defaulturl = http://www.google.com/search?sourceid=mozilla-search&q=
+ 
+ wallet.Server = http://www.mozilla.org/wallet/tables/
+@@ -20,4 +20,4 @@
+ 
+ #config.js
+ #
+-startup.homepage_override_url = http://mozillapl.org/start/
++startup.homepage_override_url = http://www.pld-linux.org/

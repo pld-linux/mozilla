@@ -1,24 +1,18 @@
-#
-# Conditional build:
-# _with_gdkxft
-# _with_gtk2
-# _without_PL
-
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
-Version:	1.1
-Release:	1
+Version:	1.2.1
+Release:	3
 Epoch:		2
-License:	GPL
+License:	Mozilla Public License
 Group:		X11/Applications/Networking
-Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.gz
+Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
+# Source0-md5:	58c37a29ef2fae2939f5be116abec32a
 Source1:	%{name}.desktop
 Source2:	%{name}.png
-#Source3:	%{name}-libart.tar.bz2
 Source4:	%{name}-addressbook.desktop
 Source5:	%{name}-chat.desktop
 Source6:	%{name}-jconsole.desktop
@@ -26,45 +20,49 @@ Source7:	%{name}-mail.desktop
 Source8:	%{name}-news.desktop
 Source9:	%{name}-terminal.desktop
 Source10:	%{name}-venkman.desktop
-Source11:	ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Lang-PL-Build-ID-%{version}.xpi
-Source12:	ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Reg-PL-Build-ID-%{version}.xpi
-Source13:	http://free.of.pl/a/adgor/lang_pl-installed-chrome.txt
+Source11:	http://dl.sourceforge.net/mozillapl/Lang-PL-Build-ID-%{version}.xpi
+# Source11-md5:	ff815e9e9a5b2b2184a46ce0ab3dd94e
+Source12:	http://dl.sourceforge.net/mozillapl/Reg-PL-Build-ID-%{version}.xpi
+# Source12-md5:	251dc06cc99b6b9d55bf66af743a34d4
+Source13:	lang_pl-installed-chrome.txt
 Source14:	%{name}-antialiasing-howto.txt
 Patch0:		%{name}-pld-homepage.patch
-Patch1:		%{name}-gdkxft.patch
-Patch2:		%{name}-nss.patch
-Patch3:		%{name}-ldap_nspr_includes.patch
-Patch4:		http://people.redhat.com/blizzard/mozilla/gtk2_embedding/2002-04-11/gtk2_embed.patch
-Patch5:		http://people.redhat.com/blizzard/mozilla/gtk2_embedding/2002-04-11/gtk2_widget.patch
-Patch6:		gtk2mozilla_head.patch
-Patch7:		%{name}-ldap-with-nss.patch
+Patch1:		%{name}-nss.patch
+Patch2:		%{name}-ldap_nspr_includes.patch
+Patch3:		%{name}-ldap-with-nss.patch
+Patch4:		%{name}-gfx.patch
+Patch5:		%{name}-alpha-gcc3.patch
+Patch6:		%{name}-64bit.patch
+#Patch5:		%{name}-gtk2.patch
 URL:		http://www.mozilla.org/
 BuildRequires:	ORBit-devel
 BuildRequires:	autoconf
-BuildRequires:	freetype-devel >= 2.0.9
-%{!?_with_gtk2:BuildRequires:	gtk+-devel}
-%{?_with_gtk2:BuildRequires:	gtk+2-devel >= 2.0.2}
-%{?_with_gtk2:BuildRequires:	pkgconfig}
+BuildRequires:	freetype-devel >= 2.1.3
+BuildRequires:	gtk+-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.4
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
-BuildRequires:	nss-devel >= 3.4.2-3.20020929
-BuildRequires:	nspr-devel >= 4.1.2-3
+BuildRequires:	nss-devel >= 3.6
+BuildRequires:	nspr-devel >= 4.2.2-2
 BuildRequires:	perl-modules >= 5.6.0
-%{!?_without_PL:BuildRequires: unzip}
+BuildRequires:	unzip
 BuildRequires:	zip >= 2.1
-Provides:	mozilla-embedded = %{version}
-%{?_with_gdkxft:Requires:	gdkxft}
+Requires(post,postun):	/sbin/ldconfig
+Requires:	nss >= 3.6
+Provides:	mozilla(gtk1) = %{epoch}:%{version}-%{release}
+Provides:	mozilla-embedded = %{epoch}:%{version}-%{release}
+Provides:	mozilla-embedded(gtk1) = %{epoch}:%{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-Requires:	nss >= 3.4.2-3.20020929
+Conflicts:	mozilla-Lang-PL
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
-%{!?_without_PL:Conflicts: mozilla-Lang-PL}
+Obsoletes:	mozilla-theme-NegativeModern
+Obsoletes:	mozilla-theme-gold
+Obsoletes:	mozilla-theme-kzilla
 
-%define		_prefix		/usr/X11R6
-%define		_mandir		%{_prefix}/man
 %define		_chromedir	%{_libdir}/%{name}/chrome
+%define		_prefix		/usr/X11R6
 
 %define		_gcc_ver	%(%{__cc} -dumpversion | cut -b 1)
 %if %{_gcc_ver} == 2
@@ -99,7 +97,9 @@ Summary:	Mozilla - programs for mail and news
 Summary(pl):	Mozilla - programy do poczty i newsów
 Summary(ru):	ðÏÞÔÏ×ÁÑ ÓÉÓÔÅÍÁ ÎÁ ÏÓÎÏ×Å Mozilla
 Group:		X11/Applications/Networking
-Requires:	%{name} = %{version}
+Requires(post,postun):	/sbin/ldconfig
+Requires(post,postun):	%{name} = %{epoch}:%{version}
+Requires:	%{name} = %{epoch}:%{version}
 Obsoletes:	mozilla-mail
 
 %description mailnews
@@ -118,9 +118,9 @@ Summary(pl):	Mozilla - pliki nag³ówkowe i biblioteki
 Summary(pt_BR):	Arquivos de inclusão para desenvolvimento de programas que usam o Mozilla
 Summary(ru):	æÁÊÌÙ, ÎÅÏÂÈÏÄÉÍÙÅ ÄÌÑ ÉÓÐÏÌØÚÏ×ÁÎÉÑ ÐÒÏÇÒÁÍÍ, ×ËÌÀÞÁÀÝÉÈ Mozilla
 Group:		X11/Development/Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{epoch}:%{version}
 Requires:	nspr-devel
-Provides:	mozilla-embedded-devel = %{version}
+Provides:	mozilla-embedded-devel = %{epoch}:%{version}-%{release}
 Obsoletes:	mozilla-embedded-devel
 
 %description devel
@@ -138,17 +138,17 @@ Mozilla.
 Mozilla
 
 %prep
-#%setup -q -a 3 -n mozilla
 %setup -q -n mozilla
-# for update:
-#%patch0 -p1
-%{?_with_gdkxft:%patch1 -p1}
+%patch0 -p1
+%patch1 -p1
 %patch2 -p1
 %patch3 -p1
-#%{?_with_gtk2:%patch4 -p1}
-#%{?_with_gtk2:%patch5 -p1}
-%{?_with_gtk2:%patch6}
-%patch7 -p1
+%patch4 -p1
+%patch5 -p1
+%ifarch alpha sparc64
+%patch6 -p1
+%endif
+#%patch5 -p0
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
@@ -177,8 +177,7 @@ CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 	--enable-postscript \
 	--enable-strip-libs \
 	--enable-svg \
-	%{!?_with_gtk2:--enable-toolkit-gtk} \
-	%{?_with_gtk2:--disable-toolkit-gtk --enable-default-toolkit=gtk2} \
+	--enable-toolkit-gtk \
 	--enable-xinerama \
 	--enable-xprint \
 	--enable-xsl \
@@ -193,9 +192,7 @@ CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 	--with-system-zlib \
 	--with-x
 
-%{__make}
-
-
+%{__make} 
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -206,7 +203,10 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_datadir}/idl,%{_pixmapsdir}} \
 	$RPM_BUILD_ROOT{%{_includedir}/%{name},%{_pkgconfigdir}}
 
 # preparing to create register
-rm -fr dist/bin/chrome/{US,chatzilla,classic,comm,content-packs,embed,en-US,en-unix,en-win,help,inspector,messenger,modern,pipnss,pippki,toolkit,xmlterm}
+# remove empty directory trees
+rm -fr dist/bin/chrome/{US,chatzilla,classic,comm,content-packs,cview,embed,embed-sample,en-US,en-mac,en-unix,en-win,forms,help,inspector,messenger,modern,pipnss,pippki,toolkit,venkman,xmlterm}
+# non-unix
+rm -f dist/bin/chrome/en-{mac,win}.jar
 echo "skin,install,select,classic/1.0"	>> dist/bin/chrome/installed-chrome.txt
 echo "locale,install,select,en-US"	>> dist/bin/chrome/installed-chrome.txt
 
@@ -224,7 +224,7 @@ ln -sf ../../share/mozilla/searchplugins $RPM_BUILD_ROOT%{_libdir}/%{name}/searc
 cp -frL dist/bin/chrome/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
 cp -frL dist/bin/components/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/components
 cp -frL dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
-%{!?_with_gtk2:cp -frL dist/bin/icons/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/icons}
+cp -frL dist/bin/icons/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/icons
 cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
 cp -frL dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
 cp -frL dist/idl/*		$RPM_BUILD_ROOT%{_datadir}/idl
@@ -238,12 +238,12 @@ for f in build/unix/*.pc ; do
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/$(basename $f)
 done
 
-sed -e 's,lib/mozilla-1.1,lib,g;s/mozilla-1.1/mozilla/g' build/unix/mozilla-gtkmozembed.pc \
+sed -e 's,lib/%{name}-%{version},lib,g;s/%{name}-%{version}/%{name}/g' build/unix/mozilla-gtkmozembed.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-gtkmozembed.pc
-		
-sed -e 's|/%{name}-%{version}||; s|/X11R6||' build/unix/mozilla-nspr.pc \
-		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nspr.pc
 
+		
+sed -e 's|/%{name}-%{version}||' build/unix/mozilla-nspr.pc \
+		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nspr.pc
 
 install %{SOURCE1}	$RPM_BUILD_ROOT%{_applnkdir}/Network/WWW
 install %{SOURCE4}	$RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
@@ -262,21 +262,18 @@ install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
 cp $RPM_BUILD_ROOT%{_chromedir}/installed-chrome.txt \
 	$RPM_BUILD_ROOT%{_chromedir}/%{name}-installed-chrome.txt
 
-%if %{!?_without_PL:1}%{?_without_PL:0}
+cp %{SOURCE14} .
+
+# pl-stuff:
 unzip %{SOURCE11} -d $RPM_BUILD_ROOT%{_libdir}
 unzip -n %{SOURCE12} -d $RPM_BUILD_ROOT%{_libdir}
 mv $RPM_BUILD_ROOT%{_libdir}/bin/chrome/* $RPM_BUILD_ROOT%{_chromedir}
 mv $RPM_BUILD_ROOT%{_libdir}/bin/searchplugins/* $RPM_BUILD_ROOT%{_libdir}/mozilla/searchplugins
-install %{SOURCE13} $RPM_BUILD_ROOT%{_chromedir}
+install %{SOURCE13} $RPM_BUILD_ROOT%{_chromedir}/lang_pl-installed-chrome.txt
 cd $RPM_BUILD_ROOT%{_chromedir}
 unzip PL.jar
-#patch -p0  < %{PATCH6}
 zip -r PL.jar locale
 rm -rf locale
-cd -
-%endif
-
-cp %{SOURCE14} .
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -284,21 +281,30 @@ rm -rf $RPM_BUILD_ROOT
 %post
 /sbin/ldconfig
 umask 022
-rm -f %{_libdir}/mozilla/component.reg
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 
 cd %{_chromedir}
 cat *-installed-chrome.txt >installed-chrome.txt
 
-%postun	-p /sbin/ldconfig
+%postun
+/sbin/ldconfig
+if [ "$1" = "2" ]; then
+	umask 022
+	rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
+	MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+fi
 
 %post mailnews
 /sbin/ldconfig
 umask 022
-rm -f %{_libdir}/mozilla/component.reg
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 
-%postun mailnews -p /sbin/ldconfig
+%postun mailnews
+/sbin/ldconfig
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 
 %files
 %defattr(644,root,root,755)
@@ -316,33 +322,28 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %dir %{_libdir}/%{name}/searchplugins
 %dir %{_datadir}/%{name}
 
-#%ghost %{_libdir}/%{name}/component.reg
 %attr(755,root,root) %{_libdir}/libgkgfx.so
 %attr(755,root,root) %{_libdir}/libgtkembedmoz.so
-%{!?_with_gtk2:%attr(755,root,root) %{_libdir}/libgtksuperwin.so}
-%{!?_with_gtk2:%attr(755,root,root) %{_libdir}/libgtkxtbin.so}
+%attr(755,root,root) %{_libdir}/libgtksuperwin.so
+%attr(755,root,root) %{_libdir}/libgtkxtbin.so
 %attr(755,root,root) %{_libdir}/libjsj.so
 %attr(755,root,root) %{_libdir}/libldap50.so
 %attr(755,root,root) %{_libdir}/libprldap50.so
 %attr(755,root,root) %{_libdir}/libssldap50.so
 %attr(755,root,root) %{_libdir}/libmozjs.so
-%attr(755,root,root) %{_libdir}/libmozpango.so
-%attr(755,root,root) %{_libdir}/libmozpango-thaix.so
 %attr(755,root,root) %{_libdir}/libmoz_art_lgpl.so
-%{?_with_gtk2:%attr(755,root,root) %{_libdir}/libmai.so}
-%{!?_with_gtk2:%attr(755,root,root) %{_libdir}/libnullplugin.so}
+%attr(755,root,root) %{_libdir}/libnullplugin.so
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
 %attr(755,root,root) %{_libdir}/libxlibrgb.so
+
 %attr(755,root,root) %{_libdir}/%{name}/components/libaccess*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libappcomps.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libautoconfig.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libcaps.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libchardet.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libchrome.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libcomposer.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libcookie.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libctl.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libdocshell.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libeditor.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libembedcomponents.so
@@ -350,20 +351,20 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libgfx*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libgk*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libhtmlpars.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libi18n.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libiiextras.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libimg*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libinspector.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjar50.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjsd.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjsdom.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libjsloader.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjsurl.so
-%attr(755,root,root) %{_libdir}/%{name}/components/liblwbrk.so
 
 %attr(755,root,root) %{_libdir}/%{name}/components/libmork.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmoz*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnecko*.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libnkcache.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libnkdatetime.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libnkfinger.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libns*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/liboji.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libp3p.so
@@ -375,20 +376,17 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/librdf.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libregviewer.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libshistory.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libstrres.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtransformiix.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtxmgr.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libtxtsvc.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libtypeaheadfind.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libuconv.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libucv*.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libunicharutil.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libuniversalchardet.so
 %attr(755,root,root) %{_libdir}/%{name}/components/liburiloader.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwallet.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwalletviewers.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwebbrwsr.so
-%{!?_with_gtk2:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk.so}
-%{?_with_gtk2:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk2.so}
+%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libx*.so
 
 %{_libdir}/%{name}/components/access*.xpt
@@ -434,6 +432,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/pippki.xpt
 %{_libdir}/%{name}/components/plugin.xpt
 %{_libdir}/%{name}/components/pref.xpt
+%{_libdir}/%{name}/components/prefetch.xpt
 %{_libdir}/%{name}/components/prefmigr.xpt
 %{_libdir}/%{name}/components/profile.xpt
 %{_libdir}/%{name}/components/progressDlg.xpt
@@ -446,9 +445,8 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/sidebar.xpt
 %{_libdir}/%{name}/components/signonviewer.xpt
 %{_libdir}/%{name}/components/timebomb.xpt
-%{_libdir}/%{name}/components/transformiix.xpt
 %{_libdir}/%{name}/components/txmgr.xpt
-#%{_libdir}/%{name}/components/txtsvc.xpt
+%{_libdir}/%{name}/components/typeaheadfind.xpt
 %{_libdir}/%{name}/components/uconv.xpt
 %{_libdir}/%{name}/components/unicharutil.xpt
 %{_libdir}/%{name}/components/uriloader.xpt
@@ -463,17 +461,70 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/windowwatcher.xpt
 %{_libdir}/%{name}/components/x*.xpt
 
-%{_libdir}/%{name}/components/*.js
-%{_libdir}/%{name}/components/*.dat
+%{_libdir}/install.js
+%{_libdir}/%{name}/components/chatzilla-service.js
+%{_libdir}/%{name}/components/jsconsole-clhandler.js
+%{_libdir}/%{name}/components/nsDictionary.js
+%{_libdir}/%{name}/components/nsDownloadProgressListener.js
+%{_libdir}/%{name}/components/nsFilePicker.js
+%{_libdir}/%{name}/components/nsHelperAppDlg.js
+%{_libdir}/%{name}/components/nsInterfaceInfoToIDL.js
+%{_libdir}/%{name}/components/nsKillAll.js
+%{_libdir}/%{name}/components/nsProgressDialog.js
+%{_libdir}/%{name}/components/nsProxyAutoConfig.js
+%{_libdir}/%{name}/components/nsResetPref.js
+%{_libdir}/%{name}/components/nsSidebar.js
+%{_libdir}/%{name}/components/nsUpdateNotifier.js
+%{_libdir}/%{name}/components/nsXmlRpcClient.js
+%{_libdir}/%{name}/components/venkman-service.js
+%{_libdir}/%{name}/components/xmlterm-service.js
+
+# not *.dat, so check-files can catch any new files
+# (and they won't be just silently placed empty in rpm)
+%ghost %{_libdir}/%{name}/components/compreg.dat
+%ghost %{_libdir}/%{name}/components/xpti.dat
 
 %dir %{_datadir}/%{name}/chrome
-%{_datadir}/%{name}/chrome/[!lpP]*
+
+%{_datadir}/%{name}/chrome/US.jar
+%{_datadir}/%{name}/chrome/chatzilla.jar
+%{_datadir}/%{name}/chrome/classic.jar
+%{_datadir}/%{name}/chrome/comm.jar
+%{_datadir}/%{name}/chrome/content-packs.jar
+%{_datadir}/%{name}/chrome/cview.jar
+%{_datadir}/%{name}/chrome/embed-sample.jar
+%{_datadir}/%{name}/chrome/en-US.jar
+%{_datadir}/%{name}/chrome/en-unix.jar
+%{_datadir}/%{name}/chrome/forms.jar
+%{_datadir}/%{name}/chrome/help.jar
+%{_datadir}/%{name}/chrome/inspector.jar
+%{_datadir}/%{name}/chrome/modern.jar
 %{_datadir}/%{name}/chrome/pipnss.jar
 %{_datadir}/%{name}/chrome/pippki.jar
-%{!?_without_PL:%lang(pl) %{_datadir}/%{name}/chrome/lang_pl-installed-chrome.txt}
-%{!?_without_PL:%lang(pl) %{_datadir}/%{name}/chrome/PL.jar}
-%{!?_without_PL:%lang(pl) %{_datadir}/%{name}/chrome/pl-PL.jar}
-%{!?_without_PL:%lang(pl) %{_datadir}/%{name}/chrome/pl-unix.jar}
+%{_datadir}/%{name}/chrome/toolkit.jar
+%{_datadir}/%{name}/chrome/venkman.jar
+%{_datadir}/%{name}/chrome/xmlterm.jar
+
+# some *.rdf files are broken in 1.2.1, so it must stay here...
+# bringing non-working Messenger window to base mozilla :/
+%{_datadir}/%{name}/chrome/messenger.jar
+
+%{_datadir}/%{name}/chrome/chrome.rdf
+%{_datadir}/%{name}/chrome/chromelist.txt
+%{_datadir}/%{name}/chrome/icons
+%exclude %{_datadir}/%{name}/chrome/icons/default/abcardWindow*.xpm
+%exclude %{_datadir}/%{name}/chrome/icons/default/addressbookWindow*.xpm
+%exclude %{_datadir}/%{name}/chrome/icons/default/messengerWindow*.xpm
+%exclude %{_datadir}/%{name}/chrome/icons/default/msgcomposeWindow*.xpm
+
+%{_datadir}/%{name}/chrome/overlayinfo
+%{_datadir}/%{name}/chrome/mozilla-installed-chrome.txt
+%ghost %{_datadir}/%{name}/chrome/installed-chrome.txt
+
+%lang(pl) %{_datadir}/%{name}/chrome/lang_pl-installed-chrome.txt
+%lang(pl) %{_datadir}/%{name}/chrome/PL.jar
+%lang(pl) %{_datadir}/%{name}/chrome/pl-PL.jar
+%lang(pl) %{_datadir}/%{name}/chrome/pl-unix.jar
 
 %{_datadir}/%{name}/defaults
 %{_datadir}/%{name}/icons
@@ -514,6 +565,18 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/mailnews.xpt
 %{_libdir}/%{name}/components/mime.xpt
 %{_libdir}/%{name}/components/msg*.xpt
+
+%{_libdir}/%{name}/components/mdn-service.js
+%{_libdir}/%{name}/components/nsLDAPPrefsService.js
+%{_libdir}/%{name}/components/smime-service.js
+
+# should belong here, but see above
+#%{_datadir}/%{name}/chrome/messenger.jar
+
+%{_datadir}/%{name}/chrome/icons/default/abcardWindow*.xpm
+%{_datadir}/%{name}/chrome/icons/default/addressbookWindow*.xpm
+%{_datadir}/%{name}/chrome/icons/default/messengerWindow*.xpm
+%{_datadir}/%{name}/chrome/icons/default/msgcomposeWindow*.xpm
 
 %{_applnkdir}/Network/Misc/mozilla-addressbook.desktop
 %{_applnkdir}/Network/Mail/mozilla-mail.desktop

@@ -1,0 +1,10 @@
+--- mozilla/configure.in	Wed Jul 19 21:52:58 2000
++++ mozilla.new/configure.in	Wed Aug 23 05:16:30 2000
+@@ -1870,7 +1870,6 @@
+ AC_CHECK_LIB(resolv, res_gethostbyaddr)
+ AC_CHECK_LIB(socket, getnetbyaddr)
+ AC_CHECK_LIB(util, login)
+-AC_CHECK_LIB(nsl, xdr_string)
+ AC_CHECK_LIB(elf, elf_rawdata)
+ AC_CHECK_LIB(intl, textdomain)
+ AC_CHECK_LIB(posix4, shm_open)
