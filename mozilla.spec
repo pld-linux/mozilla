@@ -372,22 +372,35 @@ cat << EOF > $RPM_BUILD_ROOT%{_bindir}/mozilla
 # (c) vip at linux.pl, wolf at pld-linux.org
 
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla
-PING=\`%{_bindir}/mozilla-bin -remote 'ping()' 2>&1 >/dev/null\`
-if [ -n "\$PING" ]; then
-	%{_bindir}/mozilla-bin "\$1"
+if [ "\$1" == "-remote" ]; then
+	%{_bindir}/mozilla-bin "\$@"
 else
-	if [ -z "\$1" ]; then
-		%{_bindir}/mozilla-bin -remote 'xfeDoCommand (openBrowser)'
-	elif [ "\$1" == "-mail" ]; then
-		%{_bindir}/mozilla-bin -remote 'xfeDoCommand (openInbox)'
-	elif [ "\$1" == "-edit" ]; then
-		%{_bindir}/mozilla-bin -remote 'xfeDoCommand (composeMessage)'
-	else
-		grep browser.tabs.opentabfor.middleclick ~/.mozilla/default/*/prefs.js | grep true > /dev/null
-		if [ $? -eq 0 ]; then
-			%{_bindir}/mozilla-bin -remote "OpenUrl(\$1,new-tab)"
+	PING=\`%{_bindir}/mozilla-bin -remote 'ping()' 2>&1 >/dev/null\`
+	if [ -n "\$PING" ]; then
+		if [ -f "\`pwd\`/\$1" ]; then
+			%{_bindir}/mozilla-bin "file://\`pwd\`/\$1"
 		else
-			%{_bindir}/mozilla-bin -remote "OpenUrl(\$1,new-window)"
+			%{_bindir}/mozilla-bin "\$@"
+		fi
+	else
+		if [ -z "\$1" ]; then
+			%{_bindir}/mozilla-bin -remote 'xfeDoCommand (openBrowser)'
+		elif [ "\$1" == "-mail" ]; then
+			%{_bindir}/mozilla-bin -remote 'xfeDoCommand (openInbox)'
+		elif [ "\$1" == "-compose" ]; then
+			%{_bindir}/mozilla-bin -remote 'xfeDoCommand (composeMessage)'
+		else
+			if [ -f "\`pwd\`/\$1" ]; then
+				URL="file://\`pwd\`/\$1"
+			else
+				URL="\$1"
+			fi
+			grep browser.tabs.opentabfor.middleclick ~/.mozilla/default/*/prefs.js | grep true > /dev/null
+			if [ $? -eq 0 ]; then
+				%{_bindir}/mozilla-bin -remote "OpenUrl(\$URL,new-tab)"
+			else
+				%{_bindir}/mozilla-bin -remote "OpenUrl(\$URL,new-window)"
+			fi
 		fi
 	fi
 fi
