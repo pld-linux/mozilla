@@ -5,7 +5,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.2.1
-Release:	1.1
+Release:	1.2
 Epoch:		2
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -494,6 +494,10 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_datadir}/%{name}/chrome/venkman.jar
 %{_datadir}/%{name}/chrome/xmlterm.jar
 
+# some *.rdf files are broken in 1.2.1, so it must stay here...
+# bringing non-working Messenger window to base mozilla :/
+%{_datadir}/%{name}/chrome/messenger.jar
+
 %{_datadir}/%{name}/chrome/chrome.rdf
 %{_datadir}/%{name}/chrome/chromelist.txt
 %{_datadir}/%{name}/chrome/icons
@@ -512,6 +516,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %lang(pl) %{_datadir}/%{name}/chrome/pl-unix.jar
 
 %{_datadir}/%{name}/defaults
+%{_datadir}/%{name}/icons
 %{_datadir}/%{name}/res
 %{_datadir}/%{name}/searchplugins
 %{_datadir}/idl/*
@@ -554,7 +559,8 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/nsLDAPPrefsService.js
 %{_libdir}/%{name}/components/smime-service.js
 
-%{_datadir}/%{name}/chrome/messenger.jar
+# should belong here, but see above
+#%{_datadir}/%{name}/chrome/messenger.jar
 
 %{_datadir}/%{name}/chrome/icons/default/abcardWindow*.xpm
 %{_datadir}/%{name}/chrome/icons/default/addressbookWindow*.xpm
