@@ -398,7 +398,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/libprldap50.so
 %attr(755,root,root) %{_libdir}/libssldap50.so
 %attr(755,root,root) %{_libdir}/libmozjs.so
-%attr(755,root,root) %{_libdir}/libmoz_art_lgpl.so
+#%attr(755,root,root) %{_libdir}/libmoz_art_lgpl.so
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpcom_compat.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
