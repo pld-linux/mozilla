@@ -11,7 +11,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.0
-Release:	4
+Release:	5
 Epoch:		2
 License:	GPL
 Group:		X11/Applications/Networking
@@ -439,12 +439,12 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/*.js
 %{_libdir}/%{name}/components/*.dat
 
-%{_datadir}/%{name}/chrome/[!ipP]*
+%{_datadir}/%{name}/chrome/[!ilpP]*
 %{_datadir}/%{name}/chrome/inspector.jar
 %{_datadir}/%{name}/chrome/installed-chrome.txt
 %{_datadir}/%{name}/chrome/pipnss.jar
 %{_datadir}/%{name}/chrome/pippki.jar
-%{!?_without_PL:%lang(pl) %{_datadir}/%{name}/chrome/installed-chrome.txt.PL}
+%{!?_without_PL:%lang(pl) %{_datadir}/%{name}/chrome/lang_pl-installed-chrome.txt}
 %{!?_without_PL:%lang(pl) %{_datadir}/%{name}/chrome/PL.jar}
 %{!?_without_PL:%lang(pl) %{_datadir}/%{name}/chrome/pl-PL.jar}
 %{!?_without_PL:%lang(pl) %{_datadir}/%{name}/chrome/pl-unix.jar}
