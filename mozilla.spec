@@ -6,7 +6,7 @@ Release:	1
 License:	NPL
 Group:		X11/Applications/Networking
 Group(pl):	X11/Aplikacje/Sieciowe
-Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/m14/src/%{name}-source-M15.tar.gz
+Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/m15/src/%{name}-source-M15.tar.bz2
 Source1:	mozilla.sh
 Source2:	mozilla-icon.png
 Source3:	mozilla.desktop
