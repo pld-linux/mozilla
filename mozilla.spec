@@ -12,7 +12,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	%{_version}.%{_rc}
-Release:	1
+Release:	2
 Epoch:		1
 License:	GPL
 Group:		X11/Applications/Networking
@@ -20,6 +20,13 @@ Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{_version}%{_rc}/src
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-libart.tar.bz2
+Source4:	%{name}-addressbook.desktop
+Source5:	%{name}-chat.desktop
+Source6:	%{name}-jconsole.desktop
+Source7:	%{name}-mail.desktop
+Source8:	%{name}-news.desktop
+Source9:	%{name}-terminal.desktop
+Source10:	%{name}-venkman.desktop
 Patch0:		%{name}-pld-homepage.patch
 Patch1:		%{name}-gdkxft.patch
 Patch2:		%{name}-nss.patch
@@ -175,7 +182,7 @@ fi
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_bindir},%{_applnkdir}/Network/WWW} \
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_applnkdir}/Network/{Communications,Mail,Misc,News,WWW} \
 	$RPM_BUILD_ROOT%{_datadir}/{idl,pixmaps} \
 	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,icons,res,searchplugins} \
 	$RPM_BUILD_ROOT%{_libdir}/%{name}/{components,plugins} \
@@ -208,8 +215,15 @@ cp -frL dist/include/*		$RPM_BUILD_ROOT%{_includedir}/%{name}
 
 install dist/bin/*.so		$RPM_BUILD_ROOT%{_libdir}
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_applnkdir}/Network/WWW
-install %{SOURCE2} $RPM_BUILD_ROOT%{_pixmapsdir}
+install %{SOURCE1}	$RPM_BUILD_ROOT%{_applnkdir}/Network/WWW
+install %{SOURCE4}	$RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
+install %{SOURCE5}	$RPM_BUILD_ROOT%{_applnkdir}/Network/Communications
+install %{SOURCE6}	$RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
+install %{SOURCE7}	$RPM_BUILD_ROOT%{_applnkdir}/Network/Mail
+install %{SOURCE8}	$RPM_BUILD_ROOT%{_applnkdir}/Network/News
+install %{SOURCE9}	$RPM_BUILD_ROOT%{_applnkdir}/Network/Communications
+install %{SOURCE10}	$RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
+install %{SOURCE2}	$RPM_BUILD_ROOT%{_pixmapsdir}
 
 install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}/mozilla
 install dist/bin/regchrome $RPM_BUILD_ROOT%{_bindir}
@@ -404,6 +418,10 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 
 %{_pixmapsdir}/mozilla.png
 %{_applnkdir}/Network/WWW/mozilla.desktop
+%{_applnkdir}/Network/Misc/mozilla-jconsole.desktop
+%{_applnkdir}/Network/Communications/mozilla-chat.desktop
+%{_applnkdir}/Network/Communications/mozilla-terminal.desktop
+%{_applnkdir}/Network/Misc/mozilla-venkman.desktop
 
 ##########################################
 ################ mailnews ################
@@ -431,6 +449,10 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/mailnews.xpt
 %{_libdir}/%{name}/components/mime.xpt
 %{_libdir}/%{name}/components/msg*.xpt
+
+%{_applnkdir}/Network/Misc/mozilla-addressbook.desktop
+%{_applnkdir}/Network/Mail/mozilla-mail.desktop
+%{_applnkdir}/Network/News/mozilla-news.desktop
 
 #######################################
 ################ devel ################
