@@ -1,8 +1,8 @@
 #
 # Conditional build:
-# _with_gdkxft
-# _without_gtk2
-# _without_PL
+# _with_gdkxft		- with gdkxft support (for gtk+ 1.2.x)
+# _with_gtk1		- use gtk+ 1.2.x instead of 2.x.x
+# _without_PL		- without PL language pack
 
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
@@ -40,11 +40,11 @@ URL:		http://www.mozilla.org/
 BuildRequires:	ORBit-devel
 BuildRequires:	autoconf
 BuildRequires:	freetype-devel >= 2.0.9
-%{?_without_gtk2:BuildRequires:	gtk+-devel}
-%{!?_without_gtk2:BuildRequires:  gtk+2-devel >= 2.0.2}
-%{!?_without_gtk2:BuildRequires:  pkgconfig}
-%{!?_without_gtk2:BuildRequires:  libIDL-devel}
-%{!?_without_gtk2:BuildRequires:  freetype-devel >= 2.1.0}
+%{?_with_gtk1:BuildRequires:	gtk+-devel}
+%{!?_with_gtk1:BuildRequires:  gtk+2-devel >= 2.0.2}
+%{!?_with_gtk1:BuildRequires:  pkgconfig}
+%{!?_with_gtk1:BuildRequires:  libIDL-devel}
+%{!?_with_gtk1:BuildRequires:  freetype-devel >= 2.1.0}
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.4
 BuildRequires:	libpng-devel
@@ -144,7 +144,7 @@ Mozilla
 %{?_with_gdkxft:%patch1 -p1}
 %patch2 -p1
 %patch3 -p1
-%{!?_without_gtk2:%patch4 -p0}
+%{!?_with_gtk1:%patch4 -p0}
 %patch5 -p1
 %patch6 -p1
 
@@ -175,8 +175,8 @@ CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 	--enable-postscript \
 	--enable-strip-libs \
 	--enable-svg \
-	%{?_without_gtk2:--enable-toolkit-gtk} \
-	%{!?_without_gtk2:--disable-toolkit-gtk --enable-default-toolkit=gtk2} \
+	%{?_with_gtk1:--enable-toolkit-gtk} \
+	%{!?_with_gtk1:--disable-toolkit-gtk --enable-default-toolkit=gtk2} \
 	--enable-xinerama \
 	--enable-xprint \
 	--enable-xsl \
@@ -220,7 +220,7 @@ ln -sf ../../share/mozilla/searchplugins $RPM_BUILD_ROOT%{_libdir}/%{name}/searc
 cp -frL dist/bin/chrome/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
 cp -frL dist/bin/components/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/components
 cp -frL dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
-%{?_without_gtk2:cp -frL dist/bin/icons/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/icons}
+%{?_with_gtk1:cp -frL dist/bin/icons/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/icons}
 cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
 cp -frL dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
 cp -frL dist/idl/*		$RPM_BUILD_ROOT%{_datadir}/idl
@@ -314,7 +314,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 #%ghost %{_libdir}/%{name}/component.reg
 %attr(755,root,root) %{_libdir}/libgkgfx.so
 %attr(755,root,root) %{_libdir}/libgtkembedmoz.so
-%{?_without_gtk2:%attr(755,root,root) %{_libdir}/libgtksuperwin.so}
+%{?_with_gtk1:%attr(755,root,root) %{_libdir}/libgtksuperwin.so}
 %attr(755,root,root) %{_libdir}/libgtkxtbin.so
 %attr(755,root,root) %{_libdir}/libjsj.so
 %attr(755,root,root) %{_libdir}/libldap50.so
@@ -324,8 +324,8 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 #%attr(755,root,root) %{_libdir}/libmozpango.so
 #%attr(755,root,root) %{_libdir}/libmozpango-thaix.so
 %attr(755,root,root) %{_libdir}/libmoz_art_lgpl.so
-%{!?_without_gtk2:%attr(755,root,root) %{_libdir}/libmai.so}
-%{?_withhout_gtk2:%attr(755,root,root) %{_libdir}/libnullplugin.so}
+%{!?_with_gtk1:%attr(755,root,root) %{_libdir}/libmai.so}
+%{?_with_gtk1:%attr(755,root,root) %{_libdir}/libnullplugin.so}
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
 %attr(755,root,root) %{_libdir}/libxlibrgb.so
@@ -386,8 +386,8 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libwallet.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwalletviewers.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwebbrwsr.so
-%{?_without_gtk2:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk.so}
-%{!?_without_gtk2:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk2.so}
+%{?_with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk.so}
+%{!?_with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk2.so}
 %attr(755,root,root) %{_libdir}/%{name}/components/libx*.so
 
 %{_libdir}/%{name}/components/access*.xpt
