@@ -14,7 +14,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.5
-Release:	2
+Release:	3
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -40,6 +40,7 @@ Patch4:		%{name}-gfx.patch
 Patch5:		%{name}-alpha-gcc3.patch
 Patch6:		%{name}-xpcom-aliasing.patch
 Patch7:		%{name}-amd64.patch
+Patch8:		%{name}-lib64.patch
 URL:		http://www.mozilla.org/
 %{?_with_gtk1:BuildRequires:	ORBit-devel}
 BuildRequires:	freetype-devel >= 2.1.3
@@ -206,6 +207,10 @@ Mozilla
 %patch5 -p1
 %patch6 -p1 
 %patch7 -p1 
+%if "%{_libdir}" == "%{_prefix}/lib64"
+%patch8
+%endif
+
 cp -f security/coreconf/Linux2.5.mk security/coreconf/Linux2.6.mk
 
 %build
