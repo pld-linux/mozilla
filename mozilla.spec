@@ -1,21 +1,19 @@
-%define ver		5.0
-%define rel		SeaMonkey_M3_BRANCH_19990323
-%define prefix	/usr
-%define tmp		/builds/tmp
-
-Summary:	Mozilla Mozilla
+Summary:	Mozilla
 Name:		mozilla
-Version:	%ver
-Release:	%rel
+Version:	0.M13
+Release:	1
 Copyright:	NPL
 Group:		X11/Applications/Networking
 Group(pl):	X11/Aplikacje/Sieciowe
-Source:		mozilla-%{ver}-%{rel}.tar.gz
-BuildRoot:	/tmp/%{name}-%{version}-root
-Packager:	Ramiro Estrugo <ramiro@netscape.com>
+Source:		%{name}-source-M13.tar.bz2
 URL:		http://www.mozilla.org/projects/newlayout/
-Provides:	mozilla
-Requires:	nspr gtk+ >= 1.1.13 nspr-pthreads >= 3.1
+BuildRequires:	gtk+-devel
+BuildRequires:	glib-devel
+BuildRequires:	ORBit-devel
+Requires:	gtk+ >= 1.2.0
+Requires:	glib >= 1.2.0
+Requires:	ORBit >= 0.5.0
+BuildRoot:	/tmp/%{name}-%{version}-root
 
 %description
 Mozilla
@@ -23,78 +21,91 @@ Mozilla
 %package devel
 Summary:	Mozilla development crap
 Group:		X11/Development/Libraries
-#Requires:	mozilla nspr-devel
-
-#Obsoletes: libnspr-devel
-#Conflicts: libnspr-userthreads-devel
+Requires:	%{name} = %{version}
 
 %description devel
 Mozilla development libs and headers
 
 %prep
-%setup -n mozilla
+%setup -q -n mozilla
 
 %build
+CFLAGS="$RPM_OPT_FLAGS" ; export CFLAGS
+CXXFLAGS="$RPM_OPT_FLAGS" ; export CXXFLAGS
+LDFLAGS="-s" ; export LDFLAGS
 ./configure \
-			--with-pthreads \
-			--enable-toolkit=gtk \
-			--disable-build-nspr \
-			--enable-debug \
-			--with-insure=no
+	--with-pthreads \
+	--enable-toolkit=gtk \
+	--enable-x11-shm \
+	--enable-optimize \
+	--enable-strip-libs \
+	--with-extensions \
+	--disable-dtd-debug \
+	--disable-debug \
+	--disable-tests \
+	--with-jpeg \
+	--with-zlib \
+	--with-png \
+	--disable-mailnews
 
 make
 
 %install
-mkdir -p $RPM_BUILD_ROOT%{prefix}/lib/mozilla/bin
-mkdir -p $RPM_BUILD_ROOT%{prefix}/include/mozilla
-mkdir -p $RPM_BUILD_ROOT%{prefix}/lib
-mkdir -p $RPM_BUILD_ROOT%{prefix}/lib/mozilla/idl
-mkdir -p $RPM_BUILD_ROOT%{prefix}/lib/mozilla/components
-mkdir -p $RPM_BUILD_ROOT%{prefix}/lib/mozilla/res
-mkdir -p $RPM_BUILD_ROOT%{_bindir}
+rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT{%{_libdir}/mozilla/idl,%{_includedir},%{_bindir}}
 
-cp -rpv dist/bin/components/*.so $RPM_BUILD_ROOT%{prefix}/lib/mozilla/components
-cp -rpv dist/bin/res/* $RPM_BUILD_ROOT%{prefix}/lib/mozilla/res
-cp -rpv dist/bin/*.so $RPM_BUILD_ROOT%{prefix}/lib
-cp -rpv dist/include/* $RPM_BUILD_ROOT%{prefix}/include/mozilla
-cp -rpv dist/idl/* $RPM_BUILD_ROOT%{prefix}/lib/mozilla/idl
-cp -rpv dist/lib/*.a $RPM_BUILD_ROOT%{prefix}/lib
-cp -rpv dist/bin/apprunner $RPM_BUILD_ROOT%{prefix}/lib/mozilla/bin
-cp -rpv dist/bin/viewer $RPM_BUILD_ROOT%{prefix}/lib/mozilla/bin
-cp -rpv dist/bin/vreg $RPM_BUILD_ROOT%{prefix}/lib/mozilla/bin
+cp -rp dist/bin/* $RPM_BUILD_ROOT/%{_libdir}/mozilla/
+cp -rp dist/include/gtkmozilla.h $RPM_BUILD_ROOT%{_includedir}/
+cp -rp dist/lib/libgtkmozilla.{so.0.0.0,la} $RPM_BUILD_ROOT%{_libdir}/
+cp -rp dist/idl/* $RPM_BUILD_ROOT/%{_libdir}/mozilla/idl/
 
-cp -rpv build/mozilla-viewer.sh $RPM_BUILD_ROOT%{_bindir}/mozilla-viewer
-cp -rpv build/mozilla-apprunner.sh $RPM_BUILD_ROOT%{_bindir}/mozilla-apprunner
+rm -rf $RPM_BUILD_ROOT/%{_libdir}/mozilla/*{Test,test}*
+
+ln -sf %{_libdir}/mozilla/mozilla $RPM_BUILD_ROOT%{_bindir}/mozilla
+(cd $RPM_BUILD_ROOT%{_libdir} ; ln -s libgtkmozilla.so.0.0.0 libgtkmozilla.so)
+
+perl -p -i -e "s|^dist_bin.*|dist_bin=%{_libdir}/mozilla/|" \
+	$RPM_BUILD_ROOT%{_libdir}/mozilla/mozilla
+
+perl -p -i -e 's|^MOZILLA_BIN.*|MOZILLA_BIN=\"\$dist_bin/mozilla-bin\"|' \
+	$RPM_BUILD_ROOT%{_libdir}/mozilla/mozilla
+
+perl -p -i -e "s|^MOZ_DIST_BIN.*|MOZ_DIST_BIN=\"%{_libdir}/mozilla/\"|" \
+	$RPM_BUILD_ROOT%{_libdir}/mozilla/run-mozilla.sh
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
+/sbin/ldconfig
+cd %{_libdir}/mozilla ; LD_LIBRARY_PATH=. ./regxpcom
 
-#if grep "/usr/mozilla/lib" /etc/ld.so.conf > /dev/null 2>&1
-#then
-#	:
-#else
-#	echo "/usr/mozilla/lib" >> /etc/ld.so.conf
-#fi
-#
-#/sbin/ldconfig
+%preun
+rm -f %{_libdir}/mozilla/component.reg
 
 %postun -p /sbin/ldconfig
 
 %files
-%attr(-,root,root)
-
-%{prefix}/lib/mozilla/components/*
-%{prefix}/lib/*.so
-%{prefix}/lib/mozilla/bin/*
-%{prefix}/lib/mozilla/res/*
-%attr(755,root,root)%{_bindir}/mozilla-viewer
-%attr(755,root,root)%{_bindir}/mozilla-apprunner
+%defattr(644,root,root,755)
+%attr(755,root,root)%{_bindir}/mozilla
+%dir %{_libdir}/mozilla
+%dir %{_libdir}/mozilla/plugins
+%attr(755,root,root) %{_libdir}/lib*.so.*.*
+%{_libdir}/mozilla/chrome
+%{_libdir}/mozilla/components/*.xpt
+%attr(755,root,root) %{_libdir}/mozilla/components/*.so
+%{_libdir}/mozilla/defaults
+%{_libdir}/mozilla/res
+%attr(755,root,root) %{_libdir}/mozilla/*.so
+%attr(755,root,root) %{_libdir}/mozilla/*mozilla*
+%attr(755,root,root) %{_libdir}/mozilla/*reg*
+%attr(755,root,root) %{_libdir}/mozilla/xp*
+%attr(755,root,root) %{_libdir}/mozilla/*browser
+%attr(755,root,root) %{_libdir}/mozilla/nsinstall
 
 %files devel
-%attr(-,root,root)
-
-%{prefix}/lib/*.a
-%{prefix}/include/mozilla/*
-%{prefix}/lib/mozilla/idl/*
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/lib*.so
+%attr(755,root,root) %{_libdir}/lib*.la
+%{_includedir}/*
+%{_libdir}/mozilla/idl
