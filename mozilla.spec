@@ -32,7 +32,7 @@ BuildRequires:	libmng-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	nspr-devel
-BuildRequires:	nss-static
+BuildRequires:	nss-devel
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	zip >= 2.1
 Provides:	mozilla-embedded
