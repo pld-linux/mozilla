@@ -6,7 +6,7 @@ Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
 Version:	0.9.2
-Release:	2
+Release:	3
 Epoch:		1
 License:	NPL
 Group:		X11/Applications/Networking
@@ -20,6 +20,7 @@ Patch0:		%{name}-navigator-overlay-menu.patch
 Patch1:		%{name}-taskbar-nomozilla.patch
 Patch2:		%{name}-dlopen-plugin.patch
 Patch3:		%{name}-pld-homepage.patch
+Patch4:		%{name}-embedded-psm2-enable.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
 BuildRequires:	libjpeg-devel
@@ -80,6 +81,7 @@ Summary:	Embedded part of mozilla
 Group:		X11/Development/Libraries
 Group(de):	X11/Entwicklung/Libraries
 Group(pl):	X11/Programowanie/Biblioteki
+Obsoletes:	mozilla
 
 %description embedded
 Embedded part of mozilla.
@@ -90,6 +92,7 @@ Embedded part of mozilla.
 %{?_with_clearmenu:%patch1 -p1}
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
@@ -413,8 +416,19 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 ################ embedded #############
 #######################################
 %files -f dist/Embed/embedded-mozilla.list embedded
-%{_bindir}/regxpcom
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/regxpcom
 %ghost %{_libdir}/%{name}/component.reg
+
+# maybe it will be needed for plugin support
+#%attr(755,root,root) %{_libdir}/libnullplugin.so
+#%attr(755,root,root) %{_libdir}/%{name}/plugins/libnullplugin.so
+
+# plugin support
+%attr(755,root,root) %{_libdir}/%{name}/components/libgkplugin.so
+%{_libdir}/%{name}/components/plugin.xpt
+%attr(755,root,root) %{_libdir}/libgtkxtbin.so
+
 %dir %{_libdir}/%{name}
 %dir %{_libdir}/%{name}/chrome
 %dir %{_libdir}/%{name}/components
