@@ -215,33 +215,28 @@ CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 
 %configure2_13 \
 	%{!?_with_debug:--disable-debug} \
-	--disable-dtd-debug \
 	--disable-elf-dynstr-gc \
 	--disable-pedantic \
-	--disable-short-wchar \
 	--disable-tests \
 	--enable-crypto \
 	--enable-extensions \
 	--enable-ldap \
 	--enable-mathml \
-	--enable-new-cache \
 	--enable-optimize="%{rpmcflags}" \
 	--enable-postscript \
-	--enable-strip-libs \
+	--enable-strip \
 	--enable-svg \
 	%{?_with_gtk1:--enable-toolkit-gtk} \
 	%{!?_with_gtk1:--disable-toolkit-gtk --enable-default-toolkit=gtk2} \
 	--enable-xft \
 	--enable-xinerama \
 	--enable-xprint \
-	--enable-xsl \
 	--disable-xterm-updates \
 	--enable-old-abi-compat-wrappers \
 	--with-default-mozilla-five-home=%{_libdir}/mozilla \
-	--with-system-nspr \
 	--with-pthreads \
 	--with-system-jpeg \
-	--with-system-mng \
+	--with-system-nspr \
 	--with-system-png \
 	--with-system-zlib \
 	--with-x
