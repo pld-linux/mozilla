@@ -13,7 +13,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.5b
-Release:	0.1
+Release:	0.2
 Epoch:		4
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -21,6 +21,7 @@ Source0:	http://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{nam
 # Source0-md5:	011f6d02768b9ef9c0fbcb04a1b5ea31
 Source1:	%{name}.desktop
 Source2:	%{name}.png
+Source3:	%{name}-composer.desktop
 Source4:	%{name}-addressbook.desktop
 Source5:	%{name}-chat.desktop
 Source6:	%{name}-jconsole.desktop
@@ -248,8 +249,9 @@ CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_bindir},%{_datadir}/idl,%{_pixmapsdir}} \
-	$RPM_BUILD_ROOT%{_applnkdir}/Network/{Communications,Mail,Misc,News,WWW} \
+install -d \
+	$RPM_BUILD_ROOT{%{_bindir},%{_datadir}/idl} \
+	$RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}} \
 	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,icons,res,searchplugins} \
 	$RPM_BUILD_ROOT%{_libdir}/%{name}/{components,plugins} \
 	$RPM_BUILD_ROOT{%{_includedir}/%{name},%{_pkgconfigdir}}
@@ -299,14 +301,9 @@ sed -e 's,lib/mozilla-%{version},lib,g;s/mozilla-%{version}/mozilla/g' build/uni
 sed -e 's|/mozilla-%{version}||' build/unix/mozilla-nspr.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nspr.pc
 
-install %{SOURCE1}	$RPM_BUILD_ROOT%{_applnkdir}/Network/WWW
-install %{SOURCE4}	$RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
-install %{SOURCE5}	$RPM_BUILD_ROOT%{_applnkdir}/Network/Communications
-install %{SOURCE6}	$RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
-install %{SOURCE7}	$RPM_BUILD_ROOT%{_applnkdir}/Network/Mail
-install %{SOURCE8}	$RPM_BUILD_ROOT%{_applnkdir}/Network/News
-install %{SOURCE9}	$RPM_BUILD_ROOT%{_applnkdir}/Network/Communications
-install %{SOURCE10}	$RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
+install %{SOURCE1} %{SOURCE3} %{SOURCE4} %{SOURCE5} %{SOURCE6} %{SOURCE7} \
+	%{SOURCE8} %{SOURCE9} %{SOURCE10} $RPM_BUILD_ROOT%{_desktopdir}
+
 install %{SOURCE2}	$RPM_BUILD_ROOT%{_pixmapsdir}
 
 install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}/mozilla
@@ -601,9 +598,10 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_datadir}/idl/*
 
 %{_pixmapsdir}/mozilla.png
-%{_applnkdir}/Network/WWW/mozilla.desktop
-%{_applnkdir}/Network/Misc/mozilla-jconsole.desktop
-%{_applnkdir}/Network/Communications/mozilla-terminal.desktop
+%{_desktopdir}/mozilla.desktop
+%{_desktopdir}/mozilla-composer.desktop
+#%{_desktopdir}/mozilla-jconsole.desktop
+#%{_desktopdir}/mozilla-terminal.desktop
 
 %files mailnews
 %defattr(644,root,root,755)
@@ -640,23 +638,23 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_datadir}/%{name}/chrome/icons/default/messengerWindow*.xpm
 %{_datadir}/%{name}/chrome/icons/default/msgcomposeWindow*.xpm
 
-%{_applnkdir}/Network/Misc/mozilla-addressbook.desktop
-%{_applnkdir}/Network/Mail/mozilla-mail.desktop
-%{_applnkdir}/Network/News/mozilla-news.desktop
+%{_desktopdir}/mozilla-addressbook.desktop
+%{_desktopdir}/mozilla-mail.desktop
+%{_desktopdir}/mozilla-news.desktop
 
 %files chat
 %defattr(644,root,root,755)
 %{_libdir}/%{name}/components/chatzilla-service.js
 %{_datadir}/%{name}/chrome/chatzilla.jar
 %{_datadir}/%{name}/chrome/icons/default/chatzilla-window*.xpm
-%{_applnkdir}/Network/Communications/mozilla-chat.desktop
+%{_desktopdir}/mozilla-chat.desktop
 
 %files js-debugger
 %defattr(644,root,root,755)
 %{_libdir}/%{name}/components/venkman-service.js
 %{_datadir}/%{name}/chrome/venkman.jar
 %{_datadir}/%{name}/chrome/icons/default/venkman-window*.xpm
-%{_applnkdir}/Network/Misc/mozilla-venkman.desktop
+%{_desktopdir}/mozilla-venkman.desktop
 
 %files dom-inspector
 %defattr(644,root,root,755)
