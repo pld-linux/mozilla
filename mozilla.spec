@@ -11,7 +11,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.0
-Release:	3
+Release:	4
 Epoch:		2
 License:	GPL
 Group:		X11/Applications/Networking
@@ -28,7 +28,7 @@ Source9:	%{name}-terminal.desktop
 Source10:	%{name}-venkman.desktop
 %{!?_without_PL:Source11: ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Lang-PL-Build-ID-%{version}.xpi}
 %{!?_without_PL:Source12: ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Reg-PL-Build-ID-%{version}.xpi}
-%{!?_without_PL:Source13: http://free.of.pl/a/adgor/%{name}-installed-chrome.txt.PL}
+%{!?_without_PL:Source13: http://free.of.pl/a/adgor/lang_pl-installed-chrome.txt}
 Patch0:		%{name}-pld-homepage.patch
 Patch1:		%{name}-gdkxft.patch
 Patch2:		%{name}-nss.patch
@@ -244,8 +244,6 @@ unzip -n %{SOURCE12} -d $RPM_BUILD_ROOT%{_libdir}
 mv $RPM_BUILD_ROOT%{_libdir}/bin/chrome/* $RPM_BUILD_ROOT%{_libdir}/mozilla/chrome
 mv $RPM_BUILD_ROOT%{_libdir}/bin/searchplugins/* $RPM_BUILD_ROOT%{_libdir}/mozilla/searchplugins
 install %{SOURCE13} $RPM_BUILD_ROOT%{_libdir}/mozilla/chrome
-mv $RPM_BUILD_ROOT%{_libdir}/mozilla/chrome/mozilla-installed-chrome.txt.PL \
-                        $RPM_BUILD_ROOT%{_libdir}/mozilla/chrome/installed-chrome.txt.PL
 cd $RPM_BUILD_ROOT%{_libdir}/mozilla/chrome
 unzip PL.jar
 patch -p0  < %{PATCH6}
@@ -262,10 +260,13 @@ rm -rf $RPM_BUILD_ROOT
 umask 022
 rm -f %{_libdir}/mozilla/component.reg
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
-if [ -f %{_libdir}/mozilla/chrome/installed-chrome.txt.PL ]; then
-	cd %{_libdir}/mozilla/chrome
-        cat installed-chrome.txt.PL >> installed-chrome.txt
-fi
+
+cd %{_libdir}/mozilla/chrome
+for f in *-installed-chrome.txt; do
+	if [ -f $f ]; then
+		cat $f >> installed-chrome.txt
+	fi
+done
 
 %postun	-p /sbin/ldconfig
 
