@@ -47,13 +47,13 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.4
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
-BuildRequires:	nss-devel >= 3.7.1
+BuildRequires:	nss-devel >= 3.7.2
 BuildRequires:	nspr-devel >= 4.2.2-2
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	zip >= 2.1
 Provides:	mozilla-embedded = %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-Requires:	nss >= 3.6
+Requires:	nss >= 3.7.2
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
 
