@@ -5,15 +5,15 @@
 Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
-Version:	0.9.4
-Release:	2
+Version:	0.9.5
+Release:	1
 Epoch:		1
 License:	NPL
 Group:		X11/Applications/Networking
 Group(de):	X11/Applikationen/Netzwerkwesen
 Group(pl):	X11/Aplikacje/Sieciowe
 # Mirror0:	ftp://sunsite.icm.edu.pl/pub/mozilla/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
-Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
+Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.gz
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Patch0:		%{name}-navigator-overlay-menu.patch
