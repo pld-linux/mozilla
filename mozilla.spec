@@ -31,7 +31,6 @@ Source4:	%{name}-addressbook.desktop
 Source5:	%{name}-chat.desktop
 Source6:	%{name}-jconsole.desktop
 Source7:	%{name}-mail.desktop
-Source8:	%{name}-news.desktop
 Source9:	%{name}-terminal.desktop
 Source10:	%{name}-venkman.desktop
 #Source11:	%{name}-libart.tar.bz2
@@ -357,7 +356,7 @@ sed -e 's|/mozilla-%{version}||' build/unix/mozilla-nspr.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nspr.pc
 
 install %{SOURCE1} %{SOURCE3} %{SOURCE4} %{SOURCE5} %{SOURCE6} %{SOURCE7} \
-	%{SOURCE8} %{SOURCE9} %{SOURCE10} $RPM_BUILD_ROOT%{_desktopdir}
+	%{SOURCE9} %{SOURCE10} $RPM_BUILD_ROOT%{_desktopdir}
 
 install %{SOURCE2}	$RPM_BUILD_ROOT%{_pixmapsdir}
 
@@ -804,7 +803,6 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 
 %{_desktopdir}/mozilla-addressbook.desktop
 %{_desktopdir}/mozilla-mail.desktop
-%{_desktopdir}/mozilla-news.desktop
 
 %files chat
 %defattr(644,root,root,755)
