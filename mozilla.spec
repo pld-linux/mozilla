@@ -225,9 +225,9 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 
 %ghost %{_libdir}/%{name}/component.reg
 %attr(755,root,root) %{_libdir}/libgkgfx.so
-%attr(755,root,root) %{_libdir}/libgtkembedmoz.so
-%attr(755,root,root) %{_libdir}/libgtksuperwin.so
-%attr(755,root,root) %{_libdir}/libgtkxtbin.so
+%{!?_with_gtk2:%attr(755,root,root) %{_libdir}/libgtkembedmoz.so}
+%{!?_with_gtk2:%attr(755,root,root) %{_libdir}/libgtksuperwin.so}
+%{!?_with_gtk2:%attr(755,root,root) %{_libdir}/libgtkxtbin.so}
 %attr(755,root,root) %{_libdir}/libjsj.so
 %attr(755,root,root) %{_libdir}/libldap50.so
 %attr(755,root,root) %{_libdir}/libprldap50.so
@@ -235,7 +235,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %attr(755,root,root) %{_libdir}/libmozpango.so
 %attr(755,root,root) %{_libdir}/libmozpango-thaix.so
 %attr(755,root,root) %{_libdir}/libmoz_art_lgpl.so
-%attr(755,root,root) %{_libdir}/libnullplugin.so
+%{!?_with_gtk2:%attr(755,root,root) %{_libdir}/libnullplugin.so}
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
 %attr(755,root,root) %{_libdir}/libxlibrgb.so
@@ -289,7 +289,8 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libwallet.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwalletviewers.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwebbrwsr.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk.so
+%{!?_with_gtk2:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk.so}
+%{?_with_gtk2:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk2.so}
 %attr(755,root,root) %{_libdir}/%{name}/components/libx*.so
 
 %{_libdir}/%{name}/components/access*.xpt
