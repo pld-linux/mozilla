@@ -53,13 +53,13 @@ Requires:	nss >= 3.6
 Provides:	mozilla(gtk1) = %{epoch}:%{version}-%{release}
 Provides:	mozilla-embedded = %{epoch}:%{version}-%{release}
 Provides:	mozilla-embedded(gtk1) = %{epoch}:%{version}-%{release}
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Conflicts:	mozilla-Lang-PL
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
 Obsoletes:	mozilla-theme-NegativeModern
 Obsoletes:	mozilla-theme-gold
 Obsoletes:	mozilla-theme-kzilla
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_chromedir	%{_libdir}/%{name}/chrome
 %define		_prefix		/usr/X11R6
