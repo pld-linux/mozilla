@@ -41,6 +41,7 @@ Patch5:		%{name}-alpha-gcc3.patch
 Patch6:		%{name}-amd64.patch
 URL:		http://www.mozilla.org/
 %{?with_gtk1:BuildRequires:	ORBit-devel}
+BuildRequires:	automake
 BuildRequires:	freetype-devel >= 2.1.3
 %{?with_gtk1:BuildRequires:	gtk+-devel >= 1.2.0}
 %{!?with_gtk1:BuildRequires:	gtk+2-devel >= 2.2.0}
@@ -206,7 +207,6 @@ Mozilla
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1 
-cp -f security/coreconf/Linux2.5.mk security/coreconf/Linux2.6.mk
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
@@ -216,7 +216,9 @@ MOZ_INTERNAL_LIBART_LGPL="1"; export MOZ_INTERNAL_LIBART_LGPL
 %if %{_gcc_ver} > 2
 CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 %endif
-
+cp -f /usr/share/automake/config.* build/autoconf
+cp -f /usr/share/automake/config.* nsprpub/build/autoconf
+cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
 %configure2_13 \
 	%{!?with_debug:--disable-debug} \
 	--disable-elf-dynstr-gc \
