@@ -231,7 +231,10 @@ cp -frL dist/public/ldap{,-private} $RPM_BUILD_ROOT%{_includedir}/%{name}
 
 install dist/bin/*.so $RPM_BUILD_ROOT%{_libdir}
 
-install build/unix/*.pc $RPM_BUILD_ROOT%{_pkgconfigdir}
+for f in build/unix/*.pc ; do
+	sed -e 's/%{name}-%{version}/%{name}/' $f \
+		> $RPM_BUILD_ROOT%{_pkgconfigdir}/$(basename $f)
+done
 
 install %{SOURCE1}	$RPM_BUILD_ROOT%{_applnkdir}/Network/WWW
 install %{SOURCE4}	$RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
