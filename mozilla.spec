@@ -21,6 +21,7 @@ Source2:	%{name}.png
 Patch0:		%{name}-navigator-overlay-menu.patch
 Patch1:		%{name}-taskbar-no%{name}.patch
 Patch2:		%{name}-pld-homepage.patch
+Patch3:		%{name}-nspr_correct_in_nss.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
 BuildRequires:	libjpeg-devel
@@ -107,6 +108,7 @@ Mozilla.
 %{!?_without_clearmenu:%patch0 -p1}
 %{!?_without_clearmenu:%patch1 -p1}
 %patch2 -p1
+%patch3 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
