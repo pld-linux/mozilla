@@ -66,7 +66,8 @@ Group:		X11/Development/Libraries
 Group(de):	X11/Entwicklung/Libraries
 Group(pl):	X11/Programowanie/Biblioteki
 Requires:	%{name} = %{version}
-Conflicts:	%{name}-embedded-devel
+Provides:	mozilla-embedded-devel
+Obsoletes:	mozilla-embedded-devel
 
 %description devel
 Mozilla development libs and headers.
