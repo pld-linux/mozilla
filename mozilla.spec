@@ -191,7 +191,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %dir %{_libdir}/%{name}/searchplugins
 %dir %{_datadir}/%{name}
 
-%{_libdir}/%{name}/component.reg
+%ghost %{_libdir}/%{name}/component.reg
 %attr(755,root,root) %{_libdir}/libgkgfx.so
 %attr(755,root,root) %{_libdir}/libgtkembedmoz.so
 %attr(755,root,root) %{_libdir}/libgtksuperwin.so
