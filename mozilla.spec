@@ -10,7 +10,7 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
-Version:	1.0.1
+Version:	1.0.2
 Release:	1
 Epoch:		2
 License:	GPL
