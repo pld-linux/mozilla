@@ -10,7 +10,7 @@ Epoch:		2
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
-# Source0-md5:	ac11f0cf8f80e288aab7cce60fa54510
+# Source0-md5:	58c37a29ef2fae2939f5be116abec32a
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source4:	%{name}-addressbook.desktop
