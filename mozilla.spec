@@ -1,15 +1,14 @@
 Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
-Version:	5.M16
+Version:	5.M17
 Release:	1
 License:	NPL
 Group:		X11/Applications/Networking
 Group(pl):	X11/Aplikacje/Sieciowe
-Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/m16/src/%{name}-source-M16.tar.bz2
-Source1:	mozilla.sh
-Source2:	mozilla.desktop
-Patch0:		mozilla-themes.patch
+Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/m17/src/%{name}-source-M17.tar.bz2
+Source1:	%{name}.sh
+Source2:	%{name}.desktop
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
 BuildRequires:	libjpeg-devel
@@ -20,8 +19,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_prefix		/usr/X11R6
 
 %description
-Mozilla is an open-source web browser, designed for standards compliance,
-performance and portability.
+Mozilla is an open-source web browser, designed for standards
+compliance, performance and portability.
 
 %description -l pl
 Mozilla jest potê¿n± graficzn± przegl±dark± WWW, która jest nastêpc±
@@ -56,7 +55,6 @@ Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
 
 %prep
 %setup -q -n mozilla
-%patch0 -p1
 
 %build
 CXXFLAGS="-fno-rtti -fno-exceptions"
@@ -155,7 +153,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %{_libdir}/%{name}/component.reg
 %attr(755,root,root) %{_libdir}/libcmt.so
-%attr(755,root,root) %{_libdir}/libdocshell.so
+#%attr(755,root,root) %{_libdir}/libdocshell.so
 %attr(755,root,root) %{_libdir}/libgtkembedmoz.so
 %attr(755,root,root) %{_libdir}/libgtksuperwin.so
 %attr(755,root,root) %{_libdir}/libgtkxtbin.so
@@ -166,9 +164,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libplc4.so
 %attr(755,root,root) %{_libdir}/libplds4.so
 %attr(755,root,root) %{_libdir}/libprotocol.so
-%attr(755,root,root) %{_libdir}/libraptorgfx.so
-%attr(755,root,root) %{_libdir}/libraptorplugin.so
-%attr(755,root,root) %{_libdir}/libraptorwebwidget.so
+#%attr(755,root,root) %{_libdir}/libraptorgfx.so
+#%attr(755,root,root) %{_libdir}/libraptorplugin.so
+#%attr(755,root,root) %{_libdir}/libraptorwebwidget.so
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
 
@@ -198,7 +196,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/components/libpref.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libprofile.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpsmglue.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libraptor*.so
+#%attr(755,root,root) %{_libdir}/%{name}/components/libraptor*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/librdf.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libregviewer.so
 %attr(755,root,root) %{_libdir}/%{name}/components/librelated.so
