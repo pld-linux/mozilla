@@ -10,12 +10,13 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
-Version:	1.0
-Release:	9
+Version:	1.0.2
+Release:	2
 Epoch:		2
 License:	GPL
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
+# Source0-md5:	5a7da5cd31005f1b1286f3d8a6b8137c
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-libart.tar.bz2
@@ -27,7 +28,9 @@ Source8:	%{name}-news.desktop
 Source9:	%{name}-terminal.desktop
 Source10:	%{name}-venkman.desktop
 Source11:	ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Lang-PL-Build-ID-%{version}.xpi
+# Source11-md5:	c9a595e50f245cba407813e01d34bd9f
 Source12:	ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Reg-PL-Build-ID-%{version}.xpi
+# Source12-md5:	9fcf4fabb73b618a60b4a1bd7fc40602
 Source13:	http://free.of.pl/a/adgor/lang_pl-installed-chrome.txt
 Source14:	%{name}-antialiasing-howto.txt
 Patch0:		%{name}-pld-homepage.patch
@@ -37,6 +40,7 @@ Patch3:		%{name}-ldap_nspr_includes.patch
 Patch4:		http://people.redhat.com/blizzard/mozilla/gtk2_embedding/2002-04-11/gtk2_embed.patch
 Patch5:		http://people.redhat.com/blizzard/mozilla/gtk2_embedding/2002-04-11/gtk2_widget.patch
 Patch6:		%{name}-pld-homepage-PL.patch
+Patch7:		%{name}-ldap-with-nss.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	ORBit-devel
 BuildRequires:	autoconf
@@ -48,15 +52,15 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.4
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
-BuildRequires:	nss-devel >= 3.4.1
-BuildRequires:	nspr-devel >= 4.1.2-3
+BuildRequires:	nss-devel >= 3.6-1
+BuildRequires:	nspr-devel >= 4.2.2-2
 BuildRequires:	perl-modules >= 5.6.0
 %{!?_without_PL:BuildRequires: unzip}
 BuildRequires:	zip >= 2.1
 Provides:	mozilla-embedded = %{version}
 %{?_with_gdkxft:Requires:	gdkxft}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-Requires:	nss >= 3.4.1
+Requires:	nss >= 3.6-1
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
 %{!?_without_PL:Conflicts: mozilla-Lang-PL}
@@ -144,6 +148,7 @@ Mozilla
 %patch3 -p1
 %{?_with_gtk2:%patch4 -p1}
 %{?_with_gtk2:%patch5 -p1}
+%patch7 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
@@ -308,6 +313,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/libjsj.so
 %attr(755,root,root) %{_libdir}/libldap50.so
 %attr(755,root,root) %{_libdir}/libprldap50.so
+%attr(755,root,root) %{_libdir}/libssldap50.so
 %attr(755,root,root) %{_libdir}/libmozjs.so
 %attr(755,root,root) %{_libdir}/libmozpango.so
 %attr(755,root,root) %{_libdir}/libmozpango-thaix.so
