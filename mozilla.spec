@@ -2,8 +2,6 @@
 # Conditional build:
 # _with_gdkxft
 # _with_gtk2
-%define		_version	1.0
-%define		_rc		rc3
 
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
@@ -11,12 +9,12 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
-Version:	%{_version}.%{_rc}
-Release:	2
+Version:	1.0
+Release:	1
 Epoch:		1
 License:	GPL
 Group:		X11/Applications/Networking
-Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{_version}%{_rc}/src/%{name}-source-1.0%{_rc}.tar.bz2
+Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-libart.tar.bz2
