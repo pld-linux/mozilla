@@ -533,7 +533,6 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 #%attr(755,root,root) %{_libdir}/%{name}/components/libtransmngr_client.so
 
 %{_libdir}/%{name}/components/jsconsole-clhandler.js
-%{_libdir}/%{name}/components/inspector-cmdline.js
 %{_libdir}/%{name}/components/nsCloseAllWindows.js
 %{_libdir}/%{name}/components/nsDictionary.js
 %{_libdir}/%{name}/components/nsDownloadProgressListener.js
@@ -653,6 +652,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/components/libinspector.so
 %{_libdir}/%{name}/components/inspector.xpt
+%{_libdir}/%{name}/components/inspector-cmdline.js
 %{_datadir}/%{name}/chrome/inspector.jar
 %{_datadir}/%{name}/chrome/icons/default/winInspectorMain*.xpm
 %{_datadir}/%{name}/defaults/pref/inspector.js
