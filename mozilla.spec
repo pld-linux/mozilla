@@ -236,6 +236,10 @@ for f in build/unix/*.pc ; do
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/$(basename $f)
 done
 
+sed -e 's|/%{name}-%{version}||; s|/X11R6||' mozilla-nspr.pc \
+		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nspr.pc
+
+
 install %{SOURCE1}	$RPM_BUILD_ROOT%{_applnkdir}/Network/WWW
 install %{SOURCE4}	$RPM_BUILD_ROOT%{_applnkdir}/Network/Misc
 install %{SOURCE5}	$RPM_BUILD_ROOT%{_applnkdir}/Network/Communications
