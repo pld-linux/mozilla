@@ -124,7 +124,7 @@ export MOZ_INTERNAL_LIBART_LGPL
 	--enable-mathml \
 	--enable-new-cache \
 	--enable-optimize="%{rpmcflags}" \
-	--disable-postscript \
+	--enable-postscript \
 	--enable-strip-libs \
 	--enable-svg \
 	--enable-toolkit=gtk \
