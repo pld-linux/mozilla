@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Mozilla Composer
+Name[pl]=Mozilla - Projektant stron WWW
+Exec=mozilla -edit
+Icon=mozilla.png
+Terminal=0
+Type=Application
+Categories=Office;X-Misc
+# vi: encoding=utf-8
