@@ -14,7 +14,7 @@
 %bcond_without	heimdal	# disable heimdal support
 %bcond_without	svg	# disable svg support
 #
-%define	pre	a5
+%define	pre	a6
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
@@ -27,7 +27,7 @@ Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{version}%{pre}/source/%{name}-source-%{version}%{pre}.tar.bz2
-# Source0-md5:	fa3e7a19b3ef455609ea0803b26e6e74
+# Source0-md5:	79c9fbb58cd83b905cc88f62d66cb457
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-composer.desktop
