@@ -13,9 +13,8 @@ Source1:	%{name}.desktop
 Source2:	%{name}.png
 Patch0:		%{name}-navigator-overlay-menu.patch
 Patch1:		%{name}-taskbar-nomozilla.patch
-Patch2:		%{name}-fix-wrapper.patch
-Patch3:		%{name}-pld-homepage.patch
-Patch4:		%{name}-dlopen-plugin.patch
+Patch2:		%{name}-pld-homepage.patch
+Patch3:		%{name}-dlopen-plugin.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
 BuildRequires:	libjpeg-devel
@@ -75,7 +74,6 @@ Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
 
 %build
 CXXFLAGS="-fno-rtti -fno-exceptions" ; export CXXFLAGS
