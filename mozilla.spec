@@ -44,6 +44,7 @@ Patch4:		%{name}-alpha-gcc3.patch
 Patch5:		%{name}-const_cast.patch
 URL:		http://www.mozilla.org/
 %{?with_gtk1:BuildRequires:	ORBit-devel}
+BuildRequires:			automake
 %{?with_svg:BuildRequires:	cairo-devel >= 0.1.17}
 BuildRequires:	freetype-devel >= 2.1.3
 %{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.0.0}
