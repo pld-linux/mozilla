@@ -17,7 +17,8 @@ Release:	0.1
 Epoch:		3
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
-Source0:	http://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
+# Source0:	http://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
+Source0:	%{name}-source-%{version}.tar.bz2
 # Source0-md5: 63c591ea36ed3864a1ccd4cc4f59d009
 Source1:	%{name}.desktop
 Source2:	%{name}.png
