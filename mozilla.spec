@@ -475,7 +475,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %files mailnews
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libmsgbaseutil.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libabsyncsvc.so
+#%attr(755,root,root) %{_libdir}/%{name}/components/libabsyncsvc.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libaddrbook.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libbayesflt.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libimpText.so
@@ -489,7 +489,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libmsg*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libvcard.so
 
-%{_libdir}/%{name}/components/absync.xpt
+#%{_libdir}/%{name}/components/absync.xpt
 %{_libdir}/%{name}/components/addrbook.xpt
 %{_libdir}/%{name}/components/impComm4xMail.xpt
 %{_libdir}/%{name}/components/import.xpt
