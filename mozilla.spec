@@ -9,6 +9,7 @@ Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
+Summary(ru):	Web browser
 Name:		mozilla
 Version:	%{_version}.%{_rc}
 Release:	2
