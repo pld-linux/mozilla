@@ -18,7 +18,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.7.3
-Release:	1
+Release:	2
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -413,11 +413,11 @@ rm -rf $RPM_BUILD_ROOT
 /sbin/ldconfig
 umask 022
 rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
-	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
+	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf} ||:
 cd %{_chromedir}
-cat *-installed-chrome.txt >installed-chrome.txt
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
+cat *-installed-chrome.txt >installed-chrome.txt ||:
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom ||:
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome ||:
 
 %postun
 /sbin/ldconfig
@@ -435,9 +435,9 @@ fi
 /sbin/ldconfig
 umask 022
 rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
-	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
+	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf} ||:
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom ||:
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome ||:
 
 %postun mailnews
 /sbin/ldconfig
@@ -450,9 +450,9 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %post chat
 umask 022
 rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
-	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
+	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf} ||:
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom ||:
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome ||:
 
 %postun chat
 umask 022
@@ -464,9 +464,9 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %post js-debugger
 umask 022
 rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
-	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
+	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf} ||:
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom ||:
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome ||:
 
 %postun js-debugger
 umask 022
@@ -478,9 +478,9 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %post dom-inspector
 umask 022
 rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
-	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
+	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf} ||:
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom ||:
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome ||:
 
 %postun dom-inspector
 umask 022
@@ -492,9 +492,9 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %post gnomevfs
 umask 022
 rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
-	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
+	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf} ||:
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom ||:
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome ||:
 
 %postun gnomevfs
 umask 022
@@ -506,9 +506,9 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %post calendar
 umask 022
 rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
-	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
+	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf} ||:
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom ||:
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome ||:
 
 %postun calendar
 umask 022
