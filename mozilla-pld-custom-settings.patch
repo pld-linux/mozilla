@@ -1,15 +1,15 @@
-diff -Nrc -x *~ mozilla.orig/modules/libpref/src/init/all.js mozilla/modules/libpref/src/init/all.js
---- mozilla.orig/modules/libpref/src/init/all.js	Sat Mar 10 01:29:43 2001
-+++ mozilla/modules/libpref/src/init/all.js	Sat Apr 21 01:26:55 2001
-@@ -449,3 +449,5 @@
+diff -Nur mozilla/modules/libpref/src/init/all.js mozilla.new/modules/libpref/src/init/all.js
+--- mozilla/modules/libpref/src/init/all.js	Thu May  3 05:25:40 2001
++++ mozilla.new/modules/libpref/src/init/all.js	Sun May 13 21:33:38 2001
+@@ -497,3 +497,4 @@
  
  
  pref("browser.throbber.url","chrome://navigator-region/locale/region.properties");
 +pref("browser.download.dir","~/.gnome-desktop");
-+
-diff -Nrc -x *~ mozilla.orig/profile/defaults/localstore.rdf mozilla/profile/defaults/localstore.rdf
---- mozilla.orig/profile/defaults/localstore.rdf	Fri Sep  1 21:53:12 2000
-+++ mozilla/profile/defaults/localstore.rdf	Sat Apr 21 03:14:37 2001
+\ No newline at end of file
+diff -Nur mozilla/profile/defaults/localstore.rdf mozilla.new/profile/defaults/localstore.rdf
+--- mozilla/profile/defaults/localstore.rdf	Fri Sep  1 23:53:12 2000
++++ mozilla.new/profile/defaults/localstore.rdf	Sun May 13 21:34:32 2001
 @@ -51,8 +51,8 @@
      <NC:persist resource="chrome://navigator/content/navigator.xul#sidebar-panels"/>
    </RDF:Description>
@@ -21,33 +21,21 @@ diff -Nrc -x *~ mozilla.orig/profile/defaults/localstore.rdf mozilla/profile/def
      <screenX>212</screenX>
      <screenY>43</screenY>
    </RDF:Description>
-diff -Nrc -x *~ mozilla.orig/xpfe/browser/resources/content/navigator.xul mozilla/xpfe/browser/resources/content/navigator.xul
---- mozilla.orig/xpfe/browser/resources/content/navigator.xul	Wed Mar 14 03:05:08 2001
-+++ mozilla/xpfe/browser/resources/content/navigator.xul	Sat Apr 21 01:14:02 2001
-@@ -52,7 +52,7 @@
+diff -Nur mozilla/xpfe/browser/resources/content/navigator.xul mozilla.new/xpfe/browser/resources/content/navigator.xul
+--- mozilla/xpfe/browser/resources/content/navigator.xul	Wed Apr 18 06:40:16 2001
++++ mozilla.new/xpfe/browser/resources/content/navigator.xul	Sun May 13 21:35:35 2001
+@@ -51,7 +51,7 @@
+         titlemodifier="&mainWindow.titlemodifier;" 
          titlemenuseparator="&mainWindow.titlemodifiermenuseparator;"
-         viewsourcetitlepreface="&viewsourcetitle.preface;"
          windowtype="navigator:browser" orient="vertical"
 -        width="640" height="480"
-+        width="700" height="550"
++	width="700" height="550"
          screenX="10" screenY="10"
          persist="screenX screenY width height sizemode"> 
  
-diff -Nrc -x *~ mozilla.orig/xpfe/browser/resources/locale/en-US/navigator.properties mozilla/xpfe/browser/resources/locale/en-US/navigator.properties
---- mozilla.orig/xpfe/browser/resources/locale/en-US/navigator.properties	Tue Feb 27 23:32:57 2001
-+++ mozilla/xpfe/browser/resources/locale/en-US/navigator.properties	Sat Apr 21 01:14:02 2001
-@@ -34,7 +34,7 @@
- 
- #config.js
- #
--startup.homepage_override_url=http://www.mozilla.org/mozorg.html
-+startup.homepage_override_url=http://www.pld.org.pl/
- 
- linkTargetLabel=Link will open in:
- linkHREFLabel=Location:
-diff -Nrc -x *~ mozilla.orig/xpfe/browser/resources/locale/en-US/region.properties mozilla/xpfe/browser/resources/locale/en-US/region.properties
---- mozilla.orig/xpfe/browser/resources/locale/en-US/region.properties	Fri Feb 23 08:32:54 2001
-+++ mozilla/xpfe/browser/resources/locale/en-US/region.properties	Sat Apr 21 01:28:15 2001
+diff -Nur mozilla/xpfe/browser/resources/locale/en-US/region.properties mozilla.new/xpfe/browser/resources/locale/en-US/region.properties
+--- mozilla/xpfe/browser/resources/locale/en-US/region.properties	Tue Apr 10 01:13:30 2001
++++ mozilla.new/xpfe/browser/resources/locale/en-US/region.properties	Sun May 13 21:39:55 2001
 @@ -1,5 +1,5 @@
  # navigator.properties
 -homePageDefault=http://www.mozilla.org/
@@ -55,3 +43,23 @@ diff -Nrc -x *~ mozilla.orig/xpfe/browser/resources/locale/en-US/region.properti
  shopKeyword=keyword:shop [Product]
  quoteKeyword=keyword:quote [Enter symbol here]
  localKeyword=keyword:zip [Your zip code]
+@@ -11,8 +11,9 @@
+ #
+ # all.js
+ #
++browser.startup.homepage=http://www.pld.org.pl/
+ browser.startup.homepage=http://www.mozilla.org/
+-browser.throbber.url=http://www.mozilla.org/
++browser.throbber.url=http://www.pld.org.pl/
+ browser.search.defaulturl=http://search.netscape.com/cgi-bin/search?search=
+ 
+ wallet.Server=http://www.mozilla.org/wallet/tables/
+@@ -20,7 +21,7 @@
+ 
+ #config.js
+ #
+-startup.homepage_override_url=http://www.mozilla.org/mozorg.html
++startup.homepage_override_url=http://www.pld.org.pl/
+ 
+ # search-panel.properties
+ #   Localizable URLs
