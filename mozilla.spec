@@ -6,7 +6,7 @@ Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
 Version:	0.9.3
-Release:	1
+Release:	2
 Epoch:		1
 License:	NPL
 Group:		X11/Applications/Networking
@@ -107,7 +107,7 @@ BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
 	--enable-ldap \
 	--enable-xsl \
 	--enable-xinerama \
-	--enable-elf-dynstr-gc \
+	--disable-elf-dynstr-gc \
 	--enable-crypto \
 	--with-extensions \
 	--disable-dtd-debug \
