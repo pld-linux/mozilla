@@ -65,7 +65,7 @@ BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.0.0
 Requires(post,postun):	/sbin/ldconfig
-Requires:	nspr >= 1:4.6.0-0.20041030.1
+Requires:	nspr >= 1:4.6-0.20041030.1
 Requires:	nss >= 3.8
 %{?with_gtk1:Provides:	mozilla(gtk1) = %{epoch}:%{version}-%{release}}
 %{!?with_gtk1:Provides:	mozilla(gtk2) = %{epoch}:%{version}-%{release}}
