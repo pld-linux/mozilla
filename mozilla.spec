@@ -8,13 +8,14 @@ License:	NPL
 Group:		X11/Applications/Networking
 Group(de):	X11/Applikationen/Netzwerkwesen
 Group(pl):	X11/Aplikacje/Sieciowe
+# Mirror0:	ftp://sunsite.icm.edu.pl/pub/mozilla/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
 Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
 Source1:	%{name}.desktop
 Source2:	%{name}.png
-Patch0:		%{name}-navigator-overlay-menu.patch
-Patch1:		%{name}-taskbar-nomozilla.patch
-Patch2:		%{name}-pld-homepage.patch
-Patch3:		%{name}-dlopen-plugin.patch
+# Patch0:		%{name}-navigator-overlay-menu.patch
+# Patch1:		%{name}-taskbar-nomozilla.patch
+# Patch2:		%{name}-fix-wrapper.patch
+Patch3:		%{name}-pld-homepage.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
 BuildRequires:	libjpeg-devel
@@ -70,9 +71,9 @@ Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
 
 %prep
 %setup -q -n mozilla
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
+#%patch0 -p1
+#%patch1 -p1
+#%patch2 -p1
 %patch3 -p1
 
 %build
@@ -187,10 +188,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libmozjs.so
 %attr(755,root,root) %{_libdir}/libnspr4.so
 %attr(755,root,root) %{_libdir}/libnssckbi.so
+%attr(755,root,root) %{_libdir}/libnullplugin.so
 %attr(755,root,root) %{_libdir}/libplc4.so
 %attr(755,root,root) %{_libdir}/libplds4.so
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
+%attr(755,root,root) %{_libdir}/libxlibrgb.so
 
 %attr(755,root,root) %{_libdir}/%{name}/plugins/libnullplugin.so
 
@@ -226,6 +229,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/components/librdf.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libregviewer.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libshistory.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libsmimestb.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libstrres.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtimer_gtk.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtransformiix.so
