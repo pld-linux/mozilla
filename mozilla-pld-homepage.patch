@@ -7,12 +7,12 @@
  shopKeyword=keyword:shop [Product]
  quoteKeyword=keyword:quote [Enter symbol here]
  localKeyword=keyword:zip [Your zip code]
-@@ -11,8 +11,8 @@
+@@ -13,8 +13,8 @@
  #
  # all.js
  #
 -browser.startup.homepage=http://www.mozilla.org/start/
--browser.throbber.url=http://www.mozilla.org/
+-browser.throbber.url=http://www.mozilla.org/products/mozilla1.x/
 +browser.startup.homepage=http://www.pld-linux.org/
 +browser.throbber.url=http://www.pld-linux.org/
  browser.search.defaulturl=http://www.google.com/search?q=
