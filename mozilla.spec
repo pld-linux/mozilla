@@ -13,7 +13,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.4b
-Release:	0.3
+Release:	0.4
 Epoch:		3
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -50,6 +50,7 @@ BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.0.0
+Requires(post,postun):	/sbin/ldconfig
 Requires:	nss >= 3.8
 Provides:	mozilla-embedded = %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -96,6 +97,8 @@ Summary:	Mozilla - programs for mail and news
 Summary(pl):	Mozilla - programy do poczty i newsów
 Summary(ru):	ðÏÞÔÏ×ÁÑ ÓÉÓÔÅÍÁ ÎÁ ÏÓÎÏ×Å Mozilla
 Group:		X11/Applications/Networking
+Requires(post,postun):	/sbin/ldconfig
+Requires(post,postun):	%{name} = %{version}
 Requires:	%{name} = %{version}
 Obsoletes:	mozilla-mail
 
@@ -108,6 +111,50 @@ Programy pocztowe i obs³uga newsów zintegrowane z przegl±dark±.
 %description mailnews -l ru
 ëÌÉÅÎÔ ÐÏÞÔÙ É ÎÏ×ÏÓÔÅÊ, ÎÁ ÏÓÎÏ×Å Mozilla. ðÏÄÄÅÒÖÉ×ÁÅÔ IMAP, POP É
 NNTP É ÉÍÅÅÔ ÐÒÏÓÔÏÊ ÉÎÔÅÒÆÅÊÓ ÐÏÌØÚÏ×ÁÔÅÌÑ.
+
+%package chat
+Summary:	Mozilla Chat - IRC client integrated with Mozilla
+Summary(pl):	Mozilla Chat - zintegrowany z Mozill± klient IRC-a
+Group:		X11/Applications/Networking
+Requires(post,postun):	%{name} = %{version}
+Requires:	%{name} = %{version}
+
+%description chat
+Mozilla Chat - IRC client that is integrated with the Mozilla web
+browser.
+
+%description chat -l pl
+Mozilla Chat - klient IRC-a zintegrowany z przegl±dark± Mozilla.
+
+%package js-debugger
+Summary:	JavaScript debugger for use with Mozilla
+Summary(pl):	Odpluskwiacz JavaScriptu do u¿ywania z Mozill±
+Group:		X11/Applications/Networking
+Requires(post,postun):	%{name} = %{version}
+Requires:	%{name} = %{version}
+
+%description js-debugger
+JavaScript debugger for use with Mozilla.
+
+%description js-debugger -l pl
+Odpluskwiacz JavaScriptu do u¿ywania z Mozill±.
+
+%package dom-inspector
+Summary:	A tool for inspecting the DOM of pages in Mozilla
+Summary(pl):	Narzêdzie do ogl±dania DOM stron w Mozilli
+Group:		X11/Applications/Networking
+Requires(post,postun):	%{name} = %{version}
+Requires:	%{name} = %{version}
+
+%description dom-inspector
+This is a tool that allows you to inspect the DOM for web pages in
+Mozilla. This is of great use to people who are doing Mozilla chrome
+development or web page development.
+
+%description dom-inspector -l pl
+To narzêdzie pozwala na ogl±danie DOM dla stron WWW w Mozilli. Jest
+bardzo przydatne dla ludzi rozwijaj±cych chrome w Mozilli lub
+tworz±cych strony WWW.
 
 %package devel
 Summary:	Headers for developing programs that will use Mozilla
@@ -197,7 +244,10 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_datadir}/idl,%{_pixmapsdir}} \
 	$RPM_BUILD_ROOT{%{_includedir}/%{name},%{_pkgconfigdir}}
 
 # preparing to create register
-rm -fr dist/bin/chrome/{US,chatzilla,classic,comm,content-packs,embed,en-US,en-unix,en-win,help,inspector,messenger,modern,pipnss,pippki,toolkit,xmlterm}
+# remove empty directory trees
+rm -fr dist/bin/chrome/{US,chatzilla,classic,comm,content-packs,cview,embed,embed-sample,en-US,en-mac,en-unix,en-win,help,inspector,messenger,modern,pipnss,pippki,toolkit,venkman,xmlterm}
+# non-unix
+rm -f dist/bin/chrome/en-{mac,win}.jar
 echo "skin,install,select,classic/1.0"	>> dist/bin/chrome/installed-chrome.txt
 echo "locale,install,select,en-US"	>> dist/bin/chrome/installed-chrome.txt
 
@@ -267,7 +317,13 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 cd %{_chromedir}
 cat *-installed-chrome.txt >installed-chrome.txt
 
-%postun	-p /sbin/ldconfig
+%postun
+/sbin/ldconfig
+if [ "$1" = "2" ]; then
+	umask 022
+	rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
+	MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+fi
 
 %post mailnews
 /sbin/ldconfig
@@ -275,7 +331,41 @@ umask 022
 rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 
-%postun mailnews -p /sbin/ldconfig
+%postun mailnews
+/sbin/ldconfig
+umask 022
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+
+%post chat
+umask 022
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+
+%postun chat
+umask 022
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+
+%post js-debugger
+umask 022
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+
+%postun js-debugger
+umask 022
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+
+%post dom-inspector
+umask 022
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+
+%postun dom-inspector
+umask 022
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 
 %files
 %defattr(644,root,root,755)
@@ -300,25 +390,20 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/libprldap50.so
 %attr(755,root,root) %{_libdir}/libssldap50.so
 %attr(755,root,root) %{_libdir}/libmozjs.so
-#%attr(755,root,root) %{_libdir}/libmozpango.so
-#%attr(755,root,root) %{_libdir}/libmozpango-thaix.so
 %attr(755,root,root) %{_libdir}/libmoz_art_lgpl.so
-#%attr(755,root,root) %{_libdir}/libnullplugin.so
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpcom_compat.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
 %attr(755,root,root) %{_libdir}/libxlibrgb.so
 %attr(755,root,root) %{_libdir}/%{name}/libxpcom.so
+
 %attr(755,root,root) %{_libdir}/%{name}/components/libaccess*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libappcomps.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libautoconfig.so
-
 %attr(755,root,root) %{_libdir}/%{name}/components/libcaps.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libchardet.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libchrome.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libcomposer.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libcookie.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libctl.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libdocshell.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libeditor.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libembedcomponents.so
@@ -327,20 +412,13 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libgk*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libhtmlpars.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libi18n.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libiiextras.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libimg*.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libinspector.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjar50.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjsd.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjsdom.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libjsloader.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libjsurl.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/liblwbrk.so
-
 %attr(755,root,root) %{_libdir}/%{name}/components/libmork.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmoz*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnecko*.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libnkcache.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkdatetime.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkfinger.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libns*.so
@@ -352,18 +430,12 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libpref.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libprofile.so
 %attr(755,root,root) %{_libdir}/%{name}/components/librdf.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libregviewer.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libshistory.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libstrres.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtransformiix.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtxmgr.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libtxtsvc.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtypeaheadfind.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libuconv.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libucv*.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libunicharutil.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libuniversalchardet.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/liburiloader.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwallet.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwalletviewers.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwebbrwsr.so
@@ -397,9 +469,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/helperAppDlg.xpt
 %{_libdir}/%{name}/components/history.xpt
 %{_libdir}/%{name}/components/htmlparser.xpt
-#%{_libdir}/%{name}/components/iiextras.xpt
 %{_libdir}/%{name}/components/imglib2.xpt
-%{_libdir}/%{name}/components/inspector.xpt
 %{_libdir}/%{name}/components/intl.xpt
 %{_libdir}/%{name}/components/jar.xpt
 %{_libdir}/%{name}/components/js*.xpt
@@ -423,14 +493,12 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/progressDlg.xpt
 %{_libdir}/%{name}/components/proxyObjInst.xpt
 %{_libdir}/%{name}/components/rdf.xpt
-#%{_libdir}/%{name}/components/regviewer.xpt
 %{_libdir}/%{name}/components/related.xpt
 %{_libdir}/%{name}/components/search.xpt
 %{_libdir}/%{name}/components/shistory.xpt
 %{_libdir}/%{name}/components/sidebar.xpt
 %{_libdir}/%{name}/components/signonviewer.xpt
 %{_libdir}/%{name}/components/timebomb.xpt
-#%%{_libdir}/%{name}/components/transformiix.xpt
 %{_libdir}/%{name}/components/txmgr.xpt
 %{_libdir}/%{name}/components/txtsvc.xpt
 %{_libdir}/%{name}/components/typeaheadfind.xpt
@@ -457,38 +525,72 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{!?_with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libsystem-pref.so}
 %attr(755,root,root) %{_libdir}/%{name}/components/libtransmngr_client.so
 
-%{_libdir}/%{name}/components/*.js
+%{_libdir}/%{name}/components/jsconsole-clhandler.js
+%{_libdir}/%{name}/components/nsCloseAllWindows.js
+%{_libdir}/%{name}/components/nsDictionary.js
+%{_libdir}/%{name}/components/nsDownloadProgressListener.js
+%{_libdir}/%{name}/components/nsFilePicker.js
+%{_libdir}/%{name}/components/nsHelperAppDlg.js
+%{_libdir}/%{name}/components/nsInterfaceInfoToIDL.js
+%{_libdir}/%{name}/components/nsKillAll.js
+%{_libdir}/%{name}/components/nsProgressDialog.js
+%{_libdir}/%{name}/components/nsProxyAutoConfig.js
+%{_libdir}/%{name}/components/nsResetPref.js
+%{_libdir}/%{name}/components/nsSidebar.js
+%{_libdir}/%{name}/components/nsUpdateNotifier.js
+%{_libdir}/%{name}/components/nsXmlRpcClient.js
+
 # not *.dat, so check-files can catch any new files
 # (and they won't be just silently placed empty in rpm)
 %ghost %{_libdir}/%{name}/components/compreg.dat
 %ghost %{_libdir}/%{name}/components/xpti.dat
 
 %dir %{_datadir}/%{name}/chrome
-%{_datadir}/%{name}/chrome/[!i]*
-%{_datadir}/%{name}/chrome/i[!n]*
-%{_datadir}/%{name}/chrome/ins[!t]*
+%{_datadir}/%{name}/chrome/US.jar
+%{_datadir}/%{name}/chrome/classic.jar
+%{_datadir}/%{name}/chrome/comm.jar
+%{_datadir}/%{name}/chrome/content-packs.jar
+%{_datadir}/%{name}/chrome/cview.jar
+%{_datadir}/%{name}/chrome/embed-sample.jar
+%{_datadir}/%{name}/chrome/en-US.jar
+%{_datadir}/%{name}/chrome/en-unix.jar
+%{_datadir}/%{name}/chrome/help.jar
+%{_datadir}/%{name}/chrome/modern.jar
+%{_datadir}/%{name}/chrome/pipnss.jar
+%{_datadir}/%{name}/chrome/pippki.jar
+%{_datadir}/%{name}/chrome/toolkit.jar
+
+%{_datadir}/%{name}/chrome/chrome.rdf
+%{_datadir}/%{name}/chrome/chromelist.txt
+%{_datadir}/%{name}/chrome/icons
+%exclude %{_datadir}/%{name}/chrome/icons/default/abcardWindow*.xpm
+%exclude %{_datadir}/%{name}/chrome/icons/default/addressbookWindow*.xpm
+%exclude %{_datadir}/%{name}/chrome/icons/default/chatzilla-window*.xpm
+%exclude %{_datadir}/%{name}/chrome/icons/default/messengerWindow*.xpm
+%exclude %{_datadir}/%{name}/chrome/icons/default/msgcomposeWindow*.xpm
+%exclude %{_datadir}/%{name}/chrome/icons/default/venkman-window*.xpm
+%exclude %{_datadir}/%{name}/chrome/icons/default/winInspectorMain*.xpm
+
+%{_datadir}/%{name}/chrome/overlayinfo
+%{_datadir}/%{name}/chrome/mozilla-installed-chrome.txt
 %ghost %{_datadir}/%{name}/chrome/installed-chrome.txt
 
 %{_datadir}/%{name}/defaults
+%exclude %{_datadir}/%{name}/defaults/pref/inspector.js
 %{_datadir}/%{name}/icons
 %{_datadir}/%{name}/res
+%exclude %{_datadir}/%{name}/res/inspector
 %{_datadir}/%{name}/searchplugins
 %{_datadir}/idl/*
 
 %{_pixmapsdir}/mozilla.png
 %{_applnkdir}/Network/WWW/mozilla.desktop
 %{_applnkdir}/Network/Misc/mozilla-jconsole.desktop
-%{_applnkdir}/Network/Communications/mozilla-chat.desktop
 %{_applnkdir}/Network/Communications/mozilla-terminal.desktop
-%{_applnkdir}/Network/Misc/mozilla-venkman.desktop
 
-##########################################
-################ mailnews ################
-##########################################
 %files mailnews
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libmsgbaseutil.so
-#%attr(755,root,root) %{_libdir}/%{name}/components/libabsyncsvc.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libaddrbook.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libbayesflt.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libimpText.so
@@ -502,7 +604,6 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libmsg*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libvcard.so
 
-#%{_libdir}/%{name}/components/absync.xpt
 %{_libdir}/%{name}/components/addrbook.xpt
 %{_libdir}/%{name}/components/impComm4xMail.xpt
 %{_libdir}/%{name}/components/import.xpt
@@ -511,13 +612,44 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/mime.xpt
 %{_libdir}/%{name}/components/msg*.xpt
 
+%{_libdir}/%{name}/components/mdn-service.js
+%{_libdir}/%{name}/components/nsLDAPPrefsService.js
+%{_libdir}/%{name}/components/smime-service.js
+
+%{_datadir}/%{name}/chrome/messenger.jar
+
+%{_datadir}/%{name}/chrome/icons/default/abcardWindow*.xpm
+%{_datadir}/%{name}/chrome/icons/default/addressbookWindow*.xpm
+%{_datadir}/%{name}/chrome/icons/default/messengerWindow*.xpm
+%{_datadir}/%{name}/chrome/icons/default/msgcomposeWindow*.xpm
+
 %{_applnkdir}/Network/Misc/mozilla-addressbook.desktop
 %{_applnkdir}/Network/Mail/mozilla-mail.desktop
 %{_applnkdir}/Network/News/mozilla-news.desktop
 
-#######################################
-################ devel ################
-#######################################
+%files chat
+%defattr(644,root,root,755)
+%{_libdir}/%{name}/components/chatzilla-service.js
+%{_datadir}/%{name}/chrome/chatzilla.jar
+%{_datadir}/%{name}/chrome/icons/default/chatzilla-window*.xpm
+%{_applnkdir}/Network/Communications/mozilla-chat.desktop
+
+%files js-debugger
+%defattr(644,root,root,755)
+%{_libdir}/%{name}/components/venkman-service.js
+%{_datadir}/%{name}/chrome/venkman.jar
+%{_datadir}/%{name}/chrome/icons/default/venkman-window*.xpm
+%{_applnkdir}/Network/Misc/mozilla-venkman.desktop
+
+%files dom-inspector
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/components/libinspector.so
+%{_libdir}/%{name}/components/inspector.xpt
+%{_datadir}/%{name}/chrome/inspector.jar
+%{_datadir}/%{name}/chrome/icons/default/winInspectorMain*.xpm
+%{_datadir}/%{name}/defaults/pref/inspector.js
+%{_datadir}/%{name}/res/inspector
+
 %files devel
 %defattr(644,root,root,755)
 %{_includedir}/%{name}
