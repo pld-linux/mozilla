@@ -17,13 +17,13 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
-Version:	1.7.5
-Release:	4
+Version:	1.7.6
+Release:	0.1
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{version}/source/%{name}-source-%{version}.tar.bz2
-# Source0-md5:	e5994f3e801cd834966367c6a12f8aeb
+# Source0-md5:	09c78e9e51d8b11b2d3059987ef42fd0
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-composer.desktop
