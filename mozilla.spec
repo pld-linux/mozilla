@@ -11,7 +11,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.0
-Release:	6
+Release:	7
 Epoch:		2
 License:	GPL
 Group:		X11/Applications/Networking
@@ -62,6 +62,7 @@ Obsoletes:	mozilla-irc
 
 %define		_prefix		/usr/X11R6
 %define		_mandir		%{_prefix}/man
+%define		_chromedir	%{_libdir}/%{name}/chrome
 
 %define		_gcc_ver	%(%{__cc} -dumpversion | cut -b 1)
 %if %{_gcc_ver} == 2
@@ -207,7 +208,7 @@ LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regxpcom
 LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regchrome
 install dist/bin/component.reg $RPM_BUILD_ROOT%{_libdir}/%{name}
 
-ln -sf ../../share/mozilla/chrome $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome
+ln -sf ../../share/mozilla/chrome $RPM_BUILD_ROOT%{_chromedir}
 ln -sf ../../share/mozilla/defaults $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults
 ln -sf ../../share/mozilla/icons $RPM_BUILD_ROOT%{_libdir}/%{name}/icons
 ln -sf ../../share/mozilla/res $RPM_BUILD_ROOT%{_libdir}/%{name}/res
@@ -238,13 +239,16 @@ install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}/mozilla
 install dist/bin/regchrome $RPM_BUILD_ROOT%{_bindir}
 install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
 
+cp $RPM_BUILD_ROOT%{_chromedir}/installed-chrome.txt \
+	$RPM_BUILD_ROOT%{_chromedir}/%{name}-installed-chrome.txt
+
 %if %{!?_without_PL:1}%{?_without_PL:0}
 unzip %{SOURCE11} -d $RPM_BUILD_ROOT%{_libdir}
 unzip -n %{SOURCE12} -d $RPM_BUILD_ROOT%{_libdir}
-mv $RPM_BUILD_ROOT%{_libdir}/bin/chrome/* $RPM_BUILD_ROOT%{_libdir}/mozilla/chrome
+mv $RPM_BUILD_ROOT%{_libdir}/bin/chrome/* $RPM_BUILD_ROOT%{_chromedir}
 mv $RPM_BUILD_ROOT%{_libdir}/bin/searchplugins/* $RPM_BUILD_ROOT%{_libdir}/mozilla/searchplugins
-install %{SOURCE13} $RPM_BUILD_ROOT%{_libdir}/mozilla/chrome
-cd $RPM_BUILD_ROOT%{_libdir}/mozilla/chrome
+install %{SOURCE13} $RPM_BUILD_ROOT%{_chromedir}
+cd $RPM_BUILD_ROOT%{_chromedir}
 unzip PL.jar
 patch -p0  < %{PATCH6}
 zip -r PL.jar locale
@@ -261,12 +265,8 @@ umask 022
 rm -f %{_libdir}/mozilla/component.reg
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 
-cd %{_libdir}/mozilla/chrome
-for f in *-installed-chrome.txt; do
-	if [ -f $f ]; then
-		cat $f >> installed-chrome.txt
-	fi
-done
+cd %{_chromedir}
+cat *-installed-chrome.txt >installed-chrome.txt
 
 %postun	-p /sbin/ldconfig
 
@@ -283,7 +283,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_bindir}/*
 
 %dir %{_libdir}/%{name}
-%dir %{_libdir}/%{name}/chrome
+%dir %{_chromedir}
 %dir %{_libdir}/%{name}/components
 %dir %{_libdir}/%{name}/defaults
 %dir %{_libdir}/%{name}/icons
@@ -439,9 +439,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/*.js
 %{_libdir}/%{name}/components/*.dat
 
-%{_datadir}/%{name}/chrome/[!ilpP]*
-%{_datadir}/%{name}/chrome/inspector.jar
-%{_datadir}/%{name}/chrome/installed-chrome.txt
+%{_datadir}/%{name}/chrome/[!lpP]*
 %{_datadir}/%{name}/chrome/pipnss.jar
 %{_datadir}/%{name}/chrome/pippki.jar
 %{!?_without_PL:%lang(pl) %{_datadir}/%{name}/chrome/lang_pl-installed-chrome.txt}
