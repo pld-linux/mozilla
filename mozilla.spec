@@ -11,7 +11,7 @@ Name:		mozilla
 Version:	1.2.1
 Release:	0.1
 Epoch:		2
-License:	GPL
+License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
 Source1:	%{name}.desktop
