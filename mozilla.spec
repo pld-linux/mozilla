@@ -26,7 +26,7 @@ Source11:	ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Lang-PL-Build-ID-%
 # Source11-md5:	ff815e9e9a5b2b2184a46ce0ab3dd94e
 Source12:	ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Reg-PL-Build-ID-%{version}.xpi
 # Source12-md5:	251dc06cc99b6b9d55bf66af743a34d4
-Source13:	http://free.of.pl/a/adgor/lang_pl-installed-chrome.txt
+Source13:	lang_pl-installed-chrome.txt
 Source14:	%{name}-antialiasing-howto.txt
 Patch0:		%{name}-pld-homepage.patch
 Patch1:		%{name}-nss.patch
