@@ -13,7 +13,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.3a
-Release:	0.1
+Release:	0.2
 Epoch:		2
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -229,15 +229,15 @@ cp -frL dist/public/ldap{,-private} $RPM_BUILD_ROOT%{_includedir}/%{name}
 install dist/bin/*.so $RPM_BUILD_ROOT%{_libdir}
 
 for f in build/unix/*.pc ; do
-	sed -e 's/mozilla-1.2.1/mozilla/' $f \
+	sed -e 's/mozilla-1.3a/mozilla/' $f \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/$(basename $f)
 done
 
-sed -e 's,lib/mozilla-1.2.1,lib,g;s/mozilla-1.2.1/mozilla/g' build/unix/mozilla-gtkmozembed.pc \
+sed -e 's,lib/mozilla-1.3a,lib,g;s/mozilla-1.3a/mozilla/g' build/unix/mozilla-gtkmozembed.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-gtkmozembed.pc
 
 		
-sed -e 's|/mozilla-1.2.1||' build/unix/mozilla-nspr.pc \
+sed -e 's|/mozilla-1.3a||' build/unix/mozilla-nspr.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nspr.pc
 
 install %{SOURCE1}	$RPM_BUILD_ROOT%{_applnkdir}/Network/WWW
@@ -312,7 +312,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libaccess*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libappcomps.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libautoconfig.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libbayesflt.so
+
 %attr(755,root,root) %{_libdir}/%{name}/components/libcaps.so
 #%attr(755,root,root) %{_libdir}/%{name}/components/libchardet.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libchrome.so
@@ -471,9 +471,9 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %files mailnews
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libmsgbaseutil.so
-
 %attr(755,root,root) %{_libdir}/%{name}/components/libabsyncsvc.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libaddrbook.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libbayesflt.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libimpText.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libimpComm4xMail.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libimport.so
