@@ -10,7 +10,7 @@ Release:	%rel
 Copyright:	NPL
 Group:		Mozilla
 Source:		mozilla-%{ver}-%{rel}.tar.gz
-BuildRoot:	%{tmp}/%{name}-root
+BuildRoot:	/tmp/%{name}-%{version}-root
 Packager:	Ramiro Estrugo <ramiro@netscape.com>
 URL:		http://www.mozilla.org/projects/newlayout/
 Provides:	mozilla
