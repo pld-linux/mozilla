@@ -1,24 +1,24 @@
---- mozilla/xpfe/components/prefwindow/resources/content/preftree.xul.nodebug	Mon Jan  1 16:12:01 2001
-+++ mozilla/xpfe/components/prefwindow/resources/content/preftree.xul	Mon Jan  1 16:13:39 2001
-@@ -161,26 +161,6 @@
+--- mozilla/xpfe/components/prefwindow/resources/content/preftree.xul.debug	Wed Apr  4 23:22:04 2001
++++ mozilla/xpfe/components/prefwindow/resources/content/preftree.xul	Wed Apr  4 23:22:20 2001
+@@ -144,26 +144,6 @@
        </treechildren>
      </treeitem>
  
 -    <treeitem container="true" open="true" id="debugItem">
 -      <treerow>       
--        <treecell class="treecell-indent" url="chrome://communicator/content/pref/pref-debug.xul" value="&debug.label;"/> 
+-        <treecell class="treecell-indent" url="chrome://communicator/content/pref/pref-debug.xul" label="&debug.label;"/> 
 -      </treerow>
 -      <treechildren id="debugChildren">
 -
 -        <treeitem>
 -          <treerow>
--            <treecell class="treecell-indent" url="chrome://communicator/content/pref/pref-debug1.xul" value="&debug1.label;"/> 
+-            <treecell class="treecell-indent" url="chrome://communicator/content/pref/pref-debug1.xul" label="&debug1.label;"/> 
 -          </treerow>
 -        </treeitem>
 -        
 -        <treeitem>
 -          <treerow>
--            <treecell class="treecell-indent" url="chrome://communicator/content/pref/pref-debug2.xul" value="&debug2.label;"/> 
+-            <treecell class="treecell-indent" url="chrome://communicator/content/pref/pref-debug2.xul" label="&debug2.label;"/> 
 -          </treerow>
 -        </treeitem>
 -        
