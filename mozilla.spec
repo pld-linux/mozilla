@@ -58,6 +58,7 @@ Conflicts:	mozilla-Lang-PL
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
 Obsoletes:	mozilla-theme-NegativeModern
+Obsoletes:	mozilla-theme-gold
 
 %define		_chromedir	%{_libdir}/%{name}/chrome
 %define		_prefix		/usr/X11R6
