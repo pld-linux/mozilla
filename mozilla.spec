@@ -289,7 +289,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d \
 	$RPM_BUILD_ROOT{%{_bindir},%{_datadir}/idl} \
 	$RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}} \
-	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,icons,res,searchplugins} \
+	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,icons,res,searchplugins,greprefs} \
 	$RPM_BUILD_ROOT%{_libdir}/%{name}/{components,plugins} \
 	$RPM_BUILD_ROOT{%{_includedir}/%{name},%{_pkgconfigdir}}
 
@@ -308,6 +308,7 @@ LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regchrome
 
 ln -sf ../../share/mozilla/chrome $RPM_BUILD_ROOT%{_chromedir}
 ln -sf ../../share/mozilla/defaults $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults
+ln -sf ../../share/mozilla/greprefs $RPM_BUILD_ROOT%{_libdir}/%{name}/greprefs
 ln -sf ../../share/mozilla/icons $RPM_BUILD_ROOT%{_libdir}/%{name}/icons
 ln -sf ../../share/mozilla/res $RPM_BUILD_ROOT%{_libdir}/%{name}/res
 ln -sf ../../share/mozilla/searchplugins $RPM_BUILD_ROOT%{_libdir}/%{name}/searchplugins
@@ -318,6 +319,7 @@ cp -frL dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
 %{?with_gtk1:cp -frL dist/bin/icons/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/icons}
 cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
 cp -frL dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
+cp -frL dist/gre/greprefs/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/greprefs
 cp -frL dist/idl/*		$RPM_BUILD_ROOT%{_datadir}/idl
 cp -frL dist/include/*		$RPM_BUILD_ROOT%{_includedir}/%{name}
 cp -frL dist/public/ldap{,-private} $RPM_BUILD_ROOT%{_includedir}/%{name}
@@ -494,6 +496,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %dir %{_chromedir}
 %dir %{_libdir}/%{name}/components
 %dir %{_libdir}/%{name}/defaults
+%dir %{_libdir}/%{name}/greprefs
 %dir %{_libdir}/%{name}/icons
 %dir %{_libdir}/%{name}/plugins
 %dir %{_libdir}/%{name}/res
@@ -712,6 +715,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %ghost %{_datadir}/%{name}/chrome/installed-chrome.txt
 
 %{_datadir}/%{name}/defaults
+%{_datadir}/%{name}/greprefs
 %exclude %{_datadir}/%{name}/defaults/pref/inspector.js
 %{_datadir}/%{name}/icons
 %{_datadir}/%{name}/res
