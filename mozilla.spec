@@ -16,7 +16,7 @@ Epoch:		2
 License:	GPL
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
-# Source0-md5:	faddffb99f6566771e3accc0043e49a5
+# Source0-md5:	5a7da5cd31005f1b1286f3d8a6b8137c
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-libart.tar.bz2
