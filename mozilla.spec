@@ -1,13 +1,13 @@
 Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
-Version:	5.M17
-Release:	3
+Version:	0.0.M18
+Release:	1
 License:	NPL
 Group:		X11/Applications/Networking
 Group(de):	X11/Applikationen/Netzwerkwesen
 Group(pl):	X11/Aplikacje/Sieciowe
-Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/m17/src/%{name}-source-M17.tar.bz2
+Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/m18/src/%{name}-source-M18.tar.bz2
 Source1:	%{name}.sh
 Source2:	%{name}.desktop
 Patch0:		%{name}-no_libnsl.patch
@@ -110,6 +110,7 @@ cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
 cp -frL dist/bin/icons/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/icons
 cp -frL dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
 cp -frL dist/bin/components/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/components
+cp -frL dist/bin/plugins/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins
 cp -frL dist/idl/*		$RPM_BUILD_ROOT%{_datadir}/idl
 cp -frL dist/include/*.h	$RPM_BUILD_ROOT%{_includedir}/%{name}
 cp -frL dist/include/obsolete/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/obsolete
@@ -123,9 +124,6 @@ cp -frL dist/bin/icons/mozicon16.xpm $RPM_BUILD_ROOT%{_datadir}/pixmaps/mozilla-
 
 install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}
 install dist/bin/regchrome $RPM_BUILD_ROOT%{_bindir}
-
-strip --strip-unneeded $RPM_BUILD_ROOT%{_libdir}/%{name}/components/*.so \
-	$RPM_BUILD_ROOT%{_libdir}/*.so* || :
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -160,25 +158,25 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libjsj.so
 %attr(755,root,root) %{_libdir}/libmozjs.so
 %attr(755,root,root) %{_libdir}/libnspr4.so
+%attr(755,root,root) %{_libdir}/libnullplugin.so
 %attr(755,root,root) %{_libdir}/libplc4.so
 %attr(755,root,root) %{_libdir}/libplds4.so
 %attr(755,root,root) %{_libdir}/libprotocol.so
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
 
-%attr(755,root,root) %{_libdir}/%{name}/components/libautocomplete.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libbookmarks.so
+%attr(755,root,root) %{_libdir}/%{name}/plugins/libnullplugin.so
+
+%attr(755,root,root) %{_libdir}/%{name}/components/libappcomps.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libcaps.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libchardet.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libchrome.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libcookie.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libdirectory.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libdocshell.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libeditor.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libgfx_gtk.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libgfxps.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libgk*.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libhistory.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libhtmlpars.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjar50.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjsloader.so
@@ -197,12 +195,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/components/libpsmglue.so
 %attr(755,root,root) %{_libdir}/%{name}/components/librdf.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libregviewer.so
-%attr(755,root,root) %{_libdir}/%{name}/components/librelated.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libsample.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libsearch.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libshistory.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libstrres.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libtbmb.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtimer_gtk.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtxmgr.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtxtsvc.so
@@ -210,7 +205,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/components/libucv*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libunicharutil.so
 %attr(755,root,root) %{_libdir}/%{name}/components/liburiloader.so
-%attr(755,root,root) %{_libdir}/%{name}/components/liburlbarhistory.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwallet.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwalletviewers.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwebbrwsr.so
@@ -229,6 +223,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{name}/components/docshell.xpt
 %{_libdir}/%{name}/components/dom.xpt
 %{_libdir}/%{name}/components/editor.xpt
+%{_libdir}/%{name}/components/exthandler.xpt
 %{_libdir}/%{name}/components/gfx.xpt
 %{_libdir}/%{name}/components/history.xpt
 %{_libdir}/%{name}/components/intl.xpt
@@ -240,8 +235,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{name}/components/moz*.xpt
 %{_libdir}/%{name}/components/necko*.xpt
 %{_libdir}/%{name}/components/oji.xpt
-%{_libdir}/%{name}/components/pref.xpt
+%{_libdir}/%{name}/components/plugin.xpt
 %{_libdir}/%{name}/components/prefmigr.xpt
+%{_libdir}/%{name}/components/pref.xpt
 %{_libdir}/%{name}/components/profile.xpt
 %{_libdir}/%{name}/components/proxyObjInst.xpt
 %{_libdir}/%{name}/components/psmglue.xpt
@@ -254,7 +250,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{name}/components/shistory.xpt
 %{_libdir}/%{name}/components/sidebar.xpt
 %{_libdir}/%{name}/components/signonviewer.xpt
-%{_libdir}/%{name}/components/tbmb.xpt
+%{_libdir}/%{name}/components/timebomb.xpt
 %{_libdir}/%{name}/components/txmgr.xpt
 %{_libdir}/%{name}/components/uconv.xpt
 %{_libdir}/%{name}/components/unicharutil.xpt
@@ -263,6 +259,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{name}/components/util.xpt
 %{_libdir}/%{name}/components/wallet*.xpt
 %{_libdir}/%{name}/components/webBrowser*.xpt
+%{_libdir}/%{name}/components/webshell_idls.xpt
 %{_libdir}/%{name}/components/widget.xpt
 %{_libdir}/%{name}/components/xml*.xpt
 %{_libdir}/%{name}/components/xp*.xpt
@@ -292,8 +289,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/components/libimpText.so
 %attr(755,root,root) %{_libdir}/%{name}/components/liblocalmail.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmailnews.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libmime.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmimeemitter.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libmime.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmsg*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libsigned.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libsmime.so
