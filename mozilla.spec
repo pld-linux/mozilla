@@ -36,7 +36,6 @@ Patch3:		%{name}-ldap_nspr_includes.patch
 Patch4:		%{name}-gtk2.patch
 Patch5:		%{name}-ldap-with-nss.patch
 Patch6:		%{name}-gfx.patch
-Patch7:		%{name}-gtk2_superwin.patch
 URL:		http://www.mozilla.org/
 BuildRequires:	ORBit-devel
 BuildRequires:	autoconf
@@ -148,7 +147,6 @@ Mozilla
 %{!?_without_gtk2:%patch4 -p0}
 %patch5 -p1
 %patch6 -p1
-%{!?_without_gtk2:%patch7 -p1}
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
