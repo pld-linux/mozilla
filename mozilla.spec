@@ -102,6 +102,9 @@ dist/bin/regxpcom
 
 install dist/bin/component.reg $RPM_BUILD_ROOT%{_libdir}/%{name}
 
+# discussion feature: it's need to create some files (skin overview and others)
+#dist/bin/mozilla
+
 ln -s ../../share/mozilla/chrome $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome
 ln -s ../../share/mozilla/defaults $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults
 ln -s ../../share/mozilla/res $RPM_BUILD_ROOT%{_libdir}/%{name}/res
@@ -275,14 +278,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{name}/components/*.js
 %{_libdir}/%{name}/components/*.dat
 
-%{_datadir}/%{name}/chrome/*.txt
-
 %{_datadir}/%{name}/chrome/locales
 %{_datadir}/%{name}/chrome/packages/chatzilla
 %{_datadir}/%{name}/chrome/packages/core
 %{_datadir}/%{name}/chrome/packages/widget-toolkit
 %{_datadir}/%{name}/chrome/packages/xmlterm
 %{_datadir}/%{name}/chrome/skins
+# some discussion files
+#%{_datadir}/%{name}/chrome/overlayinfo
+#%{_datadir}/%{name}/chrome/*.rdf
 
 %{_datadir}/%{name}/defaults
 %{_datadir}/%{name}/icons
