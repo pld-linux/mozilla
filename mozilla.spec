@@ -10,12 +10,12 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
-Version:	1.0
-Release:	10
+Version:	1.1
+Release:	0.1
 Epoch:		2
 License:	GPL
 Group:		X11/Applications/Networking
-Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
+Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.gz
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-libart.tar.bz2
@@ -36,9 +36,9 @@ Patch2:		%{name}-nss.patch
 Patch3:		%{name}-ldap_nspr_includes.patch
 Patch4:		http://people.redhat.com/blizzard/mozilla/gtk2_embedding/2002-04-11/gtk2_embed.patch
 Patch5:		http://people.redhat.com/blizzard/mozilla/gtk2_embedding/2002-04-11/gtk2_widget.patch
-Patch6:		%{name}-pld-homepage-PL.patch
+Patch6:		gtk2mozilla_head.patch
 Patch7:		%{name}-ldap-with-nss.patch
-URL:		http://www.mozilla.org/projects/newlayout/
+URL:		http://www.mozilla.org/
 BuildRequires:	ORBit-devel
 BuildRequires:	autoconf
 BuildRequires:	freetype-devel >= 2.0.9
@@ -139,12 +139,14 @@ Mozilla
 
 %prep
 %setup -q -a 3 -n mozilla
-%patch0 -p1
+# for update:
+#%patch0 -p1
 %{?_with_gdkxft:%patch1 -p1}
 %patch2 -p1
 %patch3 -p1
 %{?_with_gtk2:%patch4 -p1}
 %{?_with_gtk2:%patch5 -p1}
+%{?_with_gtk2:%patch6}
 %patch7 -p1
 
 %build
