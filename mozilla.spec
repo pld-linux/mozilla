@@ -2,7 +2,7 @@ Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
 Version:	5.M15
-Release:	1
+Release:	2
 License:	NPL
 Group:		X11/Applications/Networking
 Group(pl):	X11/Aplikacje/Sieciowe
