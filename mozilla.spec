@@ -2,7 +2,7 @@ Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
 Version:	5.M15
-Release:	3
+Release:	4
 License:	NPL
 Group:		X11/Applications/Networking
 Group(pl):	X11/Aplikacje/Sieciowe
@@ -80,7 +80,7 @@ make
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT{%{_bindir},%{_applnkdir}/Networking/WWW} \
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_applnkdir}/Network/WWW} \
 	$RPM_BUILD_ROOT%{_datadir}/{idl,pixmaps} \
 	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,res,icons} \
 	$RPM_BUILD_ROOT%{_libdir}/%{name}/{components,plugins} \
@@ -115,7 +115,7 @@ dist/bin/regxpcom
 install dist/bin/component.reg $RPM_BUILD_ROOT%{_libdir}/%{name}
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/mozilla
-install %{SOURCE2} $RPM_BUILD_ROOT%{_applnkdir}/Networking/WWW
+install %{SOURCE2} $RPM_BUILD_ROOT%{_applnkdir}/Network/WWW
 cp -fr dist/bin/icons/mozicon16.xpm $RPM_BUILD_ROOT%{_datadir}/pixmaps/mozilla-icon.xpm
 
 install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}
@@ -299,7 +299,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/%{name}/res
 
 %{_datadir}/pixmaps/mozilla-icon.xpm
-%{_applnkdir}/Networking/WWW/mozilla.desktop
+%{_applnkdir}/Network/WWW/mozilla.desktop
 
 ##########################################
 ################ mailnews ################
