@@ -1,12 +1,12 @@
 #
 # Conditional build:
-# _with_gtk1		- use gtk+ 1.2.x instead of 2.x.x
-# _with_gcc2		- compile using gcc2 to get working macromedia-flash and
-#			  gcc2-compiled Java plugins on nest and other gcc 3.x systems.
-#			  WARNING! You have to recompile galeon with gcc2 in
-#			  order to get it working with this release of mozilla
-# _with_debug		- compile without --disable-debug
-#
+%bcond_with	gtk1	# use gtk+ 1.2.x instead of 2.x.x
+%bcond_with	gcc2	# compile using gcc2 to get working macromedia-flash and
+			# gcc2-compiled Java plugins on nest and other gcc 3.x systems.
+			# WARNING! You have to recompile galeon with gcc2 in
+			# order to get it working with this release of mozilla
+%bcond_with	debug	# compile without --disable-debug
+
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
