@@ -11,7 +11,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.1
-Release:	0.1
+Release:	0.9
 Epoch:		2
 License:	GPL
 Group:		X11/Applications/Networking
@@ -49,7 +49,7 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.4
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
-BuildRequires:	nss-devel >= 3.4.2
+BuildRequires:	nss-devel >= 3.4.2-3.20020929
 BuildRequires:	nspr-devel >= 4.1.2-3
 BuildRequires:	perl-modules >= 5.6.0
 %{!?_without_PL:BuildRequires: unzip}
@@ -57,7 +57,7 @@ BuildRequires:	zip >= 2.1
 Provides:	mozilla-embedded = %{version}
 %{?_with_gdkxft:Requires:	gdkxft}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-Requires:	nss >= 3.4.1
+Requires:	nss >= 3.4.2-3.20020929
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
 %{!?_without_PL:Conflicts: mozilla-Lang-PL}
@@ -144,8 +144,8 @@ Mozilla
 %{?_with_gdkxft:%patch1 -p1}
 %patch2 -p1
 %patch3 -p1
-%{?_with_gtk2:%patch4 -p1}
-%{?_with_gtk2:%patch5 -p1}
+#%{?_with_gtk2:%patch4 -p1}
+#%{?_with_gtk2:%patch5 -p1}
 %{?_with_gtk2:%patch6}
 %patch7 -p1
 
@@ -211,7 +211,7 @@ echo "locale,install,select,en-US"	>> dist/bin/chrome/installed-chrome.txt
 # creating and installing register
 LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regxpcom
 LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regchrome
-install dist/bin/component.reg $RPM_BUILD_ROOT%{_libdir}/%{name}
+#install dist/bin/component.reg $RPM_BUILD_ROOT%{_libdir}/%{name}
 
 ln -sf ../../share/mozilla/chrome $RPM_BUILD_ROOT%{_chromedir}
 ln -sf ../../share/mozilla/defaults $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults
@@ -258,7 +258,7 @@ mv $RPM_BUILD_ROOT%{_libdir}/bin/searchplugins/* $RPM_BUILD_ROOT%{_libdir}/mozil
 install %{SOURCE13} $RPM_BUILD_ROOT%{_chromedir}
 cd $RPM_BUILD_ROOT%{_chromedir}
 unzip PL.jar
-patch -p0  < %{PATCH6}
+#patch -p0  < %{PATCH6}
 zip -r PL.jar locale
 rm -rf locale
 cd -
@@ -304,7 +304,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %dir %{_libdir}/%{name}/searchplugins
 %dir %{_datadir}/%{name}
 
-%ghost %{_libdir}/%{name}/component.reg
+#%ghost %{_libdir}/%{name}/component.reg
 %attr(755,root,root) %{_libdir}/libgkgfx.so
 %attr(755,root,root) %{_libdir}/libgtkembedmoz.so
 %{!?_with_gtk2:%attr(755,root,root) %{_libdir}/libgtksuperwin.so}
@@ -313,6 +313,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/libldap50.so
 %attr(755,root,root) %{_libdir}/libprldap50.so
 %attr(755,root,root) %{_libdir}/libssldap50.so
+%attr(755,root,root) %{_libdir}/libmai.so
 %attr(755,root,root) %{_libdir}/libmozjs.so
 %attr(755,root,root) %{_libdir}/libmozpango.so
 %attr(755,root,root) %{_libdir}/libmozpango-thaix.so
@@ -321,7 +322,6 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
 %attr(755,root,root) %{_libdir}/libxlibrgb.so
-
 %attr(755,root,root) %{_libdir}/%{name}/components/libaccess*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libappcomps.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libautoconfig.so
@@ -347,6 +347,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libjsloader.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjsurl.so
 %attr(755,root,root) %{_libdir}/%{name}/components/liblwbrk.so
+
 %attr(755,root,root) %{_libdir}/%{name}/components/libmork.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmoz*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnecko*.so
@@ -435,7 +436,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/timebomb.xpt
 %{_libdir}/%{name}/components/transformiix.xpt
 %{_libdir}/%{name}/components/txmgr.xpt
-%{_libdir}/%{name}/components/txtsvc.xpt
+#%{_libdir}/%{name}/components/txtsvc.xpt
 %{_libdir}/%{name}/components/uconv.xpt
 %{_libdir}/%{name}/components/unicharutil.xpt
 %{_libdir}/%{name}/components/uriloader.xpt
@@ -446,6 +447,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/webbrowserpersist.xpt
 %{_libdir}/%{name}/components/webshell_idls.xpt
 %{_libdir}/%{name}/components/widget.xpt
+%{_libdir}/%{name}/components/windowds.xpt
 %{_libdir}/%{name}/components/windowwatcher.xpt
 %{_libdir}/%{name}/components/x*.xpt
 
