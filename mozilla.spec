@@ -1,8 +1,8 @@
 Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
-Version:	0.9
-Release:	2
+Version:	0.9.1
+Release:	1
 Epoch:		1
 License:	NPL
 Group:		X11/Applications/Networking
@@ -12,14 +12,11 @@ Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Patch0:		%{name}-navigator-overlay-menu.patch
-Patch1:		%{name}-editor-overlay-menu.patch
-Patch2:		%{name}-prefs-debug.patch
-Patch3:		%{name}-taskbar-nomozilla.patch
-Patch4:		%{name}-fix-wrapper.patch
-Patch5:		%{name}-pld-custom-settings.patch
-Patch6:		%{name}-alpha-compiler.patch
-Patch7:		%{name}-dlopen-plugin.patch
-Patch8:		%{name}-notebook-crash.patch
+Patch1:		%{name}-taskbar-nomozilla.patch
+Patch2:		%{name}-fix-wrapper.patch
+Patch3:		%{name}-pld-custom-settings.patch
+Patch4:		%{name}-alpha-compiler.patch
+Patch5:		%{name}-dlopen-plugin.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
 BuildRequires:	libjpeg-devel
@@ -78,16 +75,14 @@ Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
+# FIXME: need to update this patch
+#%patch4 -p1
 %patch5 -p1
-%patch6 -p1
-%patch7 -p1
-%patch8 -p1
 
 %build
 CXXFLAGS="-fno-rtti -fno-exceptions" ; export CXXFLAGS
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
-MOZ_NSS_AUTOCONF="1"; export MOZ_NSS_AUTOCONF
+#MOZ_NSS_AUTOCONF="1"; export MOZ_NSS_AUTOCONF
 
 %configure \
 	--with-default-mozilla-five-home=%{_libdir}/mozilla \
@@ -100,6 +95,9 @@ MOZ_NSS_AUTOCONF="1"; export MOZ_NSS_AUTOCONF
 	--enable-svg \
 	--enable-ldap \
 	--enable-xsl \
+	--enable-xinerama \
+	--enable-elf-dynstr-gc \
+	--enable-crypto \
 	--with-extensions \
 	--disable-dtd-debug \
 	--disable-debug \
@@ -114,8 +112,6 @@ MOZ_NSS_AUTOCONF="1"; export MOZ_NSS_AUTOCONF
 	--with-xprint
 
 %{__make}
-# mozilla don't like openssl from PLD :(
-#%{__make} BUILD_MODULES=psm2
 
 %install
 rm -rf $RPM_BUILD_ROOT
