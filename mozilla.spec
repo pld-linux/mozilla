@@ -31,6 +31,8 @@ BuildRequires:	zip >= 2.1
 BuildRequires:	perl >= 5.6.0
 BuildRequires:	autoconf
 BuildConflicts:	mozilla-devel < %{version}
+Provides:	mozilla-embedded
+Obsoletes:	mozilla-embedded
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_prefix		/usr/X11R6
@@ -72,6 +74,15 @@ Mozilla development libs and headers.
 
 %description -l pl devel
 Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
+
+%package embedded
+Summary:	Embedded part of mozilla
+Group:		X11/Development/Libraries
+Group(de):	X11/Entwicklung/Libraries
+Group(pl):	X11/Programowanie/Biblioteki
+
+%description embedded
+Embedded part of mozilla.
 
 %prep
 %setup -q -n mozilla
@@ -157,6 +168,30 @@ install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}/mozilla
 install dist/bin/regchrome $RPM_BUILD_ROOT%{_bindir}
 install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
 
+#
+# embedded part
+#
+%{__make} -C embedding/config
+(
+    cd dist/Embed
+
+    # at first overwrite file list
+    # with libraries, which go to %{_libdir}
+    for f in *.so; do echo %{_libdir}/$f; done > embedded-mozilla.list
+
+    # next all files in %{_datadir}/mozilla
+    for f in chrome defaults res; do
+        find $f -type f -printf %{_datadir}/%{name}/%p\\n ;
+    done >> embedded-mozilla.list
+
+    # and files in %{_libdir}/mozilla
+    for f in components; do
+        find $f -type f -printf %{_libdir}/%{name}/%p\\n ;
+    done >> embedded-mozilla.list
+
+    cp embedded-mozilla.list /var/tmp
+)
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -175,6 +210,14 @@ rm -f %{_libdir}/mozilla/component.reg
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 
 %postun mailnews -p /sbin/ldconfig
+
+%post   embedded 
+/sbin/ldconfig
+umask 022
+rm -f %{_libdir}/mozilla/component.reg
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
+
+%postun embedded -p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
@@ -365,3 +408,20 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %defattr(644,root,root,755)
 %{_includedir}/%{name}
 %{_datadir}/idl/*
+
+#######################################
+################ embedded #############
+#######################################
+%files -f dist/Embed/embedded-mozilla.list embedded
+%{_bindir}/regxpcom
+%ghost %{_libdir}/%{name}/component.reg
+%dir %{_libdir}/%{name}
+%dir %{_libdir}/%{name}/chrome
+%dir %{_libdir}/%{name}/components
+%dir %{_libdir}/%{name}/defaults
+%dir %{_libdir}/%{name}/dtd
+%dir %{_libdir}/%{name}/icons
+%dir %{_libdir}/%{name}/plugins
+%dir %{_libdir}/%{name}/res
+%dir %{_libdir}/%{name}/searchplugins
+%dir %{_datadir}/%{name}
