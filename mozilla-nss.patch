@@ -1,7 +1,35 @@
-diff -urN mozilla.orig/config/config.mk mozilla/config/config.mk
---- mozilla.orig/config/config.mk	Mon Oct  7 16:42:26 2002
-+++ mozilla/config/config.mk	Mon Oct  7 16:50:17 2002
-@@ -173,7 +173,7 @@
+--- mozilla/security/manager/Makefile.in.orig	Fri Mar  8 23:50:11 2002
++++ mozilla/security/manager/Makefile.in	Sat Apr 13 16:07:59 2002
+@@ -95,14 +95,6 @@
+ else
+ 	cd $(DIST)/lib; cp -f $(LIB_PREFIX)mozdbm_s.$(LIB_SUFFIX) $(LIB_PREFIX)dbm.$(LIB_SUFFIX); $(RANLIB) $(LIB_PREFIX)dbm.$(LIB_SUFFIX)
+ endif
+-	$(MAKE) -C $(topsrcdir)/security/nss/lib $(DEFAULT_GMAKE_FLAGS)
+-	$(INSTALL) -m 755 $(DIST)/lib/$(LOADABLE_ROOT_MODULE) $(DIST)/bin
+-ifdef NSS_3_4
+-	$(INSTALL) -m 755 $(DIST)/lib/$(SOFTOKEN3_LIB) $(DIST)/bin
+-	$(INSTALL) -m 755 $(DIST)/lib/$(NSS3_LIB) $(DIST)/bin
+-	$(INSTALL) -m 755 $(DIST)/lib/$(SSL3_LIB) $(DIST)/bin
+-	$(INSTALL) -m 755 $(DIST)/lib/$(SMIME3_LIB) $(DIST)/bin
+-endif
+ ifneq (,$(filter SunOS HP-UX,$(OS_ARCH)))
+ ifneq ($(OS_TEST),i86pc)
+ ifndef HAVE_64BIT_OS
+--- mozilla/security/manager/ssl/src/Makefile.in.orig	Tue Feb 19 04:00:08 2002
++++ mozilla/security/manager/ssl/src/Makefile.in	Sat Apr 13 17:15:18 2002
+@@ -108,8 +108,7 @@
+ 
+ # Use local includes because they are inserted before INCLUDES
+ # so that Mozilla's nss.h is used, not glibc's
+-LOCAL_INCLUDES += -I$(DIST)/public/security \
+-                  -I$(DIST)/private/security \
++LOCAL_INCLUDES += -I/usr/include/nss \
+                   $(NULL)
+ 
+ EXTRA_DSO_LDOPTS += \
+--- mozilla/config/config.mk.orig	Wed Mar  6 10:56:33 2002
++++ mozilla/config/config.mk	Sat Apr 13 18:29:08 2002
+@@ -174,7 +174,7 @@
  else
  NSS_LIBS	= \
  	$(LIBS_DIR) \
@@ -10,7 +38,7 @@ diff -urN mozilla.orig/config/config.mk mozilla/config/config.mk
  	-lsmime3 \
  	-lssl3 \
  	-lnss3 \
-@@ -182,11 +182,6 @@
+@@ -183,11 +183,6 @@
  endif
  
  NSS_DEP_LIBS	= \
@@ -22,36 +50,3 @@ diff -urN mozilla.orig/config/config.mk mozilla/config/config.mk
  	$(NULL)
  
  MOZ_UNICHARUTIL_LIBS = $(DIST)/lib/$(LIB_PREFIX)unicharutil_s.$(LIB_SUFFIX)
-diff -urN mozilla.orig/security/manager/Makefile.in mozilla/security/manager/Makefile.in
---- mozilla.orig/security/manager/Makefile.in	Mon Oct  7 16:42:35 2002
-+++ mozilla/security/manager/Makefile.in	Mon Oct  7 16:47:43 2002
-@@ -105,16 +105,6 @@
- else
- 	cd $(DIST)/lib; cp -f $(LIB_PREFIX)mozdbm_s.$(LIB_SUFFIX) $(LIB_PREFIX)dbm.$(LIB_SUFFIX); $(RANLIB) $(LIB_PREFIX)dbm.$(LIB_SUFFIX)
- endif
--	$(MAKE) -C $(topsrcdir)/security/nss/lib $(DEFAULT_GMAKE_FLAGS)
--	$(INSTALL) -m 755 $(DIST)/lib/$(LOADABLE_ROOT_MODULE) $(DIST)/bin
--	$(INSTALL) -m 755 $(DIST)/lib/$(SOFTOKEN3_LIB) $(DIST)/bin
--	$(INSTALL) -m 755 $(DIST)/lib/$(NSS3_LIB) $(DIST)/bin
--	$(INSTALL) -m 755 $(DIST)/lib/$(SSL3_LIB) $(DIST)/bin
--	$(INSTALL) -m 755 $(DIST)/lib/$(SMIME3_LIB) $(DIST)/bin
--ifdef HAVE_FREEBL_MODULES
--	$(INSTALL) -m 755 $(DIST)/lib/$(FREEBL_PURE32_MODULE) $(DIST)/bin
--	$(INSTALL) -m 755 $(DIST)/lib/$(FREEBL_HYBRID_MODULE) $(DIST)/bin
--endif
- 	$(MAKE) -C boot $@
- 	$(MAKE) -C ssl $@
- 	$(MAKE) -C pki $@
-diff -urN mozilla.orig/security/manager/ssl/src/Makefile.in mozilla/security/manager/ssl/src/Makefile.in
---- mozilla.orig/security/manager/ssl/src/Makefile.in	Mon Oct  7 16:42:34 2002
-+++ mozilla/security/manager/ssl/src/Makefile.in	Mon Oct  7 16:48:47 2002
-@@ -108,8 +108,7 @@
- 
- # Use local includes because they are inserted before INCLUDES
- # so that Mozilla's nss.h is used, not glibc's
--LOCAL_INCLUDES += -I$(DIST)/public/nss \
--                  -I$(DIST)/private/nss \
-+LOCAL_INCLUDES += -I/usr/include/nss \
-                   $(NULL)
- 
- EXTRA_DSO_LDOPTS += \
