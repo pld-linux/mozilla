@@ -77,6 +77,8 @@ Obsoletes:	mozilla-theme-kzilla
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_chromedir	%{_libdir}/%{name}/chrome
+# mozilla and firefox provide their own versions
+%define		_noautoreqdep	libgkgfx.so libgtkxtbin.so libjsj.so libmozjs.so libxpcom.so libxpcom_compat.so
 
 %if %{with gcc2}
 %define		__cc		gcc2
