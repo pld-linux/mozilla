@@ -50,7 +50,7 @@ mkdir -p $RPM_BUILD_ROOT%{prefix}/lib
 mkdir -p $RPM_BUILD_ROOT%{prefix}/lib/mozilla/idl
 mkdir -p $RPM_BUILD_ROOT%{prefix}/lib/mozilla/components
 mkdir -p $RPM_BUILD_ROOT%{prefix}/lib/mozilla/res
-mkdir -p $RPM_BUILD_ROOT/usr/bin
+mkdir -p $RPM_BUILD_ROOT%{_bindir}
 
 cp -rpv dist/bin/components/*.so $RPM_BUILD_ROOT%{prefix}/lib/mozilla/components
 cp -rpv dist/bin/res/* $RPM_BUILD_ROOT%{prefix}/lib/mozilla/res
@@ -62,8 +62,8 @@ cp -rpv dist/bin/apprunner $RPM_BUILD_ROOT%{prefix}/lib/mozilla/bin
 cp -rpv dist/bin/viewer $RPM_BUILD_ROOT%{prefix}/lib/mozilla/bin
 cp -rpv dist/bin/vreg $RPM_BUILD_ROOT%{prefix}/lib/mozilla/bin
 
-cp -rpv build/mozilla-viewer.sh $RPM_BUILD_ROOT/usr/bin/mozilla-viewer
-cp -rpv build/mozilla-apprunner.sh $RPM_BUILD_ROOT/usr/bin/mozilla-apprunner
+cp -rpv build/mozilla-viewer.sh $RPM_BUILD_ROOT%{_bindir}/mozilla-viewer
+cp -rpv build/mozilla-apprunner.sh $RPM_BUILD_ROOT%{_bindir}/mozilla-apprunner
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -88,8 +88,8 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/lib/*.so
 %{prefix}/lib/mozilla/bin/*
 %{prefix}/lib/mozilla/res/*
-%attr(755, root, root)/usr/bin/mozilla-viewer
-%attr(755, root, root)/usr/bin/mozilla-apprunner
+%attr(755, root, root)%{_bindir}/mozilla-viewer
+%attr(755, root, root)%{_bindir}/mozilla-apprunner
 
 %files devel
 %attr(-, root, root)
