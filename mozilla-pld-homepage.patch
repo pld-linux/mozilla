@@ -15,7 +15,7 @@
 -browser.throbber.url=http://www.mozilla.org/
 +browser.startup.homepage=http://www.pld-linux.org/
 +browser.throbber.url=http://www.pld-linux.org/
- browser.search.defaulturl=http://search.netscape.com/cgi-bin/search?search=
+ browser.search.defaulturl=http://www.google.com/search?q=
  general.useragent.contentlocale=US
  
 @@ -21,4 +21,4 @@
