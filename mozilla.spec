@@ -2,7 +2,6 @@
 # Conditional build:
 # _with_gtk1		- use gtk+ 1.2.x instead of 2.x.x
 # _without_PL		- without PL language pack
-# _without_xft		- without Xft support
 #
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
@@ -36,7 +35,7 @@ Patch5:		%{name}-ldap-with-nss.patch
 Patch6:		%{name}-gfx.patch
 URL:		http://www.mozilla.org/
 BuildRequires:	ORBit-devel
-%{!?_without_xft:BuildRequires:	Xft-devel}
+BuildRequires:	Xft-devel >= 2.0-5
 BuildRequires:	autoconf
 BuildRequires:	freetype-devel >= 2.0.9
 %{?_with_gtk1:BuildRequires:	gtk+-devel}
@@ -173,7 +172,7 @@ CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 	--enable-svg \
 	%{?_with_gtk1:--enable-toolkit-gtk} \
 	%{!?_with_gtk1:--disable-toolkit-gtk --enable-default-toolkit=gtk2} \
-	%{!?_without_xft:--enable-xft} \
+	--enable-xft \
 	--enable-xinerama \
 	--enable-xprint \
 	--enable-xsl \
