@@ -368,6 +368,7 @@ cat << EOF > $RPM_BUILD_ROOT%{_bindir}/mozilla
 #!/bin/sh
 # (c) vip at linux.pl, wolf at pld-linux.org
 
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla
 PING=\`%{_bindir}/mozilla-bin -remote 'ping()' 2>&1 >/dev/null\`
 if [ -n "\$PING" ]; then
 	%{_bindir}/mozilla-bin "\$1"
