@@ -8,20 +8,20 @@
 %bcond_with	debug	# compile without \--disable-debug
 %bcond_without	gnomevfs	# disable GnomeVFS support
 #
-%define	pre	rc2
+%define	pre	a1
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
-Version:	1.7
+Version:	1.8
 Release:	0.%{pre}.1
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{version}%{pre}/src/%{name}-source-%{version}%{pre}.tar.bz2
-# Source0-md5:	da2215a6281cc56bcf805fe0d5e4b6c0
+# Source0-md5:	5ba8b7d5d581fc407f33857dd8d3756e
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-composer.desktop
@@ -38,8 +38,7 @@ Patch0:		%{name}-pld-homepage.patch
 Patch1:		%{name}-nss.patch
 Patch2:		%{name}-ldap_nspr_includes.patch
 Patch3:		%{name}-ldap-with-nss.patch
-Patch4:		%{name}-gfx.patch
-Patch5:		%{name}-alpha-gcc3.patch
+Patch4:		%{name}-alpha-gcc3.patch
 URL:		http://www.mozilla.org/
 %{?with_gtk1:BuildRequires:	ORBit-devel}
 BuildRequires:	cairo-devel >= 0.1.17
@@ -241,7 +240,6 @@ Mozilla
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-%patch5 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
