@@ -20,7 +20,7 @@ BuildRequires:	libstdc++-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	gtk+-devel
 BuildRequires:	ORBit-devel
-BuildRequires:	fileutils >= 4.0y
+BuildRequires:	fileutils
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_prefix		/usr/X11R6
