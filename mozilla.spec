@@ -44,6 +44,7 @@ URL:		http://www.mozilla.org/
 %{?with_gtk1:BuildRequires:	ORBit-devel}
 BuildRequires:	automake
 BuildRequires:	freetype-devel >= 2.1.3
+BuildRequires:	freetype-devel <= 2.1.7
 %{?with_gtk1:BuildRequires:	gtk+-devel >= 1.2.0}
 %{!?with_gtk1:BuildRequires:	gtk+2-devel >= 2.2.0}
 %{!?with_gtk1:BuildRequires:	libIDL-devel >= 0.8.0}
