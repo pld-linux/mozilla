@@ -9,3 +9,15 @@ diff -ur mozilla.orig/layout/svg/renderer/src/cairo/nsSVGCairoCanvas.cpp mozilla
  
  /**
   * \addtogroup cairo_renderer Cairo Rendering Engine
+diff -ur mozilla.orig/layout/svg/renderer/src/cairo/nsSVGCairoGlyphMetrics.cpp mozilla/layout/svg/renderer/src/cairo/nsSVGCairoGlyphMetrics.cpp
+--- mozilla.orig/layout/svg/renderer/src/cairo/nsSVGCairoGlyphMetrics.cpp	2004-03-16 22:40:07.000000000 +0100
++++ mozilla/layout/svg/renderer/src/cairo/nsSVGCairoGlyphMetrics.cpp	2005-03-27 11:38:00.253917800 +0200
+@@ -321,7 +321,7 @@
+     font.GetFirstFamily(family);
+     char *f = ToNewCString(family);
+     cairo_select_font(mCT, f, slant, weight);
+-    free(f);
++    delete f;
+     mFont = cairo_current_font(mCT);
+ 
+     nsCOMPtr<nsIPresContext> presContext;
