@@ -19,7 +19,7 @@ Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
-# Source0-md5:	0a1447d0c4ff99a39d4a07e65b5f544f
+# Source0-md5:	9d59651eac39a95da756d38fe5385896
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-composer.desktop
@@ -205,9 +205,7 @@ cp -f security/coreconf/Linux2.5.mk security/coreconf/Linux2.6.mk
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
 MOZILLA_OFFICIAL="1"; export MOZILLA_OFFICIAL
-
-MOZ_INTERNAL_LIBART_LGPL="x"
-export MOZ_INTERNAL_LIBART_LGPL
+#MOZ_INTERNAL_LIBART_LGPL="1"; export MOZ_INTERNAL_LIBART_LGPL
 
 %if %{_gcc_ver} > 2
 CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
@@ -225,7 +223,7 @@ CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 	--enable-optimize="%{rpmcflags}" \
 	--enable-postscript \
 	--enable-strip \
-	--enable-svg \
+	--disable-svg \
 	%{?_with_gtk1:--enable-toolkit-gtk} \
 	%{!?_with_gtk1:--disable-toolkit-gtk --enable-default-toolkit=gtk2} \
 	--enable-xft \
