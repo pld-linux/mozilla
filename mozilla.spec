@@ -50,7 +50,7 @@ BuildRequires:	nspr-devel >= 1:4.3-2.20030517
 BuildRequires:	nss-devel >= 3.8
 %{!?_with_gtk1:BuildRequires:	pango-devel >= 1.1.0}
 BuildRequires:	perl-modules >= 5.6.0
-%{!?_with_gtk1:BuildRequires:	pkgconfig}
+BuildRequires:	pkgconfig
 BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.0.0
