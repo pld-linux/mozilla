@@ -47,6 +47,9 @@ Patch4:		%{name}-alpha-gcc3.patch
 # http://bugzilla.mozilla.org/show_bug.cgi?id=234035
 # http://bugzilla.mozilla.org/attachment.cgi?id=149334&action=view
 Patch5:		%{name}-freetype218.patch
+# https://bugzilla.mozilla.org/show_bug.cgi?id=255900
+# https://bugzilla.mozilla.org/attachment.cgi?id=160219&action=view
+Patch6:		%{name}-filechooser.patch
 URL:		http://www.mozilla.org/
 %{?with_gtk1:BuildRequires:	ORBit-devel}
 %{?with_svg:BuildRequires:	cairo-devel >= 0.1.17}
@@ -255,6 +258,7 @@ Mozilla
 %patch3 -p1
 %patch4 -p1
 %{?with_ft218:%patch5 -p0}
+%patch6 -p0
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
