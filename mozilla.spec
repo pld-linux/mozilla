@@ -29,6 +29,7 @@ Source10:	%{name}-venkman.desktop
 Source11:	ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Lang-PL-Build-ID-%{version}.xpi
 Source12:	ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Reg-PL-Build-ID-%{version}.xpi
 Source13:	http://free.of.pl/a/adgor/lang_pl-installed-chrome.txt
+Source14:	%{name}-antialiasing-howto.txt
 Patch0:		%{name}-pld-homepage.patch
 Patch1:		%{name}-gdkxft.patch
 Patch2:		%{name}-nss.patch
@@ -258,6 +259,8 @@ rm -rf locale
 cd -
 %endif
 
+cp %{SOURCE14} .
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -283,6 +286,8 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/*
+
+%doc %{name}-antialiasing-howto.txt
 
 %dir %{_libdir}/%{name}
 %dir %{_chromedir}
