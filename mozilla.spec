@@ -11,8 +11,8 @@
 			# WARNING! You have to recompile galeon with gcc2 in
 			# order to get it working with this release of mozilla
 %bcond_without	gnomevfs	# disable GnomeVFS support
-%bcond_without	heimdal	# disable heimdal support
-%bcond_without	svg	# disable svg support
+%bcond_without	heimdal		# disable heimdal support
+%bcond_without	svg		# disable svg support
 #
 %define	pre	b1
 Summary:	Mozilla - web browser
@@ -22,7 +22,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.8
-Release:	0.%{pre}.1
+Release:	0.%{pre}.2
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -36,6 +36,10 @@ Source6:	%{name}-jconsole.desktop
 Source7:	%{name}-mail.desktop
 Source9:	%{name}-terminal.desktop
 Source10:	%{name}-venkman.desktop
+Source11:	http://www.mozilla-enigmail.org/downloads/src/ipc-1.1.2.tar.gz
+# Source11-md5:
+Source12:	http://www.mozilla-enigmail.org/downloads/src/enigmail-0.90.1.tar.gz
+# Source12-md5:	
 Patch0:		%{name}-pld-homepage.patch
 Patch1:		%{name}-nss.patch
 Patch2:		%{name}-ldap_nspr_includes.patch
@@ -45,7 +49,9 @@ Patch5:		%{name}-const_cast.patch
 URL:		http://www.mozilla.org/
 %{?with_gtk1:BuildRequires:	ORBit-devel}
 BuildRequires:	automake
-%{?with_svg:BuildRequires:	cairo-devel >= 0.1.17}
+%{?with_svg:BuildRequires:	cairo-devel >= 0.3.0}
+BuildRequires:  /bin/csh
+BuildRequires:	/bin/ex
 BuildRequires:	freetype-devel >= 2.1.3
 %{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.0.0}
 %{?with_gtk1:BuildRequires:	gtk+-devel >= 1.2.0}
@@ -141,6 +147,23 @@ Programy pocztowe i obsЁuga newsСw zintegrowane z przegl╠dark╠.
 %description mailnews -l ru
 Клиент почты и новостей, на основе Mozilla. Поддерживает IMAP, POP и
 NNTP и имеет простой интерфейс пользователя.
+
+%package addon-enigmail
+Summary:	Enigmail - PGP/GPG support for Mozilla
+Summary(pl):	Enigmail - obsЁuga PGP/GPG dla Mozilli
+Group:		X11/Applications/Networking
+Requires(post,postun):	/sbin/ldconfig
+Requires(post,postun):	%{name}-mailnews = %{epoch}:%{version}-%{release}
+Requires:	%{name}-mailnews = %{epoch}:%{version}-%{release}
+
+%description addon-enigmail
+Enigmail is an extension to the mail client of Mozilla / Netscape and
+Mozilla Thunderbird which allows users to access the authentication and
+encryption features provided by GnuPG.
+
+%description addon-enigmail -l pl
+Rozszerzenie Mozilla Mail dla Mozilla Mail. Pozwala na Ёatwe korzystanie
+z dobrodziejstw GnuPG.
 
 %package chat
 Summary:	Mozilla Chat - IRC client integrated with Mozilla
@@ -246,6 +269,11 @@ Mozilla
 #%patch4 -p1
 %patch5 -p1
 
+cd extensions
+tar xvfz %{SOURCE11}
+tar xvfz %{SOURCE12}
+cd ..
+
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
 MOZILLA_OFFICIAL="1"; export MOZILLA_OFFICIAL
@@ -288,6 +316,13 @@ cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
 	--with-system-zlib \
 	--with-x
 
+%{__make}
+
+cd extensions/ipc
+./makemake -r
+%{__make}
+cd ../enigmail
+./makemake -r
 %{__make}
 
 %install
@@ -428,6 +463,12 @@ fi
 
 %postun mailnews
 /sbin/ldconfig
+%{_sbindir}/mozilla-chrome+xpcom-generate
+
+%post addon-enigmail
+%{_sbindir}/mozilla-chrome+xpcom-generate
+
+%postun addon-enigmail
 %{_sbindir}/mozilla-chrome+xpcom-generate
 
 %post chat
@@ -763,6 +804,22 @@ fi
 %ghost %{_datadir}/%{name}/chrome/overlayinfo/editor/content/overlays.rdf
 
 %{_desktopdir}/mozilla-mail.desktop
+
+%files addon-enigmail
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/components/libenigmime.so
+%{_libdir}/%{name}/components/enigmail.xpt
+%{_libdir}/%{name}/components/enigmime.xpt
+%{_libdir}/%{name}/components/ipc.xpt
+%{_libdir}/%{name}/components/enigmail.js
+%{_libdir}/%{name}/components/enigprefs-service.js
+%{_datadir}/%{name}/chrome/enigmail-en-US.jar
+%{_datadir}/%{name}/chrome/enigmail-skin-tbird.jar
+%{_datadir}/%{name}/chrome/enigmail-skin.jar
+%{_datadir}/%{name}/chrome/enigmail.jar
+%{_datadir}/%{name}/chrome/enigmime.jar
+%dir %{_datadir}/%{name}/chrome/overlayinfo/global
+%ghost %{_datadir}/%{name}/chrome/overlayinfo/global/content/overlays.rdf
 
 %files chat
 %defattr(644,root,root,755)
