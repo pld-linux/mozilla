@@ -175,7 +175,6 @@ CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 	--enable-svg \
 	%{?_with_gtk1:--enable-toolkit-gtk} \
 	%{!?_with_gtk1:--disable-toolkit-gtk --enable-default-toolkit=gtk2} \
-	--enable-xft \
 	--enable-xinerama \
 	--enable-xprint \
 	--enable-xsl \
