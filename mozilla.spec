@@ -295,6 +295,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkcache.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libns*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/liboji.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libp3p.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpipboot.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpipnss.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libpippki.so
