@@ -235,6 +235,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %attr(755,root,root) %{_libdir}/libnssckbi.so
 %attr(755,root,root) %{_libdir}/libnullplugin.so
 %attr(755,root,root) %{_libdir}/libsoftokn3.so
+%attr(755,root,root) %{_libdir}/libsmime3.so
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
 %attr(755,root,root) %{_libdir}/libxlibrgb.so
