@@ -11,14 +11,13 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.2
-Release:	0.beta.2
+Release:	0.beta.3
 Epoch:		2
 License:	GPL
 Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}b/src/%{name}-source-%{version}b.tar.gz
 Source1:	%{name}.desktop
 Source2:	%{name}.png
-#Source3:	%{name}-libart.tar.bz2
 Source4:	%{name}-addressbook.desktop
 Source5:	%{name}-chat.desktop
 Source6:	%{name}-jconsole.desktop
@@ -34,9 +33,10 @@ Patch0:		%{name}-pld-homepage.patch
 Patch1:		%{name}-gdkxft.patch
 Patch2:		%{name}-nss.patch
 Patch3:		%{name}-ldap_nspr_includes.patch
-Patch4:		gtk2mozilla_head.patch
+Patch4:		%{name}-gtk2.patch
 Patch5:		%{name}-ldap-with-nss.patch
 Patch6:		%{name}-gfx.patch
+Patch7:		%{name}-gtk2_superwin.patch
 URL:		http://www.mozilla.org/
 BuildRequires:	ORBit-devel
 BuildRequires:	autoconf
@@ -145,9 +145,10 @@ Mozilla
 %{?_with_gdkxft:%patch1 -p1}
 %patch2 -p1
 %patch3 -p1
-%{?_with_gtk2:%patch4 -p1}
+%{?_with_gtk2:%patch4 -p0}
 %patch5 -p1
 %patch6 -p1
+%{?_with_gtk2:%patch7 -p1}
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
