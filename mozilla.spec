@@ -8,7 +8,7 @@
 %bcond_with	debug	# compile without \--disable-debug
 %bcond_without	gnomevfs	# disable GnomeVFS support
 #
-%define	pre	b
+%define	pre	rc1
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
@@ -20,8 +20,8 @@ Release:	0.%{pre}.2
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
-Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{version}%{pre}/src/%{name}-source-%{version}%{pre}-source.tar.bz2
-# Source0-md5:	ee564ecbc7f443f9e49eca1d9ff57296
+Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{version}%{pre}/src/%{name}-source-%{version}%{pre}.tar.bz2
+# Source0-md5:	731f0892685a637f195d7e99a359f9ad
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-composer.desktop
@@ -240,8 +240,8 @@ Mozilla
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-%patch6 -p1
-%patch7 -p1
+#%patch6 -p1 # already included?
+#%patch7 -p1 # outdated
 cp -f security/coreconf/Linux2.5.mk security/coreconf/Linux2.6.mk
 
 %build
