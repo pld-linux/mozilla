@@ -30,10 +30,8 @@ Source12:	http://osdn.dl.sourceforge.net/mozillapl/Reg-PL-Build-ID-%{version}.xp
 Source13:	http://free.of.pl/a/adgor/lang_pl-installed-chrome.txt
 Source14:	%{name}-antialiasing-howto.txt
 Patch0:		%{name}-pld-homepage.patch
-#Patch1:		%{name}-gdkxft.patch
 Patch2:		%{name}-nss.patch
 Patch3:		%{name}-ldap_nspr_includes.patch
-#Patch4:		%{name}-gtk2.patch
 Patch5:		%{name}-ldap-with-nss.patch
 Patch6:		%{name}-gfx.patch
 URL:		http://www.mozilla.org/
@@ -143,7 +141,6 @@ Mozilla
 %patch0 -p1
 %patch2 -p1
 %patch3 -p1
-#%{!?_with_gtk1:%patch4 -p0}
 %patch5 -p1
 %patch6 -p1
 
