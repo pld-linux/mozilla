@@ -1,6 +1,5 @@
-diff -Nur mozilla/xpfe/browser/resources/locale/en-US/region.properties mozilla.new/xpfe/browser/resources/locale/en-US/region.properties
---- mozilla/xpfe/browser/resources/locale/en-US/region.properties	Tue Apr 10 01:13:30 2001
-+++ mozilla.new/xpfe/browser/resources/locale/en-US/region.properties	Sun May 13 21:39:55 2001
+--- mozilla/xpfe/browser/resources/locale/en-US/region.properties.orig	Thu Sep 13 18:57:41 2001
++++ mozilla/xpfe/browser/resources/locale/en-US/region.properties	Sat Sep 15 18:40:49 2001
 @@ -1,5 +1,5 @@
  # navigator.properties
 -homePageDefault=http://www.mozilla.org/
@@ -8,23 +7,20 @@ diff -Nur mozilla/xpfe/browser/resources/locale/en-US/region.properties mozilla.
  shopKeyword=keyword:shop [Product]
  quoteKeyword=keyword:quote [Enter symbol here]
  localKeyword=keyword:zip [Your zip code]
-@@ -11,8 +11,9 @@
+@@ -11,8 +11,8 @@
  #
  # all.js
  #
-+browser.startup.homepage=http://www.pld.org.pl/
- browser.startup.homepage=http://www.mozilla.org/
+-browser.startup.homepage=http://www.mozilla.org/start
 -browser.throbber.url=http://www.mozilla.org/
++browser.startup.homepage=http://www.pld.org.pl/
 +browser.throbber.url=http://www.pld.org.pl/
  browser.search.defaulturl=http://search.netscape.com/cgi-bin/search?search=
  
  wallet.Server=http://www.mozilla.org/wallet/tables/
-@@ -20,7 +21,7 @@
+@@ -20,4 +20,4 @@
  
  #config.js
  #
--startup.homepage_override_url=http://www.mozilla.org/mozorg.html
-+startup.homepage_override_url=http://www.pld.org.pl/
- 
- # search-panel.properties
- #   Localizable URLs
+-startup.homepage_override_url.1=http://www.mozilla.org/start
++startup.homepage_override_url.1=http://www.pld.org.pl/
