@@ -1,10 +1,11 @@
 [Desktop Entry]
+Encoding=UTF-8
 Name=Mozilla Composer
 Comment=Mozilla Composer
 Comment[pl]=Mozilla - Projektant stron WWW
 Exec=mozilla -edit
 Icon=mozilla.png
-Terminal=0
+Terminal=false
 Type=Application
 Categories=Office;X-Misc
 # vi: encoding=utf-8

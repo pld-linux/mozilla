@@ -1,11 +1,12 @@
 [Desktop Entry]
+Encoding=UTF-8
 Name=Mozilla jConsole
 Name[pl]=Mozilla jConsole
 Comment=JavaScript Console
 Comment[pl]=Konsola JavaScript
 Exec=mozilla -jconsole
 Icon=mozilla.png
-Terminal=0
+Terminal=false
 Type=Application
 Categories=Network;X-Misc
 # vi: encoding=utf-8

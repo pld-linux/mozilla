@@ -1,11 +1,12 @@
 [Desktop Entry]
+Encoding=UTF-8
 Name=Mozilla Venkman
 Name[pl]=Mozilla Venkman
 Comment=JavaScript Debugger
 Comment[pl]=Debugger JavaScript
 Exec=mozilla -venkman
 Icon=mozilla.png
-Terminal=0
+Terminal=false
 Type=Application
 Categories=Network;X-Misc
 # vi: encoding=utf-8
