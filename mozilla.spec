@@ -1,6 +1,10 @@
 #
 # Conditional build:
 # _with_gtk1		- use gtk+ 1.2.x instead of 2.x.x
+# _with_gcc2		- compile using gcc2 to get working flash and java plugins
+#			  on nest and other gcc 3.x systems. WARNING! You have to 
+#			  recompile galeon with gcc2 in order to get it working with 
+#			  this release of mozilla
 #
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
@@ -9,7 +13,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.2.1
-Release:	0.9
+Release:	0.10
 Epoch:		2
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -32,14 +36,14 @@ Patch6:		%{name}-gfx.patch
 Patch7:		%{name}-gtk2.patch
 URL:		http://www.mozilla.org/
 BuildRequires:	ORBit-devel
-BuildRequires:	Xft-devel >= 2.0-6
+BuildRequires:	Xft-devel >= 2.1-2
 BuildRequires:	autoconf
-BuildRequires:	freetype-devel >= 2.0.9
+BuildRequires:	freetype-devel >= 2.1.3
 %{?_with_gtk1:BuildRequires:	gtk+-devel}
-%{!?_with_gtk1:BuildRequires:  gtk+2-devel >= 2.1.3}
+%{!?_with_gtk1:BuildRequires:  gtk+2-devel >= 2.2.0}
 %{!?_with_gtk1:BuildRequires:  pkgconfig}
 %{!?_with_gtk1:BuildRequires:  libIDL-devel}
-%{!?_with_gtk1:BuildRequires:  freetype-devel >= 2.1.0}
+%{!?_with_gtk1:BuildRequires:  freetype-devel >= 2.1.3}
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.4
 BuildRequires:	libpng-devel
@@ -55,6 +59,11 @@ Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
 
 %define		_chromedir	%{_libdir}/%{name}/chrome
+
+%if%{?_with_gcc2:1}%{!?_with_gcc2:0}
+%define		__cc		gcc2
+%define		__cxx		gcc2
+%endif
 
 %define		_gcc_ver	%(%{__cc} -dumpversion | cut -b 1)
 %if %{_gcc_ver} == 2
@@ -148,6 +157,9 @@ export MOZ_INTERNAL_LIBART_LGPL
 CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 %endif
 
+%define		__cc		gcc2
+%define		__cxx		gcc2
+
 %configure2_13 \
 	--disable-debug \
 	--disable-dtd-debug \
@@ -181,7 +193,7 @@ CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 	--with-system-zlib \
 	--with-x
 
-%{__make}
+%{__make} 
 
 %install
 rm -rf $RPM_BUILD_ROOT
