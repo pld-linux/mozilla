@@ -183,6 +183,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}/plugins
 %dir %{_libdir}/%{name}/res
 %dir %{_libdir}/%{name}/searchplugins
+%dir %{_libdir}/%{name}/psmdata
 %dir %{_datadir}/%{name}
 
 %{_libdir}/%{name}/component.reg
@@ -307,6 +308,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/%{name}/icons
 %{_datadir}/%{name}/res
 %{_datadir}/%{name}/searchplugins
+%{_datadir}/%{name}/psmdata
 
 %{_pixmapsdir}/mozilla.png
 %{_applnkdir}/Network/WWW/mozilla.desktop
