@@ -6,6 +6,7 @@
 			# WARNING! You have to recompile galeon with gcc2 in
 			# order to get it working with this release of mozilla
 %bcond_with	debug	# compile without \--disable-debug
+%bcond_with	ft218	# compile with freetype >= 2.1.8
 %bcond_without	gnomevfs	# disable GnomeVFS support
 #
 %define	pre	rc3
@@ -40,10 +41,16 @@ Patch2:		%{name}-ldap_nspr_includes.patch
 Patch3:		%{name}-ldap-with-nss.patch
 Patch4:		%{name}-gfx.patch
 Patch5:		%{name}-alpha-gcc3.patch
+Patch6:		%{name}-freetype218.patch
 URL:		http://www.mozilla.org/
 %{?with_gtk1:BuildRequires:	ORBit-devel}
 BuildRequires:	cairo-devel >= 0.1.17
+%if %{with ft218}
+BuildRequires:	freetype-devel >= 1:2.1.8
+%else
+BuildRequires:	freetype-devel < 2.1.8
 BuildRequires:	freetype-devel >= 2.1.3
+%endif
 %{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.0.0}
 %{?with_gtk1:BuildRequires:	gtk+-devel >= 1.2.0}
 %{!?with_gtk1:BuildRequires:	gtk+2-devel >= 2.2.0}
@@ -242,6 +249,7 @@ Mozilla
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%{?with_ft218:%patch6 -p0}
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
