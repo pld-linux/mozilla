@@ -18,7 +18,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.7.6
-Release:	1
+Release:	2
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -63,8 +63,8 @@ BuildConflicts:	freetype-devel = 2.1.8
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.0
 BuildRequires:	libstdc++-devel
-BuildRequires:	nspr-devel >= 1:4.6-0.20041030.1
-BuildRequires:	nss-devel >= 3.8
+BuildRequires:	nspr-devel >= 1:4.6-0.20041030.2
+BuildRequires:	nss-devel >= 3.9.4-1
 %{!?with_gtk1:BuildRequires:	pango-devel >= 1:1.1.0}
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	pkgconfig
@@ -73,8 +73,8 @@ BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.0.0
 Requires(post,postun):	/sbin/ldconfig
-Requires:	nspr >= 1:4.6-0.20041030.1
-Requires:	nss >= 3.8
+Requires:	nspr >= 1:4.6-0.20041030.2
+Requires:	nss >= 3.9.4-1
 %{?with_gtk1:Provides:	mozilla(gtk1) = %{epoch}:%{version}-%{release}}
 %{!?with_gtk1:Provides:	mozilla(gtk2) = %{epoch}:%{version}-%{release}}
 Provides:	mozilla-embedded = %{epoch}:%{version}-%{release}
