@@ -142,7 +142,7 @@ Mozilla
 %patch0 -p1
 %patch2 -p1
 %patch3 -p1
-#%%{!?_with_gtk1:%patch4 -p0}
+%{!?_with_gtk1:%patch4 -p0}
 %patch5 -p1
 %patch6 -p1
 
