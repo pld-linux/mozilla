@@ -5,6 +5,7 @@ Version:	5.M17
 Release:	3
 License:	NPL
 Group:		X11/Applications/Networking
+Group(de):	X11/Applikationen/Netzwerkwesen
 Group(pl):	X11/Aplikacje/Sieciowe
 Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/m17/src/%{name}-source-M17.tar.bz2
 Source1:	%{name}.sh
@@ -31,6 +32,7 @@ Netscape Navigatora.
 Summary:	Mozilla - programs for mail and news
 Summary(pl):	Mozilla - programy do poczty i newsów
 Group:		X11/Applications/Networking
+Group(de):	X11/Applikationen/Netzwerkwesen
 Group(pl):	X11/Aplikacje/Sieciowe
 Requires:	%{name} = %{version}
 
@@ -44,6 +46,7 @@ Programy pocztowe i newsów zintegrowane z przegl±dark±.
 Summary:	Mozilla development crap
 Summary(pl):	Mozilla - pliki nag³ówkowe i biblioteki
 Group:		X11/Development/Libraries
+Group(de):	X11/Entwicklung/Libraries
 Group(pl):	X11/Programowanie/Biblioteki
 Requires:	%{name} = %{version}
 Requires:	%{name}-mailnews = %{version}
@@ -62,8 +65,6 @@ Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
 autoconf
 CXXFLAGS="-fno-rtti -fno-exceptions"
 MOZ_OPTIMIZE_FLAGS="$RPM_OPT_FLAGS"
-LDFLAGS="-s"
-export CXXFLAGS MOZ_OPTIMIZE_FLAGS LDFLAGS
 %configure \
 	--with-pthreads \
 	--enable-optimize \
