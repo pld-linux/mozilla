@@ -10,8 +10,8 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
-Version:	1.0
-Release:	10
+Version:	1.0.1
+Release:	1
 Epoch:		2
 License:	GPL
 Group:		X11/Applications/Networking
@@ -49,15 +49,15 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.4
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
-BuildRequires:	nss-devel >= 3.4.1
-BuildRequires:	nspr-devel >= 4.1.2-3
+BuildRequires:	nss-devel >= 3.6-1
+BuildRequires:	nspr-devel >= 4.2.2-2
 BuildRequires:	perl-modules >= 5.6.0
 %{!?_without_PL:BuildRequires: unzip}
 BuildRequires:	zip >= 2.1
 Provides:	mozilla-embedded = %{version}
 %{?_with_gdkxft:Requires:	gdkxft}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-Requires:	nss >= 3.4.1
+Requires:	nss >= 3.6-1
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
 %{!?_without_PL:Conflicts: mozilla-Lang-PL}
