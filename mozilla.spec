@@ -2,7 +2,7 @@ Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
 Version:	0.8
-Release:	0.1
+Release:	1
 Epoch:		1
 License:	NPL
 Group:		X11/Applications/Networking
@@ -12,6 +12,9 @@ Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Patch0:		%{name}-editor-overlay-menu.patch
+Patch1:		%{name}-navigator-overlay-menu0.8.patch
+Patch2:		%{name}-prefs-debug.patch
+Patch3:		%{name}-taskbar-nomozilla.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
 BuildRequires:	libjpeg-devel
@@ -62,10 +65,15 @@ Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
 %prep
 %setup -q -n mozilla
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 autoconf
 CXXFLAGS="-fno-rtti -fno-exceptions" ; export CXXFLAGS
+
+# mozilla
 %configure \
 	--with-default-mozilla-five-home=%{_libdir}/mozilla \
 	--enable-optimize="%{?debug:-O0 -g}%{!?debug:$RPM_OPT_FLAGS}" \
@@ -85,11 +93,32 @@ CXXFLAGS="-fno-rtti -fno-exceptions" ; export CXXFLAGS
 
 %{__make}
 
+# psm
+%configure \
+	--with-default-mozilla-five-home=%{_libdir}/mozilla \
+	--enable-optimize="%{?debug:-O0 -g}%{!?debug:$RPM_OPT_FLAGS}" \
+	--with-pthreads \
+	--enable-toolkit=gtk \
+	--enable-strip-libs \
+	--enable-modules=psm \
+	--with-extensions \
+	--disable-dtd-debug \
+	--disable-debug \
+	--disable-tests \
+	--disable-pedantic \
+	--with-x \
+	--with-jpeg \
+	--with-zlib \
+	--with-png \
+	--with-xprint
+
+%{__make}
+
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_bindir},%{_applnkdir}/Network/WWW} \
 	$RPM_BUILD_ROOT%{_datadir}/{idl,pixmaps} \
-	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,res,icons,searchplugins} \
+	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,res,icons,searchplugins,psmdata} \
 	$RPM_BUILD_ROOT%{_libdir}/%{name}/{components,plugins} \
 	$RPM_BUILD_ROOT%{_includedir}/%{name}/{obsolete,private}
 
@@ -108,6 +137,7 @@ ln -s ../../share/mozilla/defaults $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults
 ln -s ../../share/mozilla/res $RPM_BUILD_ROOT%{_libdir}/%{name}/res
 ln -s ../../share/mozilla/icons $RPM_BUILD_ROOT%{_libdir}/%{name}/icons
 ln -s ../../share/mozilla/searchplugins $RPM_BUILD_ROOT%{_libdir}/%{name}/searchplugins
+ln -s ../../share/mozilla/psmdata $RPM_BUILD_ROOT%{_libdir}/%{name}/psmdata
 
 cp -frL dist/bin/chrome/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
 cp -frL dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
@@ -116,6 +146,7 @@ cp -frL dist/bin/icons/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/icons
 cp -frL dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
 cp -frL dist/bin/components/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/components
 cp -frL dist/bin/plugins/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/plugins
+cp -frL dist/bin/psmdata/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/psmdata
 cp -frL dist/idl/*		$RPM_BUILD_ROOT%{_datadir}/idl
 cp -frL dist/include/*.h	$RPM_BUILD_ROOT%{_includedir}/%{name}
 cp -frL dist/include/obsolete/*.h $RPM_BUILD_ROOT%{_includedir}/%{name}/obsolete
@@ -129,6 +160,7 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{_pixmapsdir}
 
 install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}/mozilla
 install dist/bin/regchrome $RPM_BUILD_ROOT%{_bindir}
+install dist/bin/psm $RPM_BUILD_ROOT%{_bindir}/psm
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -162,6 +194,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libjsj.so
 %attr(755,root,root) %{_libdir}/libmozjs.so
 %attr(755,root,root) %{_libdir}/libnspr4.so
+%attr(755,root,root) %{_libdir}/libnssckbi.so
 %attr(755,root,root) %{_libdir}/libplc4.so
 %attr(755,root,root) %{_libdir}/libplds4.so
 %attr(755,root,root) %{_libdir}/libxpcom.so
