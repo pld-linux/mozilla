@@ -31,11 +31,9 @@ Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{versio
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-composer.desktop
-Source4:	%{name}-addressbook.desktop
 Source5:	%{name}-chat.desktop
 Source6:	%{name}-jconsole.desktop
 Source7:	%{name}-mail.desktop
-Source8:	%{name}-news.desktop
 Source9:	%{name}-terminal.desktop
 Source10:	%{name}-venkman.desktop
 Patch0:		%{name}-pld-homepage.patch
@@ -347,8 +345,8 @@ sed -e 's,lib/mozilla-%{version}%{pre},lib,g;s/mozilla-%{version}%{pre}/mozilla/
 sed -e 's|/mozilla-%{version}%{pre}||' build/unix/mozilla-nspr.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nspr.pc
 
-install %{SOURCE1} %{SOURCE3} %{SOURCE4} %{SOURCE5} %{SOURCE6} %{SOURCE7} \
-	%{SOURCE8} %{SOURCE9} %{SOURCE10} $RPM_BUILD_ROOT%{_desktopdir}
+install %{SOURCE1} %{SOURCE3} %{SOURCE5} %{SOURCE6} %{SOURCE7} \
+	%{SOURCE9} %{SOURCE10} $RPM_BUILD_ROOT%{_desktopdir}
 
 install %{SOURCE2}	$RPM_BUILD_ROOT%{_pixmapsdir}
 
@@ -805,9 +803,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %ghost %{_datadir}/%{name}/chrome/overlayinfo/cookie/content/overlays.rdf
 %ghost %{_datadir}/%{name}/chrome/overlayinfo/editor/content/overlays.rdf
 
-%{_desktopdir}/mozilla-addressbook.desktop
 %{_desktopdir}/mozilla-mail.desktop
-%{_desktopdir}/mozilla-news.desktop
 
 %files chat
 %defattr(644,root,root,755)
