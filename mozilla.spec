@@ -5,8 +5,8 @@
 Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
-Version:	0.9.3
-Release:	2
+Version:	0.9.4
+Release:	1
 Epoch:		1
 License:	NPL
 Group:		X11/Applications/Networking
@@ -18,8 +18,7 @@ Source1:	%{name}.desktop
 Source2:	%{name}.png
 Patch0:		%{name}-navigator-overlay-menu.patch
 Patch1:		%{name}-taskbar-nomozilla.patch
-Patch2:		%{name}-dlopen-plugin.patch
-Patch3:		%{name}-pld-homepage.patch
+Patch2:		%{name}-pld-homepage.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
 BuildRequires:	libjpeg-devel
@@ -31,7 +30,6 @@ BuildRequires:	fileutils
 BuildRequires:	zip >= 2.1
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	autoconf
-BuildConflicts:	mozilla-devel < %{version}
 Provides:	mozilla-embedded
 Obsoletes:	mozilla-embedded
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -87,10 +85,9 @@ Embedded part of mozilla.
 
 %prep
 %setup -q -n mozilla
-%{?_with_clearmenu:%patch0 -p1}
-%{?_with_clearmenu:%patch1 -p1}
+%{!?_without_clearmenu:%patch0 -p1}
+%{!?_without_clearmenu:%patch1 -p1}
 %patch2 -p1
-%patch3 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
