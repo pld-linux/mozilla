@@ -9,7 +9,7 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Name:		mozilla
 Version:	0.9.8
-Release:	3
+Release:	4
 Epoch:		1
 License:	GPL
 Group:		X11/Applications/Networking
@@ -35,7 +35,7 @@ BuildRequires:	nspr-devel
 BuildRequires:	nss-static
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	zip >= 2.1
-Provides:	mozilla-embedded
+Provides:	mozilla-embedded = %{version}
 %{?_with_gdkxft:Requires:	gdkxft}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	mozilla-embedded
@@ -82,7 +82,7 @@ Summary(pt_BR):	Arquivos de inclusão para desenvolvimento de programas que usam 
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}
 Requires:	nspr-devel
-Provides:	mozilla-embedded-devel
+Provides:	mozilla-embedded-devel = %{version}
 Obsoletes:	mozilla-embedded-devel
 
 %description devel
