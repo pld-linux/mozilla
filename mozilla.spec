@@ -225,7 +225,7 @@ Summary(pt_BR):	Arquivos de inclusЦo para desenvolvimento de programas que usam 
 Summary(ru):	Файлы, необходимые для использования программ, включающих Mozilla
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-Requires:	nspr-devel >= 1:4.5.0
+Requires:	nspr-devel >= 1:4.6-0.20041030.1
 Provides:	mozilla-embedded-devel = %{epoch}:%{version}-%{release}
 Obsoletes:	mozilla-embedded-devel
 
