@@ -65,7 +65,7 @@ BuildRequires:	libpng-devel >= 1.2.0
 BuildRequires:	libstdc++-devel
 BuildRequires:	nspr-devel >= 1:4.5.0
 BuildRequires:	nss-devel >= 3.8
-%{!?with_gtk1:BuildRequires:	pango-devel >= 1.1.0}
+%{!?with_gtk1:BuildRequires:	pango-devel >= 1:1.1.0}
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	pkgconfig
 BuildRequires:	xcursor-devel
