@@ -1,11 +1,3 @@
-#
-# Conditional build:
-# _with_gtk1		- use gtk+ 1.2.x instead of 2.x.x
-# _with_gcc2		- compile using gcc2 to get working flash and java plugins
-#			  on nest and other gcc 3.x systems. WARNING! You have to 
-#			  recompile galeon with gcc2 in order to get it working with 
-#			  this release of mozilla
-#
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
@@ -13,7 +5,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.2.1
-Release:	0.10
+Release:	0.11
 Epoch:		2
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -35,15 +27,11 @@ Patch5:		%{name}-ldap-with-nss.patch
 Patch6:		%{name}-gfx.patch
 Patch7:		%{name}-gtk2.patch
 URL:		http://www.mozilla.org/
-%{_with_gtk1:BuildRequires:	ORBit-devel}
+BuildRequires:	ORBit-devel
 BuildRequires:	Xft-devel >= 2.1-2
 BuildRequires:	autoconf
 BuildRequires:	freetype-devel >= 2.1.3
-%{?_with_gtk1:BuildRequires:	gtk+-devel}
-%{!?_with_gtk1:BuildRequires:  gtk+2-devel >= 2.2.0}
-%{!?_with_gtk1:BuildRequires:  pkgconfig}
-%{!?_with_gtk1:BuildRequires:  libIDL-devel}
-%{!?_with_gtk1:BuildRequires:  freetype-devel >= 2.1.3}
+BuildRequires:	gtk+-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.4
 BuildRequires:	libpng-devel
@@ -53,22 +41,13 @@ BuildRequires:	nspr-devel >= 4.2.2-2
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	zip >= 2.1
 Provides:	mozilla-embedded = %{version}
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Requires:	nss >= 3.6
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
 
 %define		_chromedir	%{_libdir}/%{name}/chrome
-
-%if%{?_with_gcc2:1}%{!?_with_gcc2:0}
-%define		__cc		gcc2
-%define		__cxx		gcc2
-%endif
-
-%define		_gcc_ver	%(%{__cc} -dumpversion | cut -b 1)
-%if %{_gcc_ver} == 2
-%define		__cxx		"%{__cc}"
-%endif
+%define		_prefix		/usr/X11R6
 
 %description
 Mozilla is an open-source web browser, designed for standards
@@ -173,8 +152,7 @@ CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 	--enable-postscript \
 	--enable-strip-libs \
 	--enable-svg \
-	%{?_with_gtk1:--enable-toolkit-gtk} \
-	%{!?_with_gtk1:--disable-toolkit-gtk --enable-default-toolkit=gtk2} \
+	--enable-toolkit-gtk \
 	--enable-xft \
 	--enable-xinerama \
 	--enable-xprint \
@@ -219,7 +197,7 @@ ln -sf ../../share/mozilla/searchplugins $RPM_BUILD_ROOT%{_libdir}/%{name}/searc
 cp -frL dist/bin/chrome/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
 cp -frL dist/bin/components/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/components
 cp -frL dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
-%{?_with_gtk1:cp -frL dist/bin/icons/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/icons}
+cp -frL dist/bin/icons/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/icons
 cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
 cp -frL dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
 cp -frL dist/idl/*		$RPM_BUILD_ROOT%{_datadir}/idl
@@ -229,15 +207,15 @@ cp -frL dist/public/ldap{,-private} $RPM_BUILD_ROOT%{_includedir}/%{name}
 install dist/bin/*.so $RPM_BUILD_ROOT%{_libdir}
 
 for f in build/unix/*.pc ; do
-	sed -e 's/mozilla-1.2.1/mozilla/' $f \
+	sed -e 's/%{name}-%{version}/%{name}/' $f \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/$(basename $f)
 done
 
-sed -e 's,lib/mozilla-1.2.1,lib,g;s/mozilla-1.2.1/mozilla/g' build/unix/mozilla-gtkmozembed.pc \
+sed -e 's,lib/%{name}-%{version},lib,g;s/%{name}-%{version}/%{name}/g' build/unix/mozilla-gtkmozembed.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-gtkmozembed.pc
 
 		
-sed -e 's|/mozilla-1.2.1||' build/unix/mozilla-nspr.pc \
+sed -e 's|/%{name}-%{version}||' build/unix/mozilla-nspr.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nspr.pc
 
 install %{SOURCE1}	$RPM_BUILD_ROOT%{_applnkdir}/Network/WWW
@@ -294,7 +272,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 #%ghost %{_libdir}/%{name}/component.reg
 %attr(755,root,root) %{_libdir}/libgkgfx.so
 %attr(755,root,root) %{_libdir}/libgtkembedmoz.so
-%{?_with_gtk1:%attr(755,root,root) %{_libdir}/libgtksuperwin.so}
+%attr(755,root,root) %{_libdir}/libgtksuperwin.so
 %attr(755,root,root) %{_libdir}/libgtkxtbin.so
 %attr(755,root,root) %{_libdir}/libjsj.so
 %attr(755,root,root) %{_libdir}/libldap50.so
@@ -304,8 +282,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 #%attr(755,root,root) %{_libdir}/libmozpango.so
 #%attr(755,root,root) %{_libdir}/libmozpango-thaix.so
 %attr(755,root,root) %{_libdir}/libmoz_art_lgpl.so
-%{!?_with_gtk1:%attr(755,root,root) %{_libdir}/libmai.so}
-%{?_with_gtk1:%attr(755,root,root) %{_libdir}/libnullplugin.so}
+%attr(755,root,root) %{_libdir}/libnullplugin.so
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
 %attr(755,root,root) %{_libdir}/libxlibrgb.so
@@ -366,8 +343,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libwallet.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwalletviewers.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwebbrwsr.so
-%{?_with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk.so}
-%{!?_with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk2.so}
+%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libx*.so
 
 %{_libdir}/%{name}/components/access*.xpt
