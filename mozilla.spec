@@ -6,20 +6,22 @@
 			# WARNING! You have to recompile galeon with gcc2 in
 			# order to get it working with this release of mozilla
 %bcond_with	debug	# compile without \--disable-debug
+%bcond_without	gnomevfs	# disable GnomeVFS support
 #
+%define	pre	rc2
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
-Version:	1.6
-Release:	3
+Version:	1.7
+Release:	0.%{pre}.1
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
-Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
-# Source0-md5:	da612f8768320dbafd0bfb3c254c2788
+Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{version}%{pre}/src/%{name}-source-%{version}%{pre}.tar.bz2
+# Source0-md5:	da2215a6281cc56bcf805fe0d5e4b6c0
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-composer.desktop
@@ -30,23 +32,23 @@ Source7:	%{name}-mail.desktop
 Source8:	%{name}-news.desktop
 Source9:	%{name}-terminal.desktop
 Source10:	%{name}-venkman.desktop
-Source11:	%{name}-libart.tar.bz2
-# Source11-md5:	d6834f4881d5947b4e0540f46b7edfb6
+#Source11:	%{name}-libart.tar.bz2
+## Source11-md5:	d6834f4881d5947b4e0540f46b7edfb6
 Patch0:		%{name}-pld-homepage.patch
 Patch1:		%{name}-nss.patch
 Patch2:		%{name}-ldap_nspr_includes.patch
 Patch3:		%{name}-ldap-with-nss.patch
 Patch4:		%{name}-gfx.patch
 Patch5:		%{name}-alpha-gcc3.patch
-Patch6:		%{name}-amd64.patch
-Patch7:		%{name}-gcc34.patch
 URL:		http://www.mozilla.org/
 %{?with_gtk1:BuildRequires:	ORBit-devel}
-BuildRequires:	automake
+BuildRequires:	cairo-devel >= 0.1.17
 BuildRequires:	freetype-devel >= 2.1.3
-BuildRequires:	freetype-devel <= 2.1.7
+%{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.0.0}
 %{?with_gtk1:BuildRequires:	gtk+-devel >= 1.2.0}
 %{!?with_gtk1:BuildRequires:	gtk+2-devel >= 2.2.0}
+# for libnegotiateauth
+BuildRequires:	heimdal-devel
 %{!?with_gtk1:BuildRequires:	libIDL-devel >= 0.8.0}
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.0
@@ -88,6 +90,10 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_gcc_ver	%(%{__cc} -dumpversion | cut -b 1)
 %if %{_gcc_ver} == 2
 %define		__cxx		"%{__cc}"
+%endif
+
+%if %{with gtk1}
+%undefine	with_gnomevfs
 %endif
 
 %description
@@ -177,6 +183,32 @@ To narzêdzie pozwala na ogl±danie DOM dla stron WWW w Mozilli. Jest
 bardzo przydatne dla ludzi rozwijaj±cych chrome w Mozilli lub
 tworz±cych strony WWW.
 
+%package gnomevfs
+Summary:	Gnome-VFS module providing support for smb:// URLs
+Summary(pl):	Modu³ Gnome-VFS dodaj±cy wsparcie dla URLi smb://
+Group:		X11/Applications/Networking
+Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+
+%description gnomevfs
+Gnome-VFS module providing support for smb:// URLs.
+
+%description gnomevfs -l pl
+Modu³ Gnome-VFS dodaj±cy wsparcie dla URLi smb://.
+
+%package calendar
+Summary:	Mozilla calendar
+Summary(pl):	Kalendarz Mozilli
+Group:		X11/Applications/Networking
+Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+
+%description calendar
+This package contains the calendar application from the Mozilla suite.
+
+%description calendar -l pl
+Ten pakiet zawiera kalendarz z zestawu aplikacji Mozilla.
+
 %package devel
 Summary:	Headers for developing programs that will use Mozilla
 Summary(pl):	Mozilla - pliki nag³ówkowe i biblioteki
@@ -203,20 +235,18 @@ Mozilla.
 Mozilla
 
 %prep
-%setup -q -n %{name} -a11
+%setup -q -n %{name}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-%patch6 -p1 
-%patch7 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
 MOZILLA_OFFICIAL="1"; export MOZILLA_OFFICIAL
-MOZ_INTERNAL_LIBART_LGPL="1"; export MOZ_INTERNAL_LIBART_LGPL
+#MOZ_INTERNAL_LIBART_LGPL="1"; export MOZ_INTERNAL_LIBART_LGPL
 
 %if %{_gcc_ver} > 2
 CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
@@ -229,6 +259,7 @@ cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
 	--disable-elf-dynstr-gc \
 	--disable-pedantic \
 	--disable-tests \
+	--enable-calendar \
 	--enable-crypto \
 	--enable-extensions \
 	--enable-ldap \
@@ -237,8 +268,10 @@ cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
 	--enable-postscript \
 	--enable-strip \
 	--enable-svg \
+	--enable-svg-renderer-cairo \
 	%{?with_gtk1:--enable-toolkit-gtk} \
 	%{!?with_gtk1:--disable-toolkit-gtk --enable-default-toolkit=gtk2} \
+	%{!?with_gnomevfs:--disable-gnomevfs} \
 	--enable-xft \
 	--enable-xinerama \
 	--enable-xprint \
@@ -259,7 +292,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d \
 	$RPM_BUILD_ROOT{%{_bindir},%{_datadir}/idl} \
 	$RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}} \
-	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,icons,res,searchplugins} \
+	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,icons,res,searchplugins,greprefs} \
 	$RPM_BUILD_ROOT%{_libdir}/%{name}/{components,plugins} \
 	$RPM_BUILD_ROOT{%{_includedir}/%{name},%{_pkgconfigdir}}
 
@@ -278,6 +311,7 @@ LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regchrome
 
 ln -sf ../../share/mozilla/chrome $RPM_BUILD_ROOT%{_chromedir}
 ln -sf ../../share/mozilla/defaults $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults
+ln -sf ../../share/mozilla/greprefs $RPM_BUILD_ROOT%{_libdir}/%{name}/greprefs
 ln -sf ../../share/mozilla/icons $RPM_BUILD_ROOT%{_libdir}/%{name}/icons
 ln -sf ../../share/mozilla/res $RPM_BUILD_ROOT%{_libdir}/%{name}/res
 ln -sf ../../share/mozilla/searchplugins $RPM_BUILD_ROOT%{_libdir}/%{name}/searchplugins
@@ -288,6 +322,7 @@ cp -frL dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
 %{?with_gtk1:cp -frL dist/bin/icons/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/icons}
 cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
 cp -frL dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
+cp -frL dist/gre/greprefs/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/greprefs
 cp -frL dist/idl/*		$RPM_BUILD_ROOT%{_datadir}/idl
 cp -frL dist/include/*		$RPM_BUILD_ROOT%{_includedir}/%{name}
 cp -frL dist/public/ldap{,-private} $RPM_BUILD_ROOT%{_includedir}/%{name}
@@ -297,15 +332,15 @@ install dist/bin/*.so $RPM_BUILD_ROOT%{_libdir}
 ln -s %{_libdir}/libxpcom.so $RPM_BUILD_ROOT%{_libdir}/%{name}/libxpcom.so
 
 for f in build/unix/*.pc ; do
-	sed -e 's/mozilla-%{version}/mozilla/' $f \
+	sed -e 's/mozilla-%{version}%{pre}/mozilla/' $f \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/$(basename $f)
 done
 
-sed -e 's,lib/mozilla-%{version},lib,g;s/mozilla-%{version}/mozilla/g' build/unix/mozilla-gtkmozembed.pc \
+sed -e 's,lib/mozilla-%{version}%{pre},lib,g;s/mozilla-%{version}%{pre}/mozilla/g' build/unix/mozilla-gtkmozembed.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-gtkmozembed.pc
 
 
-sed -e 's|/mozilla-%{version}||' build/unix/mozilla-nspr.pc \
+sed -e 's|/mozilla-%{version}%{pre}||' build/unix/mozilla-nspr.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nspr.pc
 
 install %{SOURCE1} %{SOURCE3} %{SOURCE4} %{SOURCE5} %{SOURCE6} %{SOURCE7} \
@@ -428,6 +463,34 @@ rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 
+%post gnomevfs
+umask 022
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
+	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
+
+%postun gnomevfs
+umask 022
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
+	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
+
+%post calendar
+umask 022
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
+	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
+
+%postun calendar
+umask 022
+rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat \
+	%{_datadir}/mozilla/chrome/{chrome.rdf,overlayinfo/*/*/*.rdf}
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
+
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/*
@@ -436,6 +499,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %dir %{_chromedir}
 %dir %{_libdir}/%{name}/components
 %dir %{_libdir}/%{name}/defaults
+%dir %{_libdir}/%{name}/greprefs
 %dir %{_libdir}/%{name}/icons
 %dir %{_libdir}/%{name}/plugins
 %dir %{_libdir}/%{name}/res
@@ -451,7 +515,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %attr(755,root,root) %{_libdir}/libprldap50.so
 %attr(755,root,root) %{_libdir}/libssldap50.so
 %attr(755,root,root) %{_libdir}/libmozjs.so
-%attr(755,root,root) %{_libdir}/libmoz_art_lgpl.so
+##%attr(755,root,root) %{_libdir}/libmoz_art_lgpl.so
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpcom_compat.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
@@ -476,11 +540,11 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %attr(755,root,root) %{_libdir}/%{name}/components/libimg*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjar50.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjsd.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libjsdom.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmork.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmoz*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmyspell.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnecko*.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libnegotiateauth.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkdatetime.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkfinger.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libns*.so
@@ -514,7 +578,6 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %{_libdir}/%{name}/components/bookmarks.xpt
 %{_libdir}/%{name}/components/caps.xpt
 %{_libdir}/%{name}/components/chardet.xpt
-%{_libdir}/%{name}/components/chrome.xpt
 %{_libdir}/%{name}/components/commandhandler.xpt
 %{_libdir}/%{name}/components/composer.xpt
 %{_libdir}/%{name}/components/content*.xpt
@@ -529,6 +592,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %{_libdir}/%{name}/components/find.xpt
 %{_libdir}/%{name}/components/filepicker.xpt
 %{_libdir}/%{name}/components/gfx*.xpt
+%{_libdir}/%{name}/components/gksvgrenderer.xpt
 %{_libdir}/%{name}/components/helperAppDlg.xpt
 %{_libdir}/%{name}/components/history.xpt
 %{_libdir}/%{name}/components/htmlparser.xpt
@@ -569,7 +633,6 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %{_libdir}/%{name}/components/unicharutil.xpt
 %{_libdir}/%{name}/components/uriloader.xpt
 %{_libdir}/%{name}/components/urlbarhistory.xpt
-%{_libdir}/%{name}/components/util.xpt
 %{_libdir}/%{name}/components/wallet*.xpt
 %{_libdir}/%{name}/components/webBrowser_core.xpt
 %{_libdir}/%{name}/components/webbrowserpersist.xpt
@@ -582,7 +645,6 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 
 # Is this a correct package for these files?
 %{_libdir}/%{name}/components/ipcd.xpt
-%{_libdir}/%{name}/components/ucnative.xpt
 %attr(755,root,root) %{_libdir}/%{name}/components/libipcdc.so
 %{!?with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libsystem-pref.so}
 
@@ -622,6 +684,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %{_datadir}/%{name}/chrome/modern.jar
 %{_datadir}/%{name}/chrome/pipnss.jar
 %{_datadir}/%{name}/chrome/pippki.jar
+%{_datadir}/%{name}/chrome/svg.jar
 %{_datadir}/%{name}/chrome/tasks.jar
 %{_datadir}/%{name}/chrome/toolkit.jar
 
@@ -630,6 +693,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %{_datadir}/%{name}/chrome/icons
 %exclude %{_datadir}/%{name}/chrome/icons/default/abcardWindow*.xpm
 %exclude %{_datadir}/%{name}/chrome/icons/default/addressbookWindow*.xpm
+%exclude %{_datadir}/%{name}/chrome/icons/default/calendar-window*.xpm
 %exclude %{_datadir}/%{name}/chrome/icons/default/chatzilla-window*.xpm
 %exclude %{_datadir}/%{name}/chrome/icons/default/messengerWindow*.xpm
 %exclude %{_datadir}/%{name}/chrome/icons/default/msgcomposeWindow*.xpm
@@ -654,6 +718,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %ghost %{_datadir}/%{name}/chrome/installed-chrome.txt
 
 %{_datadir}/%{name}/defaults
+%{_datadir}/%{name}/greprefs
 %exclude %{_datadir}/%{name}/defaults/pref/inspector.js
 %{_datadir}/%{name}/icons
 %{_datadir}/%{name}/res
@@ -754,6 +819,18 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %ghost %{_datadir}/%{name}/chrome/overlayinfo/inspector/content/overlays.rdf
 %{_datadir}/%{name}/defaults/pref/inspector.js
 %{_datadir}/%{name}/res/inspector
+
+%files gnomevfs
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/components/libnkgnomevfs.so
+
+%files calendar
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/%{name}/components/libxpical.so
+%{_libdir}/%{name}/components/calendar.xpt
+%{_libdir}/%{name}/components/calendarService.js
+%{_datadir}/%{name}/chrome/calendar.jar
+%{_datadir}/%{name}/chrome/icons/default/calendar-window*.xpm
 
 %files devel
 %defattr(644,root,root,755)
