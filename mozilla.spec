@@ -46,6 +46,7 @@ Patch2:		%{name}-ldap_nspr_includes.patch
 Patch3:		%{name}-ldap-with-nss.patch
 Patch4:		%{name}-alpha-gcc3.patch
 Patch5:		%{name}-const_cast.patch
+Patch6:		%{name}-makemake.patch
 URL:		http://www.mozilla.org/
 %{?with_gtk1:BuildRequires:	ORBit-devel}
 BuildRequires:	automake
@@ -274,6 +275,7 @@ cd extensions
 tar xvfz %{SOURCE11}
 tar xvfz %{SOURCE12}
 cd ..
+%patch6 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
