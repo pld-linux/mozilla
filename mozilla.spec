@@ -9,7 +9,7 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
-Version:	1.2
+Version:	1.2.1
 Release:	0.1
 Epoch:		2
 License:	GPL
@@ -32,7 +32,7 @@ Patch0:		%{name}-pld-homepage.patch
 #Patch1:		%{name}-gdkxft.patch
 Patch2:		%{name}-nss.patch
 Patch3:		%{name}-ldap_nspr_includes.patch
-Patch4:		%{name}-gtk2.patch
+#Patch4:		%{name}-gtk2.patch
 Patch5:		%{name}-ldap-with-nss.patch
 Patch6:		%{name}-gfx.patch
 URL:		http://www.mozilla.org/
@@ -142,7 +142,7 @@ Mozilla
 %patch0 -p1
 %patch2 -p1
 %patch3 -p1
-%{!?_with_gtk1:%patch4 -p0}
+#%{!?_with_gtk1:%patch4 -p0}
 %patch5 -p1
 %patch6 -p1
 
@@ -175,6 +175,7 @@ CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 	--enable-svg \
 	%{?_with_gtk1:--enable-toolkit-gtk} \
 	%{!?_with_gtk1:--disable-toolkit-gtk --enable-default-toolkit=gtk2} \
+	--enable-xft \
 	--enable-xinerama \
 	--enable-xprint \
 	--enable-xsl \
