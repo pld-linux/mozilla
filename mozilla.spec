@@ -18,7 +18,7 @@ Group:		X11/Applications/Networking
 Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.gz
 Source1:	%{name}.desktop
 Source2:	%{name}.png
-Source3:	%{name}-libart.tar.bz2
+#Source3:	%{name}-libart.tar.bz2
 Source4:	%{name}-addressbook.desktop
 Source5:	%{name}-chat.desktop
 Source6:	%{name}-jconsole.desktop
@@ -138,7 +138,8 @@ Mozilla.
 Mozilla
 
 %prep
-%setup -q -a 3 -n mozilla
+#%setup -q -a 3 -n mozilla
+%setup -q -n mozilla
 # for update:
 #%patch0 -p1
 %{?_with_gdkxft:%patch1 -p1}
