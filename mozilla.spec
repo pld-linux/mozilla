@@ -11,7 +11,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.0
-Release:	8
+Release:	9
 Epoch:		2
 License:	GPL
 Group:		X11/Applications/Networking
@@ -223,6 +223,7 @@ cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
 cp -frL dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
 cp -frL dist/idl/*		$RPM_BUILD_ROOT%{_datadir}/idl
 cp -frL dist/include/*		$RPM_BUILD_ROOT%{_includedir}/%{name}
+cp -frL dist/public/ldap{,-private} $RPM_BUILD_ROOT%{_includedir}/%{name}
 
 install dist/bin/*.so $RPM_BUILD_ROOT%{_libdir}
 
