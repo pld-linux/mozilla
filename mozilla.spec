@@ -1,18 +1,18 @@
 Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
-Version:	0.6
-Release:	2
+Version:	0.7
+Release:	1
 Epoch:		1
 License:	NPL
 Group:		X11/Applications/Networking
 Group(de):	X11/Applikationen/Netzwerkwesen
 Group(pl):	X11/Aplikacje/Sieciowe
-Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source.tar.bz2
+Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
 Source1:	%{name}.desktop
-Patch0:		%{name}-no_libnsl.patch
-Patch1:		%{name}-default-home.patch
-Patch2:		%{name}-user-agent.patch
+Patch0:		%{name}-editor-overlay-menu.patch
+Patch1:		%{name}-navigator-overlay-menu.patch
+Patch2:		%{name}-psm-sparc-config.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
 BuildRequires:	libjpeg-devel
@@ -63,8 +63,8 @@ Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
 %prep
 %setup -q -n mozilla
 %patch0 -p1
-%patch1 -p0
-%patch2 -p0
+%patch1 -p1
+%patch2 -p1
 
 %build
 autoconf
