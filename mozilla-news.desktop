@@ -6,4 +6,5 @@ Icon=mozilla.png
 Terminal=0
 Type=Application
 Categories=Network;News
+Encoding=UTF-8
 # vi: encoding=utf-8
