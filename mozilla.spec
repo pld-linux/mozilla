@@ -13,13 +13,13 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
-Version:	1.5
-Release:	2
+Version:	1.6
+Release:	0.1
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
-# Source0-md5:	9d59651eac39a95da756d38fe5385896
+# Source0-md5:	da612f8768320dbafd0bfb3c254c2788
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-composer.desktop
@@ -38,20 +38,19 @@ Patch2:		%{name}-ldap_nspr_includes.patch
 Patch3:		%{name}-ldap-with-nss.patch
 Patch4:		%{name}-gfx.patch
 Patch5:		%{name}-alpha-gcc3.patch
-Patch6:		%{name}-xpcom-aliasing.patch
-Patch7:		%{name}-amd64.patch
+Patch6:		%{name}-amd64.patch
 URL:		http://www.mozilla.org/
-%{?_with_gtk1:BuildRequires:	ORBit-devel}
+%{?with_gtk1:BuildRequires:	ORBit-devel}
 BuildRequires:	freetype-devel >= 2.1.3
-%{?_with_gtk1:BuildRequires:	gtk+-devel >= 1.2.0}
-%{!?_with_gtk1:BuildRequires:	gtk+2-devel >= 2.2.0}
-%{!?_with_gtk1:BuildRequires:	libIDL-devel >= 0.8.0}
+%{?with_gtk1:BuildRequires:	gtk+-devel >= 1.2.0}
+%{!?with_gtk1:BuildRequires:	gtk+2-devel >= 2.2.0}
+%{!?with_gtk1:BuildRequires:	libIDL-devel >= 0.8.0}
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.0
 BuildRequires:	libstdc++-devel
-BuildRequires:	nspr-devel >= 1:4.3-2.20030517
+BuildRequires:	nspr-devel >= 1:4.5.0
 BuildRequires:	nss-devel >= 3.8
-%{!?_with_gtk1:BuildRequires:	pango-devel >= 1.1.0}
+%{!?with_gtk1:BuildRequires:	pango-devel >= 1.1.0}
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	pkgconfig
 BuildRequires:	xcursor-devel
@@ -60,11 +59,11 @@ BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.0.0
 Requires(post,postun):	/sbin/ldconfig
 Requires:	nss >= 3.8
-%{?_with_gtk1:Provides:	mozilla(gtk1) = %{epoch}:%{version}-%{release}}
-%{!?_with_gtk1:Provides:	mozilla(gtk2) = %{epoch}:%{version}-%{release}}
+%{?with_gtk1:Provides:	mozilla(gtk1) = %{epoch}:%{version}-%{release}}
+%{!?with_gtk1:Provides:	mozilla(gtk2) = %{epoch}:%{version}-%{release}}
 Provides:	mozilla-embedded = %{epoch}:%{version}-%{release}
-%{?_with_gtk1:Provides:	mozilla-embedded(gtk1) = %{epoch}:%{version}-%{release}}
-%{!?_with_gtk1:Provides:	mozilla-embedded(gtk2) = %{epoch}:%{version}-%{release}}
+%{?with_gtk1:Provides:	mozilla-embedded(gtk1) = %{epoch}:%{version}-%{release}}
+%{!?with_gtk1:Provides:	mozilla-embedded(gtk2) = %{epoch}:%{version}-%{release}}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
@@ -74,7 +73,7 @@ Obsoletes:	mozilla-theme-kzilla
 
 %define		_chromedir	%{_libdir}/%{name}/chrome
 
-%if %{?_with_gcc2:1}%{!?_with_gcc2:0}
+%if %{with gcc2}
 %define		__cc		gcc2
 %define		__cxx		gcc2
 %endif
@@ -205,7 +204,6 @@ Mozilla
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1 
-%patch7 -p1 
 cp -f security/coreconf/Linux2.5.mk security/coreconf/Linux2.6.mk
 
 %build
@@ -218,7 +216,7 @@ CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 %endif
 
 %configure2_13 \
-	%{!?_with_debug:--disable-debug} \
+	%{!?with_debug:--disable-debug} \
 	--disable-elf-dynstr-gc \
 	--disable-pedantic \
 	--disable-tests \
@@ -230,8 +228,8 @@ CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 	--enable-postscript \
 	--enable-strip \
 	--enable-svg \
-	%{?_with_gtk1:--enable-toolkit-gtk} \
-	%{!?_with_gtk1:--disable-toolkit-gtk --enable-default-toolkit=gtk2} \
+	%{?with_gtk1:--enable-toolkit-gtk} \
+	%{!?with_gtk1:--disable-toolkit-gtk --enable-default-toolkit=gtk2} \
 	--enable-xft \
 	--enable-xinerama \
 	--enable-xprint \
@@ -278,7 +276,7 @@ ln -sf ../../share/mozilla/searchplugins $RPM_BUILD_ROOT%{_libdir}/%{name}/searc
 cp -frL dist/bin/chrome/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
 cp -frL dist/bin/components/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/components
 cp -frL dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
-%{?_with_gtk1:cp -frL dist/bin/icons/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/icons}
+%{?with_gtk1:cp -frL dist/bin/icons/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/icons}
 cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
 cp -frL dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
 cp -frL dist/idl/*		$RPM_BUILD_ROOT%{_datadir}/idl
@@ -407,7 +405,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 
 %attr(755,root,root) %{_libdir}/libgkgfx.so
 %attr(755,root,root) %{_libdir}/libgtkembedmoz.so
-%{?_with_gtk1:%attr(755,root,root) %{_libdir}/libgtksuperwin.so}
+%{?with_gtk1:%attr(755,root,root) %{_libdir}/libgtksuperwin.so}
 %attr(755,root,root) %{_libdir}/libgtkxtbin.so
 %attr(755,root,root) %{_libdir}/libjsj.so
 %attr(755,root,root) %{_libdir}/libldap50.so
@@ -466,8 +464,8 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libwalletviewers.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwebbrwsr.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwebsrvcs.so
-%{?_with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk.so}
-%{!?_with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk2.so}
+%{?with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk.so}
+%{!?with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk2.so}
 %attr(755,root,root) %{_libdir}/%{name}/components/libx*.so
 
 %{_libdir}/%{name}/components/access*.xpt
@@ -525,7 +523,6 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/sidebar.xpt
 %{_libdir}/%{name}/components/signonviewer.xpt
 %{_libdir}/%{name}/components/spellchecker.xpt
-%{_libdir}/%{name}/components/timebomb.xpt
 %{_libdir}/%{name}/components/txmgr.xpt
 %{_libdir}/%{name}/components/txtsvc.xpt
 %{_libdir}/%{name}/components/typeaheadfind.xpt
@@ -549,7 +546,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 #%{_libdir}/%{name}/components/transmngr.xpt
 %{_libdir}/%{name}/components/ucnative.xpt
 %attr(755,root,root) %{_libdir}/%{name}/components/libipcdc.so
-%{!?_with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libsystem-pref.so}
+%{!?with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libsystem-pref.so}
 #%attr(755,root,root) %{_libdir}/%{name}/components/libtransmngr_client.so
 
 %{_libdir}/%{name}/components/jsconsole-clhandler.js
@@ -566,6 +563,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/nsSidebar.js
 %{_libdir}/%{name}/components/nsUpdateNotifier.js
 %{_libdir}/%{name}/components/nsXmlRpcClient.js
+%{_libdir}/%{name}/components/offlineStartup.js
 
 # not *.dat, so check-files can catch any new files
 # (and they won't be just silently placed empty in rpm)
@@ -588,6 +586,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_datadir}/%{name}/chrome/modern.jar
 %{_datadir}/%{name}/chrome/pipnss.jar
 %{_datadir}/%{name}/chrome/pippki.jar
+%{_datadir}/%{name}/chrome/tasks.jar
 %{_datadir}/%{name}/chrome/toolkit.jar
 
 %{_datadir}/%{name}/chrome/chrome.rdf
