@@ -12,8 +12,8 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
-Version:	1.4a
-Release:	0.2
+Version:	1.4b
+Release:	0.1
 Epoch:		3
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -46,13 +46,13 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.4
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
-BuildRequires:	nss-devel >= 3.7.2
-BuildRequires:	nspr-devel >= 4.2.2-2
+BuildRequires:	nss-devel >= 3.7.3
+BuildRequires:	nspr-devel >= 4.3
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	zip >= 2.1
 Provides:	mozilla-embedded = %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-Requires:	nss >= 3.7.2
+Requires:	nss >= 3.7.3
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
 
