@@ -110,7 +110,7 @@ Mozilla.
 %{?_with_gdkxft:%patch3 -p1}
 %patch4 -p1
 %patch5 -p1
-%patch6 -p1
+%{?_with_gtk2:%patch6 -p1}
 %{?_with_gtk2:%patch7 -p1}
 
 %build
