@@ -8,7 +8,7 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Name:		mozilla
 Version:	0.9.6
-Release:	2
+Release:	3
 Epoch:		1
 License:	GPL
 # Mirror0:	ftp://sunsite.icm.edu.pl/pub/mozilla/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
@@ -28,6 +28,7 @@ BuildRequires:	libmng-devel
 BuildRequires:	libpng-devel
 BuildRequires:	gtk+-devel
 BuildRequires:	ORBit-devel
+BuildRequires:	nspr-devel
 BuildRequires:	fileutils
 BuildRequires:	zip >= 2.1
 BuildRequires:	perl-modules >= 5.6.0
@@ -112,6 +113,7 @@ BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
 
 %configure2_13 \
 	--with-default-mozilla-five-home=%{_libdir}/mozilla \
+	--with-nspr-prefix="/usr" \
 	--enable-optimize="%{rpmcflags}" \
 	--with-pthreads \
 	--enable-toolkit=gtk \
@@ -229,11 +231,8 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %attr(755,root,root) %{_libdir}/libmozjs.so
 %attr(755,root,root) %{_libdir}/libmozpango.so
 %attr(755,root,root) %{_libdir}/libmozpango-thaix.so
-%attr(755,root,root) %{_libdir}/libnspr4.so
 %attr(755,root,root) %{_libdir}/libnssckbi.so
 %attr(755,root,root) %{_libdir}/libnullplugin.so
-%attr(755,root,root) %{_libdir}/libplc4.so
-%attr(755,root,root) %{_libdir}/libplds4.so
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
 %attr(755,root,root) %{_libdir}/libxlibrgb.so
