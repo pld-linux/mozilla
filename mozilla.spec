@@ -71,8 +71,8 @@ Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
 
 %prep
 %setup -q -n mozilla
-#%patch0 -p1
-#%patch1 -p1
+%patch0 -p1
+%patch1 -p1
 %patch2 -p1
 %patch3 -p1
 
