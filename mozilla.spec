@@ -198,6 +198,7 @@ Mozilla
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+cp -f security/coreconf/Linux2.5.mk security/coreconf/Linux2.6.mk
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
