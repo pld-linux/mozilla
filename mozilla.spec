@@ -26,13 +26,13 @@ Patch4:		%{name}-gdkxft.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	ORBit-devel
 BuildRequires:	autoconf
-BuildRequires:	freetype-devel
+BuildRequires:	freetype-devel >= 2.0.9
 BuildRequires:	gtk+-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
-BuildRequires:	nspr-devel
+BuildRequires:	nspr-devel >= 4.1.2-3
 #BuildRequires:	nss-static
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	zip >= 2.1
