@@ -111,7 +111,7 @@ Mozilla.
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
-%patch7 -p1
+%{?_with_gtk2:%patch7 -p1}
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
