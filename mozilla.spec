@@ -49,7 +49,7 @@ BuildRequires:	libmng-devel >= 1.0.4
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	nss-devel >= 3.4.2-3.20020929
-BuildRequires:	nspr-devel >= 4.1.2-3
+BuildRequires:	nspr-devel >= 4.2.2.b
 BuildRequires:	perl-modules >= 5.6.0
 %{!?_without_PL:BuildRequires: unzip}
 BuildRequires:	zip >= 2.1
@@ -232,14 +232,18 @@ cp -frL dist/public/ldap{,-private} $RPM_BUILD_ROOT%{_includedir}/%{name}
 install dist/bin/*.so $RPM_BUILD_ROOT%{_libdir}
 
 for f in build/unix/*.pc ; do
-	sed -e 's/%{name}-%{version}/%{name}/' $f \
+	sed -e 's/%{name}-%{version}b/%{name}/' $f \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/$(basename $f)
 done
+#for f in build/unix/*.pc ; do
+#	sed -e 's/%{name}b/%{name}/' $f \
+#		> $RPM_BUILD_ROOT%{_pkgconfigdir}/$(basename $f)
+#done
 
 sed -e 's,lib/mozilla-1.2b,lib,g;s/mozilla-1.2b/mozilla/g' build/unix/mozilla-gtkmozembed.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-gtkmozembed.pc
 		
-sed -e 's|/%{name}-%{version}||; s|/X11R6||' build/unix/mozilla-nspr.pc \
+sed -e 's|/%{name}-%{version}b||; s|/X11R6||' build/unix/mozilla-nspr.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nspr.pc
 
 
@@ -318,7 +322,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/libgkgfx.so
 %attr(755,root,root) %{_libdir}/libgtkembedmoz.so
 %{!?_with_gtk2:%attr(755,root,root) %{_libdir}/libgtksuperwin.so}
-%{!?_with_gtk2:%attr(755,root,root) %{_libdir}/libgtkxtbin.so}
+%attr(755,root,root) %{_libdir}/libgtkxtbin.so
 %attr(755,root,root) %{_libdir}/libjsj.so
 %attr(755,root,root) %{_libdir}/libldap50.so
 %attr(755,root,root) %{_libdir}/libprldap50.so
@@ -327,7 +331,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 #%attr(755,root,root) %{_libdir}/libmozpango.so
 #%attr(755,root,root) %{_libdir}/libmozpango-thaix.so
 %attr(755,root,root) %{_libdir}/libmoz_art_lgpl.so
-#%{?_with_gtk2:%attr(755,root,root) %{_libdir}/libmai.so}
+%{?_with_gtk2:%attr(755,root,root) %{_libdir}/libmai.so}
 %{!?_with_gtk2:%attr(755,root,root) %{_libdir}/libnullplugin.so}
 %attr(755,root,root) %{_libdir}/libxpcom.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
