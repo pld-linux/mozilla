@@ -1,3 +1,9 @@
+
+#
+# todo:
+# - svg support
+#
+
 #
 # Conditional build:
 # _with_gtk1		- use gtk+ 1.2.x instead of 2.x.x
