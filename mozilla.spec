@@ -30,7 +30,7 @@ BuildRequires:	ORBit-devel
 BuildRequires:	libmng-devel
 BuildRequires:	fileutils
 BuildRequires:	zip >= 2.1
-BuildRequires:	perl >= 5.6.0
+BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	autoconf
 BuildConflicts:	mozilla-devel < %{version}
 Provides:	mozilla-embedded
