@@ -39,6 +39,7 @@ BuildRequires:	zip >= 2.1
 Provides:	mozilla-embedded = %{version}
 %{?_with_gdkxft:Requires:	gdkxft}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+Requires:	nss >= 3.4
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
 
