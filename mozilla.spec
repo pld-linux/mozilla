@@ -8,10 +8,12 @@
 			# gcc2-compiled Java plugins on nest and other gcc 3.x systems.
 			# WARNING! You have to recompile galeon with gcc2 in
 			# order to get it working with this release of mozilla
-%bcond_with	debug	# compile without \--disable-debug
+%bcond_with	ft218	# compile with freetype >= 2.1.8
 %bcond_without	gnomevfs	# disable GnomeVFS support
+%bcond_without	heimdal	# disable heimdal support
+%bcond_without	svg	# disable svg support
 #
-%define	pre	a1
+%define	pre	a2
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
@@ -24,7 +26,7 @@ Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{version}%{pre}/src/%{name}-source-%{version}%{pre}.tar.bz2
-# Source0-md5:	5ba8b7d5d581fc407f33857dd8d3756e
+# Source0-md5:	610007ae35933022fc167f4166b1293e
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-composer.desktop
@@ -42,15 +44,24 @@ Patch1:		%{name}-nss.patch
 Patch2:		%{name}-ldap_nspr_includes.patch
 Patch3:		%{name}-ldap-with-nss.patch
 Patch4:		%{name}-alpha-gcc3.patch
+# http://bugzilla.mozilla.org/show_bug.cgi?id=234035
+# http://bugzilla.mozilla.org/attachment.cgi?id=149334&action=view
+Patch5:		%{name}-freetype218.patch
 URL:		http://www.mozilla.org/
 %{?with_gtk1:BuildRequires:	ORBit-devel}
-BuildRequires:	cairo-devel >= 0.1.17
+%{?with_svg:BuildRequires:	cairo-devel >= 0.1.17}
+%if %{with ft218}
+BuildRequires:	freetype-devel >= 1:2.1.8
+%else
 BuildRequires:	freetype-devel >= 2.1.3
+BuildRequires:	freetype-devel < 1:2.1.8
+BuildConflicts:	freetype-devel = 2.1.8
+%endif
 %{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.0.0}
 %{?with_gtk1:BuildRequires:	gtk+-devel >= 1.2.0}
 %{!?with_gtk1:BuildRequires:	gtk+2-devel >= 2.2.0}
 # for libnegotiateauth
-BuildRequires:	heimdal-devel
+%{?with_heimdal:BuildRequires:	heimdal-devel}
 %{!?with_gtk1:BuildRequires:	libIDL-devel >= 0.8.0}
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.0
@@ -243,6 +254,7 @@ Mozilla
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%{?with_ft218:%patch5 -p0}
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
@@ -256,7 +268,7 @@ cp -f /usr/share/automake/config.* build/autoconf
 cp -f /usr/share/automake/config.* nsprpub/build/autoconf
 cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
 %configure2_13 \
-	%{!?with_debug:--disable-debug} \
+	%{!?debug:--disable-debug} \
 	--disable-elf-dynstr-gc \
 	--disable-pedantic \
 	--disable-tests \
@@ -267,9 +279,9 @@ cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
 	--enable-mathml \
 	--enable-optimize="%{rpmcflags}" \
 	--enable-postscript \
-	--enable-strip \
-	--enable-svg \
-	--enable-svg-renderer-cairo \
+	%{!?debug:--enable-strip} \
+	%{?with_svg:--enable-svg} \
+	%{?with_svg:--enable-svg-renderer-cairo} \
 	%{?with_gtk1:--enable-toolkit-gtk} \
 	%{!?with_gtk1:--disable-toolkit-gtk --enable-default-toolkit=gtk2} \
 	%{!?with_gnomevfs:--disable-gnomevfs} \
@@ -360,22 +372,36 @@ cat << EOF > $RPM_BUILD_ROOT%{_bindir}/mozilla
 #!/bin/sh
 # (c) vip at linux.pl, wolf at pld-linux.org
 
-PING=\`%{_bindir}/mozilla-bin -remote 'ping()' 2>&1 >/dev/null\`
-if [ -n "\$PING" ]; then
-	%{_bindir}/mozilla-bin "\$1"
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla
+if [ "\$1" == "-remote" ]; then
+	%{_bindir}/mozilla-bin "\$@"
 else
-	if [ -z "\$1" ]; then
-		%{_bindir}/mozilla-bin -remote 'xfeDoCommand (openBrowser)'
-	elif [ "\$1" == "-mail" ]; then
-		%{_bindir}/mozilla-bin -remote 'xfeDoCommand (openInbox)'
-	elif [ "\$1" == "-edit" ]; then
-		%{_bindir}/mozilla-bin -remote 'xfeDoCommand (composeMessage)'
-	else
-		grep browser.tabs.opentabfor.middleclick ~/.mozilla/default/*/prefs.js | grep true > /dev/null
-		if [ $? -eq 0 ]; then
-			%{_bindir}/mozilla-bin -remote "OpenUrl(\$1,new-tab)"
+	PING=\`%{_bindir}/mozilla-bin -remote 'ping()' 2>&1 >/dev/null\`
+	if [ -n "\$PING" ]; then
+		if [ -f "\`pwd\`/\$1" ]; then
+			%{_bindir}/mozilla-bin "file://\`pwd\`/\$1"
 		else
-			%{_bindir}/mozilla-bin -remote "OpenUrl(\$1,new-window)"
+			%{_bindir}/mozilla-bin "\$@"
+		fi
+	else
+		if [ -z "\$1" ]; then
+			%{_bindir}/mozilla-bin -remote 'xfeDoCommand (openBrowser)'
+		elif [ "\$1" == "-mail" ]; then
+			%{_bindir}/mozilla-bin -remote 'xfeDoCommand (openInbox)'
+		elif [ "\$1" == "-compose" ]; then
+			%{_bindir}/mozilla-bin -remote 'xfeDoCommand (composeMessage)'
+		else
+			if [ -f "\`pwd\`/\$1" ]; then
+				URL="file://\`pwd\`/\$1"
+			else
+				URL="\$1"
+			fi
+			grep browser.tabs.opentabfor.middleclick ~/.mozilla/default/*/prefs.js | grep true > /dev/null
+			if [ $? -eq 0 ]; then
+				%{_bindir}/mozilla-bin -remote "OpenUrl(\$URL,new-tab)"
+			else
+				%{_bindir}/mozilla-bin -remote "OpenUrl(\$URL,new-window)"
+			fi
 		fi
 	fi
 fi
@@ -545,7 +571,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %attr(755,root,root) %{_libdir}/%{name}/components/libmoz*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmyspell.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnecko*.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libnegotiateauth.so
+%{?with_heimdal:%attr(755,root,root) %{_libdir}/%{name}/components/libnegotiateauth.so}
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkdatetime.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkfinger.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libns*.so
@@ -559,6 +585,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %attr(755,root,root) %{_libdir}/%{name}/components/librdf.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libspellchecker.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libsql.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libsroaming.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtransformiix.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtxmgr.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtypeaheadfind.so
@@ -594,7 +621,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %{_libdir}/%{name}/components/find.xpt
 %{_libdir}/%{name}/components/filepicker.xpt
 %{_libdir}/%{name}/components/gfx*.xpt
-%{_libdir}/%{name}/components/gksvgrenderer.xpt
+%{?with_svg:%{_libdir}/%{name}/components/gksvgrenderer.xpt}
 %{_libdir}/%{name}/components/helperAppDlg.xpt
 %{_libdir}/%{name}/components/history.xpt
 %{_libdir}/%{name}/components/htmlparser.xpt
@@ -636,7 +663,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %{_libdir}/%{name}/components/uconv.xpt
 %{_libdir}/%{name}/components/unicharutil.xpt
 %{_libdir}/%{name}/components/uriloader.xpt
-%{_libdir}/%{name}/components/urlbarhistory.xpt
+#{_libdir}/%{name}/components/urlbarhistory.xpt
 %{_libdir}/%{name}/components/wallet*.xpt
 %{_libdir}/%{name}/components/webBrowser_core.xpt
 %{_libdir}/%{name}/components/webbrowserpersist.xpt
@@ -648,7 +675,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %{_libdir}/%{name}/components/x*.xpt
 
 # Is this a correct package for these files?
-%{_libdir}/%{name}/components/ipcd.xpt
+%{_libdir}/%{name}/components/ipcd*.xpt
 %attr(755,root,root) %{_libdir}/%{name}/components/libipcdc.so
 %{!?with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libsystem-pref.so}
 
@@ -689,7 +716,8 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %{_datadir}/%{name}/chrome/pipnss.jar
 %{_datadir}/%{name}/chrome/pippki.jar
 %{_datadir}/%{name}/chrome/sql.jar
-%{_datadir}/%{name}/chrome/svg.jar
+%{_datadir}/%{name}/chrome/sroaming.jar
+%{?with_svg:%{_datadir}/%{name}/chrome/svg.jar}
 %{_datadir}/%{name}/chrome/tasks.jar
 %{_datadir}/%{name}/chrome/toolkit.jar
 
@@ -825,9 +853,11 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %{_datadir}/%{name}/defaults/pref/inspector.js
 %{_datadir}/%{name}/res/inspector
 
+%if %{with gnomevfs}
 %files gnomevfs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}/components/libnkgnomevfs.so
+%endif
 
 %files calendar
 %defattr(644,root,root,755)
