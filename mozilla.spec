@@ -2,6 +2,7 @@
 # Conditional build:
 # _with_clearmenu
 # _with_gdkxft
+# _with_gtk2
 
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
@@ -9,7 +10,7 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Name:		mozilla
 Version:	1.0.rc1
-Release:	0.1
+Release:	0.2
 Epoch:		1
 License:	GPL
 Group:		X11/Applications/Networking
@@ -24,11 +25,14 @@ Patch2:		%{name}-pld-homepage.patch
 Patch3:		%{name}-gdkxft.patch
 Patch4:		%{name}-nss.patch
 Patch5:		%{name}-ldap_nspr_includes.patch
+Patch6:		http://people.redhat.com/blizzard/mozilla/gtk2_embedding/2002-04-11/gtk2_embed.patch
+Patch7:		http://people.redhat.com/blizzard/mozilla/gtk2_embedding/2002-04-11/gtk2_widget.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	ORBit-devel
 BuildRequires:	autoconf
 BuildRequires:	freetype-devel >= 2.0.9
-BuildRequires:	gtk+-devel
+%{!?_with_gtk2:BuildRequires:	gtk+-devel}
+%{?_with_gtk2:BuildRequires:	gtk+2-devel >= 2.0.2}
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel
 BuildRequires:	libpng-devel
@@ -106,6 +110,8 @@ Mozilla.
 %{?_with_gdkxft:%patch3 -p1}
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
+%patch7 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
@@ -130,7 +136,8 @@ export MOZ_INTERNAL_LIBART_LGPL
 	--enable-postscript \
 	--enable-strip-libs \
 	--enable-svg \
-	--enable-toolkit-gtk \
+	%{!?_with_gtk2:--enable-toolkit-gtk} \
+	%{?_with_gtk2:--disable-toolkit-gtk --enable-default-toolkit=gtk2} \
 	--enable-xinerama \
 	--enable-xprint \
 	--enable-xsl \
