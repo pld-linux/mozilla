@@ -11,7 +11,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.1
-Release:	0.9
+Release:	0.10
 Epoch:		2
 License:	GPL
 Group:		X11/Applications/Networking
@@ -236,6 +236,9 @@ for f in build/unix/*.pc ; do
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/$(basename $f)
 done
 
+sed -e 's,lib/mozilla-1.1,lib,g;s/mozilla-1.1/mozilla/g' build/unix/mozilla-gtkmozembed.pc \
+		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-gtkmozembed.pc
+		
 sed -e 's|/%{name}-%{version}||; s|/X11R6||' build/unix/mozilla-nspr.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nspr.pc
 
