@@ -6,7 +6,7 @@ Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
 Version:	0.9.2
-Release:	3
+Release:	4
 Epoch:		1
 License:	NPL
 Group:		X11/Applications/Networking
@@ -67,8 +67,7 @@ Summary(pl):	Mozilla - pliki nag³ówkowe i biblioteki
 Group:		X11/Development/Libraries
 Group(de):	X11/Entwicklung/Libraries
 Group(pl):	X11/Programowanie/Biblioteki
-Requires:	%{name} = %{version}
-Requires:	%{name}-mailnews = %{version}
+Requires:	%{name}-embedded = %{version}
 
 %description devel
 Mozilla development libs and headers.
