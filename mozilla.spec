@@ -11,7 +11,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.1
-Release:	0.10
+Release:	0.11
 Epoch:		2
 License:	GPL
 Group:		X11/Applications/Networking
@@ -182,6 +182,7 @@ CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 	--enable-xprint \
 	--enable-xsl \
 	--disable-xterm-updates \
+	--enable-old-abi-compat-wrappers \
 	--with-default-mozilla-five-home=%{_libdir}/mozilla \
 	--with-system-nspr \
 	--with-pthreads \
@@ -323,7 +324,6 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/libldap50.so
 %attr(755,root,root) %{_libdir}/libprldap50.so
 %attr(755,root,root) %{_libdir}/libssldap50.so
-%attr(755,root,root) %{_libdir}/libmai.so
 %attr(755,root,root) %{_libdir}/libmozjs.so
 %attr(755,root,root) %{_libdir}/libmozpango.so
 %attr(755,root,root) %{_libdir}/libmozpango-thaix.so
