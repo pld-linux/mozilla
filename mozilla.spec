@@ -1,6 +1,5 @@
 #
 # Conditional build:
-# _with_clearmenu
 # _with_gdkxft
 # _with_gtk2
 
@@ -19,14 +18,12 @@ Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-libart.tar.bz2
-Patch0:		%{name}-navigator-overlay-menu.patch
-Patch1:		%{name}-taskbar-no%{name}.patch
-Patch2:		%{name}-pld-homepage.patch
-Patch3:		%{name}-gdkxft.patch
-Patch4:		%{name}-nss.patch
-Patch5:		%{name}-ldap_nspr_includes.patch
-Patch6:		http://people.redhat.com/blizzard/mozilla/gtk2_embedding/2002-04-11/gtk2_embed.patch
-Patch7:		http://people.redhat.com/blizzard/mozilla/gtk2_embedding/2002-04-11/gtk2_widget.patch
+Patch0:		%{name}-pld-homepage.patch
+Patch1:		%{name}-gdkxft.patch
+Patch2:		%{name}-nss.patch
+Patch3:		%{name}-ldap_nspr_includes.patch
+Patch4:		http://people.redhat.com/blizzard/mozilla/gtk2_embedding/2002-04-11/gtk2_embed.patch
+Patch5:		http://people.redhat.com/blizzard/mozilla/gtk2_embedding/2002-04-11/gtk2_widget.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	ORBit-devel
 BuildRequires:	autoconf
@@ -104,14 +101,12 @@ Mozilla.
 
 %prep
 %setup -q -a 3 -n mozilla
-%{?_with_clearmenu:%patch0 -p1}
-%{?_with_clearmenu:%patch1 -p1}
+%patch0 -p1
+%{?_with_gdkxft:%patch1 -p1}
 %patch2 -p1
-%{?_with_gdkxft:%patch3 -p1}
-%patch4 -p1
-%patch5 -p1
-%{?_with_gtk2:%patch6 -p1}
-%{?_with_gtk2:%patch7 -p1}
+%patch3 -p1
+%{?_with_gtk2:%patch4 -p1}
+%{?_with_gtk2:%patch5 -p1}
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
