@@ -1,401 +1,52 @@
-diff -Nur mozilla/security/nss/lib/Makefile mozilla.new/security/nss/lib/Makefile
---- mozilla/security/nss/lib/Makefile	Wed Sep 27 07:49:43 2000
-+++ mozilla.new/security/nss/lib/Makefile	Sun Apr  7 21:41:57 2002
-@@ -65,7 +65,10 @@
- #######################################################################
- # (6) Execute "component" rules. (OPTIONAL)                           #
- #######################################################################
--
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/md \
-+	-I/usr/include/nspr/obsolete \
-+	-I/usr/include/nspr/private
- 
- 
- #######################################################################
-diff -Nur mozilla/security/nss/lib/asn1/Makefile mozilla.new/security/nss/lib/asn1/Makefile
---- mozilla/security/nss/lib/asn1/Makefile	Thu Oct 11 19:41:40 2001
-+++ mozilla.new/security/nss/lib/asn1/Makefile	Sun Apr  7 21:34:04 2002
-@@ -36,5 +36,9 @@
- include $(CORE_DEPTH)/coreconf/config.mk
- include config.mk
- include $(CORE_DEPTH)/coreconf/rules.mk
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/md \
-+	-I/usr/include/nspr/obsolete \
-+	-I/usr/include/nspr/private
- 
- export:: private_export
-diff -Nur mozilla/security/nss/lib/base/Makefile mozilla.new/security/nss/lib/base/Makefile
---- mozilla/security/nss/lib/base/Makefile	Thu Sep  7 00:11:57 2000
-+++ mozilla.new/security/nss/lib/base/Makefile	Sun Apr  7 21:28:25 2002
-@@ -36,5 +36,9 @@
- include $(CORE_DEPTH)/coreconf/config.mk
- include config.mk
- include $(CORE_DEPTH)/coreconf/rules.mk
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/md \
-+	-I/usr/include/nspr/obsolete \
-+	-I/usr/include/nspr/private
- 
- export:: private_export
-diff -Nur mozilla/security/nss/lib/certdb/Makefile mozilla.new/security/nss/lib/certdb/Makefile
---- mozilla/security/nss/lib/certdb/Makefile	Fri Mar 31 21:42:29 2000
-+++ mozilla.new/security/nss/lib/certdb/Makefile	Sun Apr  7 21:58:26 2002
-@@ -66,7 +66,10 @@
- # (6) Execute "component" rules. (OPTIONAL)                           #
- #######################################################################
- 
--
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/md \
-+	-I/usr/include/nspr/obsolete \
-+	-I/usr/include/nspr/private
- 
- #######################################################################
- # (7) Execute "local" rules. (OPTIONAL).                              #
-diff -Nur mozilla/security/nss/lib/certhigh/Makefile mozilla.new/security/nss/lib/certhigh/Makefile
---- mozilla/security/nss/lib/certhigh/Makefile	Fri Mar 31 21:42:53 2000
-+++ mozilla.new/security/nss/lib/certhigh/Makefile	Mon Apr  8 09:44:00 2002
-@@ -66,7 +66,10 @@
- # (6) Execute "component" rules. (OPTIONAL)                           #
- #######################################################################
- 
--
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/md \
-+	-I/usr/include/nspr/obsolete \
-+	-I/usr/include/nspr/private
- 
- #######################################################################
- # (7) Execute "local" rules. (OPTIONAL).                              #
-diff -Nur mozilla/security/nss/lib/ckfw/Makefile mozilla.new/security/nss/lib/ckfw/Makefile
---- mozilla/security/nss/lib/ckfw/Makefile	Tue Sep 12 00:37:01 2000
-+++ mozilla.new/security/nss/lib/ckfw/Makefile	Mon Apr  8 09:45:09 2002
-@@ -37,6 +37,11 @@
- include config.mk
- include $(CORE_DEPTH)/coreconf/rules.mk
- 
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/md \
-+	-I/usr/include/nspr/obsloete \
-+	-I/usr/include/nspr/private
-+
- # This'll need some help from a build person.
- 
- nssckepv.h: ck.api ckapi.perl
-diff -Nur mozilla/security/nss/lib/ckfw/builtins/Makefile mozilla.new/security/nss/lib/ckfw/builtins/Makefile
---- mozilla/security/nss/lib/ckfw/builtins/Makefile	Fri Feb 15 23:53:42 2002
-+++ mozilla.new/security/nss/lib/ckfw/builtins/Makefile	Mon Apr  8 14:26:07 2002
-@@ -36,6 +36,11 @@
- include $(CORE_DEPTH)/coreconf/config.mk
- include config.mk
- 
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/md \
-+	-I/usr/include/nspr/obsolete \
-+	-I/usr/include/nspr/private
-+
- EXTRA_LIBS = \
- 	$(DIST)/lib/$(LIB_PREFIX)nssckfw.$(LIB_SUFFIX) \
- 	$(DIST)/lib/$(LIB_PREFIX)nssb.$(LIB_SUFFIX) \
-@@ -54,8 +59,8 @@
+--- mozilla/security/manager/Makefile.in.orig	Fri Mar  8 23:50:11 2002
++++ mozilla/security/manager/Makefile.in	Sat Apr 13 16:07:59 2002
+@@ -95,14 +95,6 @@
  else
+ 	cd $(DIST)/lib; cp -f $(LIB_PREFIX)mozdbm_s.$(LIB_SUFFIX) $(LIB_PREFIX)dbm.$(LIB_SUFFIX); $(RANLIB) $(LIB_PREFIX)dbm.$(LIB_SUFFIX)
+ endif
+-	$(MAKE) -C $(topsrcdir)/security/nss/lib $(DEFAULT_GMAKE_FLAGS)
+-	$(INSTALL) -m 755 $(DIST)/lib/$(LOADABLE_ROOT_MODULE) $(DIST)/bin
+-ifdef NSS_3_4
+-	$(INSTALL) -m 755 $(DIST)/lib/$(SOFTOKEN3_LIB) $(DIST)/bin
+-	$(INSTALL) -m 755 $(DIST)/lib/$(NSS3_LIB) $(DIST)/bin
+-	$(INSTALL) -m 755 $(DIST)/lib/$(SSL3_LIB) $(DIST)/bin
+-	$(INSTALL) -m 755 $(DIST)/lib/$(SMIME3_LIB) $(DIST)/bin
+-endif
+ ifneq (,$(filter SunOS HP-UX,$(OS_ARCH)))
+ ifneq ($(OS_TEST),i86pc)
+ ifndef HAVE_64BIT_OS
+--- mozilla/security/manager/ssl/src/Makefile.in.orig	Tue Feb 19 04:00:08 2002
++++ mozilla/security/manager/ssl/src/Makefile.in	Sat Apr 13 17:15:18 2002
+@@ -108,8 +108,7 @@
  
- EXTRA_LIBS += \
--	$(DIST)/lib/$(LIB_PREFIX)plc4.$(LIB_SUFFIX) \
--	$(DIST)/lib/$(LIB_PREFIX)plds4.$(LIB_SUFFIX) \
-+	/usr/lib/$(LIB_PREFIX)plc4.$(LIB_SUFFIX) \
-+	/usr/lib/$(LIB_PREFIX)plds4.$(LIB_SUFFIX) \
+ # Use local includes because they are inserted before INCLUDES
+ # so that Mozilla's nss.h is used, not glibc's
+-LOCAL_INCLUDES += -I$(DIST)/public/security \
+-                  -I$(DIST)/private/security \
++LOCAL_INCLUDES += -I/usr/include/nss \
+                   $(NULL)
+ 
+ EXTRA_DSO_LDOPTS += \
+--- mozilla/config/config.mk.orig	Wed Mar  6 10:56:33 2002
++++ mozilla/config/config.mk	Sat Apr 13 18:29:08 2002
+@@ -174,7 +174,7 @@
+ else
+ NSS_LIBS	= \
+ 	$(LIBS_DIR) \
+-	$(DIST)/lib/$(LIB_PREFIX)crmf.$(LIB_SUFFIX) \
++	/usr/lib/libcrmf.a \
+ 	-lsmime3 \
+ 	-lssl3 \
+ 	-lnss3 \
+@@ -183,11 +183,6 @@
+ endif
+ 
+ NSS_DEP_LIBS	= \
+-	$(DIST)/lib/$(LIB_PREFIX)crmf.$(LIB_SUFFIX) \
+-	$(DIST)/lib/$(LIB_PREFIX)smime3$(DLL_SUFFIX) \
+-	$(DIST)/lib/$(LIB_PREFIX)ssl3$(DLL_SUFFIX) \
+-	$(DIST)/lib/$(LIB_PREFIX)nss3$(DLL_SUFFIX) \
+-	$(DIST)/lib/$(LIB_PREFIX)softokn3$(DLL_SUFFIX) \
  	$(NULL)
  
- endif
-diff -Nur mozilla/security/nss/lib/ckfw/dbm/Makefile mozilla.new/security/nss/lib/ckfw/dbm/Makefile
---- mozilla/security/nss/lib/ckfw/dbm/Makefile	Mon May 15 22:39:53 2000
-+++ mozilla.new/security/nss/lib/ckfw/dbm/Makefile	Mon Apr  8 10:16:17 2002
-@@ -36,3 +36,7 @@
- include config.mk
- include $(CORE_DEPTH)/coreconf/config.mk
- include $(CORE_DEPTH)/coreconf/rules.mk
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/md \
-+	-I/usr/include/nspr/obsolete \
-+	-I/usr/include/nspr/private
-\ No newline at end of file
-diff -Nur mozilla/security/nss/lib/crmf/Makefile mozilla.new/security/nss/lib/crmf/Makefile
---- mozilla/security/nss/lib/crmf/Makefile	Fri Mar 31 21:43:56 2000
-+++ mozilla.new/security/nss/lib/crmf/Makefile	Mon Apr  8 09:59:09 2002
-@@ -67,7 +67,10 @@
- # (6) Execute "component" rules. (OPTIONAL)                           #
- #######################################################################
- 
--
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/md \
-+	-I/usr/include/nspr/obsolete \
-+	-I/usr/include/nspr/private
- 
- #######################################################################
- # (7) Execute "local" rules. (OPTIONAL).                              #
-diff -Nur mozilla/security/nss/lib/cryptohi/Makefile mozilla.new/security/nss/lib/cryptohi/Makefile
---- mozilla/security/nss/lib/cryptohi/Makefile	Fri Mar 31 21:44:56 2000
-+++ mozilla.new/security/nss/lib/cryptohi/Makefile	Mon Apr  8 10:03:13 2002
-@@ -66,7 +66,10 @@
- # (6) Execute "component" rules. (OPTIONAL)                           #
- #######################################################################
- 
--
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/md \
-+	-I/usr/include/nspr/obsolete \
-+	-I/usr/include/nspr/private
- 
- #######################################################################
- # (7) Execute "local" rules. (OPTIONAL).                              #
-diff -Nur mozilla/security/nss/lib/dev/Makefile mozilla.new/security/nss/lib/dev/Makefile
---- mozilla/security/nss/lib/dev/Makefile	Thu Oct 11 19:41:41 2001
-+++ mozilla.new/security/nss/lib/dev/Makefile	Sun Apr  7 21:40:55 2002
-@@ -36,5 +36,9 @@
- include $(CORE_DEPTH)/coreconf/config.mk
- include config.mk
- include $(CORE_DEPTH)/coreconf/rules.mk
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/md \
-+	-I/usr/include/nspr/obsolete \
-+	-I/usr/include/nspr/private
- 
- export:: private_export
-diff -Nur mozilla/security/nss/lib/fortcrypt/Makefile mozilla.new/security/nss/lib/fortcrypt/Makefile
---- mozilla/security/nss/lib/fortcrypt/Makefile	Fri Feb 15 23:53:44 2002
-+++ mozilla.new/security/nss/lib/fortcrypt/Makefile	Sun Apr  7 20:14:13 2002
-@@ -36,6 +36,11 @@
- include $(CORE_DEPTH)/coreconf/config.mk
- include config.mk
- 
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/obsolete \
-+	-I/usr/include/nspr/private \
-+	-I/usr/include/nspr/md
-+
- CILIB                   = $(OBJDIR)/cilib.$(LIB_SUFFIX)
- ORIG_CILIB              = libci/$(OS_TARGET)$(OS_RELEASE).$(LIB_SUFFIX)
- 
-diff -Nur mozilla/security/nss/lib/fortcrypt/swfort/Makefile mozilla.new/security/nss/lib/fortcrypt/swfort/Makefile
---- mozilla/security/nss/lib/fortcrypt/swfort/Makefile	Sun Jun  3 07:36:28 2001
-+++ mozilla.new/security/nss/lib/fortcrypt/swfort/Makefile	Mon Apr  8 10:24:06 2002
-@@ -66,7 +66,10 @@
- # (6) Execute "component" rules. (OPTIONAL)                           #
- #######################################################################
- 
--
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/md \
-+	-I/usr/include/nspr/obsolete \
-+	-I/usr/include/nspr/private
- 
- #######################################################################
- # (7) Execute "local" rules. (OPTIONAL).                              #
-diff -Nur mozilla/security/nss/lib/fortcrypt/swfort/pkcs11/Makefile mozilla.new/security/nss/lib/fortcrypt/swfort/pkcs11/Makefile
---- mozilla/security/nss/lib/fortcrypt/swfort/pkcs11/Makefile	Fri Feb 15 23:53:46 2002
-+++ mozilla.new/security/nss/lib/fortcrypt/swfort/pkcs11/Makefile	Mon Apr  8 14:23:56 2002
-@@ -36,6 +36,11 @@
- include $(CORE_DEPTH)/coreconf/config.mk
- include config.mk
- 
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/md \
-+	-I/usr/include/nspr/obsolete \
-+	-I/usr/include/nspr/private
-+
- CRYPTO_LIB = $(DIST)/lib/$(LIB_PREFIX)freebl.$(LIB_SUFFIX) 
- #SWCILI    = ../$(OBJDIR)/$(LIB_PREFIX)swfci.$(LIB_SUFFIX)
- 
-@@ -76,8 +81,8 @@
- 	$(DIST)/lib/$(LIB_PREFIX)softokn.$(LIB_SUFFIX) \
- 	$(CRYPTO_LIB) \
- 	$(DIST)/lib/$(LIB_PREFIX)secutil.$(LIB_SUFFIX) \
--	$(DIST)/lib/$(LIB_PREFIX)plc4.$(LIB_SUFFIX) \
--	$(DIST)/lib/$(LIB_PREFIX)plds4.$(LIB_SUFFIX) \
-+	/usr/lib/$(LIB_PREFIX)plc4.$(LIB_SUFFIX) \
-+	/usr/lib/$(LIB_PREFIX)plds4.$(LIB_SUFFIX) \
- 	$(NULL)
- 
- endif
-diff -Nur mozilla/security/nss/lib/freebl/Makefile mozilla.new/security/nss/lib/freebl/Makefile
---- mozilla/security/nss/lib/freebl/Makefile	Fri Feb 15 23:53:48 2002
-+++ mozilla.new/security/nss/lib/freebl/Makefile	Sun Apr  7 21:16:41 2002
-@@ -213,7 +213,10 @@
- # (6) Execute "component" rules. (OPTIONAL)                           #
- #######################################################################
- 
--
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/md \
-+	-I/usr/include/nspr/obsolete \
-+	-I/usr/include/nspr/private
- 
- #######################################################################
- # (7) Execute "local" rules. (OPTIONAL).                              #
-diff -Nur mozilla/security/nss/lib/jar/Makefile mozilla.new/security/nss/lib/jar/Makefile
---- mozilla/security/nss/lib/jar/Makefile	Fri Mar 31 21:58:08 2000
-+++ mozilla.new/security/nss/lib/jar/Makefile	Mon Apr  8 10:04:06 2002
-@@ -37,3 +37,7 @@
- include config.mk
- include $(CORE_DEPTH)/coreconf/rules.mk
- 
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/md \
-+	-I/usr/include/nspr/obsolete \
-+	-I/usr/include/nspr/private
-\ No newline at end of file
-diff -Nur mozilla/security/nss/lib/nss/Makefile mozilla.new/security/nss/lib/nss/Makefile
---- mozilla/security/nss/lib/nss/Makefile	Tue Jan 30 22:01:59 2001
-+++ mozilla.new/security/nss/lib/nss/Makefile	Mon Apr  8 09:58:11 2002
-@@ -68,7 +68,10 @@
- # (6) Execute "component" rules. (OPTIONAL)                           #
- #######################################################################
- 
--
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/md \
-+	-I/usr/include/nspr/obsolete \
-+	-I/usr/include/nspr/private
- 
- #######################################################################
- # (7) Execute "local" rules. (OPTIONAL).                              #
-diff -Nur mozilla/security/nss/lib/pk11wrap/Makefile mozilla.new/security/nss/lib/pk11wrap/Makefile
---- mozilla/security/nss/lib/pk11wrap/Makefile	Fri Feb 15 23:53:55 2002
-+++ mozilla.new/security/nss/lib/pk11wrap/Makefile	Mon Apr  8 09:56:18 2002
-@@ -66,7 +66,10 @@
- # (6) Execute "component" rules. (OPTIONAL)                           #
- #######################################################################
- 
--
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/md \
-+	-I/usr/include/nspr/obsolete \
-+	-I/usr/include/nspr/private
- 
- #######################################################################
- # (7) Execute "local" rules. (OPTIONAL).                              #
-diff -Nur mozilla/security/nss/lib/pkcs12/Makefile mozilla.new/security/nss/lib/pkcs12/Makefile
---- mozilla/security/nss/lib/pkcs12/Makefile	Fri Mar 31 21:15:54 2000
-+++ mozilla.new/security/nss/lib/pkcs12/Makefile	Mon Apr  8 10:05:17 2002
-@@ -67,7 +67,10 @@
- # (6) Execute "component" rules. (OPTIONAL)                           #
- #######################################################################
- 
--
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/md \
-+	-I/usr/include/nspr/obsolete \
-+	-I/usr/include/nspr/private
- 
- #######################################################################
- # (7) Execute "local" rules. (OPTIONAL).                              #
-diff -Nur mozilla/security/nss/lib/pkcs7/Makefile mozilla.new/security/nss/lib/pkcs7/Makefile
---- mozilla/security/nss/lib/pkcs7/Makefile	Fri Mar 31 21:16:00 2000
-+++ mozilla.new/security/nss/lib/pkcs7/Makefile	Mon Apr  8 10:06:06 2002
-@@ -66,7 +66,10 @@
- # (6) Execute "component" rules. (OPTIONAL)                           #
- #######################################################################
- 
--
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/md \
-+	-I/usr/include/nspr/obsolete \
-+	-I/usr/include/nspr/private
- 
- #######################################################################
- # (7) Execute "local" rules. (OPTIONAL).                              #
-diff -Nur mozilla/security/nss/lib/pki/Makefile mozilla.new/security/nss/lib/pki/Makefile
---- mozilla/security/nss/lib/pki/Makefile	Thu Oct 11 19:41:43 2001
-+++ mozilla.new/security/nss/lib/pki/Makefile	Sun Apr  7 21:48:03 2002
-@@ -40,5 +40,9 @@
- include config34.mk
- endif
- include $(CORE_DEPTH)/coreconf/rules.mk
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/md \
-+	-I/usr/include/nspr/obsolete \
-+	-I/usr/include/nspr/private
- 
- export:: private_export
-diff -Nur mozilla/security/nss/lib/pki1/Makefile mozilla.new/security/nss/lib/pki1/Makefile
---- mozilla/security/nss/lib/pki1/Makefile	Fri Jan  4 06:22:06 2002
-+++ mozilla.new/security/nss/lib/pki1/Makefile	Sun Apr  7 21:54:19 2002
-@@ -36,6 +36,10 @@
- include $(CORE_DEPTH)/coreconf/config.mk
- include config.mk
- include $(CORE_DEPTH)/coreconf/rules.mk
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/md \
-+	-I/usr/include/nspr/obsolete \
-+	-I/usr/include/nspr/private
- 
- # Generate oiddata.h and oiddata.c.
- oidgen: oidgen.perl oids.txt
-diff -Nur mozilla/security/nss/lib/smime/Makefile mozilla.new/security/nss/lib/smime/Makefile
---- mozilla/security/nss/lib/smime/Makefile	Tue Jun 13 23:56:25 2000
-+++ mozilla.new/security/nss/lib/smime/Makefile	Mon Apr  8 10:07:19 2002
-@@ -66,7 +66,10 @@
- # (6) Execute "component" rules. (OPTIONAL)                           #
- #######################################################################
- 
--
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/md \
-+	-I/usr/include/nspr/obsolete \
-+	-I/usr/include/nspr/private
- 
- #######################################################################
- # (7) Execute "local" rules. (OPTIONAL).                              #
-diff -Nur mozilla/security/nss/lib/softoken/Makefile mozilla.new/security/nss/lib/softoken/Makefile
---- mozilla/security/nss/lib/softoken/Makefile	Fri Feb 15 23:54:02 2002
-+++ mozilla.new/security/nss/lib/softoken/Makefile	Sun Apr  7 21:22:32 2002
-@@ -67,6 +67,10 @@
- #######################################################################
- 
- 
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/md \
-+	-I/usr/include/nspr/obsolete \
-+	-I/usr/include/nspr/private
- 
- #######################################################################
- # (7) Execute "local" rules. (OPTIONAL).                              #
-diff -Nur mozilla/security/nss/lib/ssl/Makefile mozilla.new/security/nss/lib/ssl/Makefile
---- mozilla/security/nss/lib/ssl/Makefile	Fri Feb 15 23:54:05 2002
-+++ mozilla.new/security/nss/lib/ssl/Makefile	Mon Apr  8 09:47:16 2002
-@@ -76,7 +76,10 @@
- #######################################################################
- # (6) Execute "component" rules. (OPTIONAL)                           #
- #######################################################################
--
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/md \
-+	-I/usr/include/nspr/obsolete \
-+	-I/usr/include/nspr/private
- 
- 
- #######################################################################
-diff -Nur mozilla/security/nss/lib/util/Makefile mozilla.new/security/nss/lib/util/Makefile
---- mozilla/security/nss/lib/util/Makefile	Fri Feb 15 23:54:08 2002
-+++ mozilla.new/security/nss/lib/util/Makefile	Sun Apr  7 20:05:54 2002
-@@ -71,8 +71,14 @@
- #######################################################################
- # (6) Execute "component" rules. (OPTIONAL)                           #
- #######################################################################
--
--
-+#INCLUDES += -I../../../../nsprpub/lib/ds \
-+#	-I../../../../nsprpub/pr/include \
-+#	-I../../../../nsprpub/pr/src/md/mac \
-+#	-I../../../../nsprpub/pr/include/obsolete
-+INCLUDES += -I/usr/include/nspr \
-+	-I/usr/include/nspr/obsolete \
-+	-I/usr/include/nspr/private \
-+	-I/usr/include/nspr/md
- 
- #######################################################################
- # (7) Execute "local" rules. (OPTIONAL).                              #
+ MOZ_UNICHARUTIL_LIBS = $(DIST)/lib/$(LIB_PREFIX)unicharutil_s.$(LIB_SUFFIX)
