@@ -10,8 +10,8 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
-Version:	1.0
-Release:	9
+Version:	1.0.2
+Release:	1
 Epoch:		2
 License:	GPL
 Group:		X11/Applications/Networking
@@ -37,6 +37,7 @@ Patch3:		%{name}-ldap_nspr_includes.patch
 Patch4:		http://people.redhat.com/blizzard/mozilla/gtk2_embedding/2002-04-11/gtk2_embed.patch
 Patch5:		http://people.redhat.com/blizzard/mozilla/gtk2_embedding/2002-04-11/gtk2_widget.patch
 Patch6:		%{name}-pld-homepage-PL.patch
+Patch7:		%{name}-ldap-with-nss.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	ORBit-devel
 BuildRequires:	autoconf
@@ -48,15 +49,15 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.4
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
-BuildRequires:	nss-devel >= 3.4.1
-BuildRequires:	nspr-devel >= 4.1.2-3
+BuildRequires:	nss-devel >= 3.6-1
+BuildRequires:	nspr-devel >= 4.2.2-2
 BuildRequires:	perl-modules >= 5.6.0
 %{!?_without_PL:BuildRequires: unzip}
 BuildRequires:	zip >= 2.1
 Provides:	mozilla-embedded = %{version}
 %{?_with_gdkxft:Requires:	gdkxft}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-Requires:	nss >= 3.4.1
+Requires:	nss >= 3.6-1
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
 %{!?_without_PL:Conflicts: mozilla-Lang-PL}
@@ -144,6 +145,7 @@ Mozilla
 %patch3 -p1
 %{?_with_gtk2:%patch4 -p1}
 %{?_with_gtk2:%patch5 -p1}
+%patch7 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
@@ -308,6 +310,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/libjsj.so
 %attr(755,root,root) %{_libdir}/libldap50.so
 %attr(755,root,root) %{_libdir}/libprldap50.so
+%attr(755,root,root) %{_libdir}/libssldap50.so
 %attr(755,root,root) %{_libdir}/libmozjs.so
 %attr(755,root,root) %{_libdir}/libmozpango.so
 %attr(755,root,root) %{_libdir}/libmozpango-thaix.so
