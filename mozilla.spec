@@ -21,8 +21,8 @@ Source3:	%{name}-libart.tar.bz2
 Patch0:		%{name}-navigator-overlay-menu.patch
 Patch1:		%{name}-taskbar-no%{name}.patch
 Patch2:		%{name}-pld-homepage.patch
-Patch3:		%{name}-nspr_correct_in_nss.patch
-Patch4:		%{name}-gdkxft.patch
+Patch3:		%{name}-gdkxft.patch
+Patch4:		%{name}-nss.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	ORBit-devel
 BuildRequires:	autoconf
@@ -32,8 +32,7 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
-BuildRequires:	nspr-devel >= 4.1.2-3
-#BuildRequires:	nss-static
+BuildRequires:	nspr-static >= 4.1.2-3
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	zip >= 2.1
 Provides:	mozilla-embedded = %{version}
@@ -101,8 +100,8 @@ Mozilla.
 %{?_with_clearmenu:%patch0 -p1}
 %{?_with_clearmenu:%patch1 -p1}
 %patch2 -p1
-#%patch3 -p1
-%{?_with_gdkxft:%patch4 -p1}
+%{?_with_gdkxft:%patch3 -p1}
+%patch4 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
