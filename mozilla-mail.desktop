@@ -1,8 +1,9 @@
 [Desktop Entry]
 Name=Mozilla Mail
 Name[pl]=Poczta Mozilli
-Exec=mozilla -splash -mail
+Exec=mozilla -mail
 Icon=mozilla.png
 Terminal=0
 Type=Application
+Categories=Network;Email
 # vi: encoding=utf-8

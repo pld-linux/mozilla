@@ -1,8 +1,9 @@
 [Desktop Entry]
 Name=Mozilla News
 Name[pl]=Czytnik Newsów Mozilli
-Exec=mozilla -splash -news
+Exec=mozilla -news
 Icon=mozilla.png
 Terminal=0
 Type=Application
+Categories=Network;X-News
 # vi: encoding=utf-8

@@ -1,8 +1,9 @@
 [Desktop Entry]
 Name=Mozilla Chat
 Name[pl]=Chat Mozilli
-Exec=mozilla -splash -chat
+Exec=mozilla -chat
 Icon=mozilla.png
 Terminal=0
 Type=Application
+Categories=Network;X-Communication
 # vi: encoding=utf-8
