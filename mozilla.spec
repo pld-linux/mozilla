@@ -68,8 +68,8 @@ rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT%{_bindir} \
 	$RPM_BUILD_ROOT%{_datadir}/{idl,pixmaps,applnk/Internet} \
-	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,res,icons}
-	$RPM_BUILD_ROOT%{_libdir}/%{name}/{components,plugins}
+	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,res,icons} \
+	$RPM_BUILD_ROOT%{_libdir}/%{name}/{components,plugins} \
 	$RPM_BUILD_ROOT%{_includedir}
 
 ln -s ../../share/mozilla/chrome $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome
