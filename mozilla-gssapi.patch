@@ -1,0 +1,12 @@
+diff -urN aa/mozilla/configure mozilla/configure
+--- aa/mozilla/configure	2004-03-16 05:00:47.000000000 +0100
++++ mozilla/configure	2004-03-19 22:55:51.563667720 +0100
+@@ -12653,7 +12653,7 @@
+         cat > conftest.$ac_ext <<EOF
+ #line 12655 "configure"
+ #include "confdefs.h"
+- #include <gssapi/gssapi.h> 
++ #include <gssapi.h> 
+ int main() {
+  gss_OID oid = GSS_C_NT_HOSTBASED_SERVICE; 
+ ; return 0; }
