@@ -8,12 +8,12 @@
 			# gcc2-compiled Java plugins on nest and other gcc 3.x systems.
 			# WARNING! You have to recompile galeon with gcc2 in
 			# order to get it working with this release of mozilla
-%bcond_with	ft218	# compile with freetype >= 2.1.8
+%bcond_without	ft218	# compile with freetype >= 2.1.8
 %bcond_without	gnomevfs	# disable GnomeVFS support
 %bcond_without	heimdal	# disable heimdal support
 %bcond_without	svg	# disable svg support
 #
-%define	pre	a3
+%define	pre	a4
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
@@ -26,7 +26,7 @@ Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{version}%{pre}/src/%{name}-source-%{version}%{pre}.tar.bz2
-# Source0-md5:	123d90d91965e2a655550a3af44513ce
+# Source0-md5:	f1eecee3c57064d27cfecf963e268793
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-composer.desktop
@@ -37,19 +37,14 @@ Source7:	%{name}-mail.desktop
 Source8:	%{name}-news.desktop
 Source9:	%{name}-terminal.desktop
 Source10:	%{name}-venkman.desktop
-#Source11:	%{name}-libart.tar.bz2
-## Source11-md5:	d6834f4881d5947b4e0540f46b7edfb6
 Patch0:		%{name}-pld-homepage.patch
 Patch1:		%{name}-nss.patch
 Patch2:		%{name}-ldap_nspr_includes.patch
 Patch3:		%{name}-ldap-with-nss.patch
 Patch4:		%{name}-alpha-gcc3.patch
 # http://bugzilla.mozilla.org/show_bug.cgi?id=234035
-# http://bugzilla.mozilla.org/attachment.cgi?id=149334&action=view
+# http://bugzilla.mozilla.org/attachment.cgi?id=162261&action=view
 Patch5:		%{name}-freetype218.patch
-# https://bugzilla.mozilla.org/show_bug.cgi?id=255900
-# https://bugzilla.mozilla.org/attachment.cgi?id=160219&action=view
-Patch6:		%{name}-filechooser.patch
 URL:		http://www.mozilla.org/
 %{?with_gtk1:BuildRequires:	ORBit-devel}
 %{?with_svg:BuildRequires:	cairo-devel >= 0.1.17}
@@ -69,7 +64,7 @@ BuildConflicts:	freetype-devel = 2.1.8
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.0
 BuildRequires:	libstdc++-devel
-BuildRequires:	nspr-devel >= 1:4.5.0
+BuildRequires:	nspr-devel >= 1:4.5.0-0.20041019.1
 BuildRequires:	nss-devel >= 3.8
 %{!?with_gtk1:BuildRequires:	pango-devel >= 1.1.0}
 BuildRequires:	perl-modules >= 5.6.0
@@ -79,7 +74,7 @@ BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.0.0
 Requires(post,postun):	/sbin/ldconfig
-Requires:	nspr >= 1:4.5.0
+Requires:	nspr >= 1:4.5.0-0.20041019.1
 Requires:	nss >= 3.8
 %{?with_gtk1:Provides:	mozilla(gtk1) = %{epoch}:%{version}-%{release}}
 %{!?with_gtk1:Provides:	mozilla(gtk2) = %{epoch}:%{version}-%{release}}
@@ -232,7 +227,7 @@ Summary(pt_BR):	Arquivos de inclusão para desenvolvimento de programas que usam 
 Summary(ru):	æÁÊÌÙ, ÎÅÏÂÈÏÄÉÍÙÅ ÄÌÑ ÉÓÐÏÌØÚÏ×ÁÎÉÑ ÐÒÏÇÒÁÍÍ, ×ËÌÀÞÁÀÝÉÈ Mozilla
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-Requires:	nspr-devel >= 1:4.5.0
+Requires:	nspr-devel >= 1:4.5.0-0.20041019.1
 Provides:	mozilla-embedded-devel = %{epoch}:%{version}-%{release}
 Obsoletes:	mozilla-embedded-devel
 
@@ -256,14 +251,12 @@ Mozilla
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
+#patch4 -p1
 %{?with_ft218:%patch5 -p0}
-%patch6 -p0
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
 MOZILLA_OFFICIAL="1"; export MOZILLA_OFFICIAL
-#MOZ_INTERNAL_LIBART_LGPL="1"; export MOZ_INTERNAL_LIBART_LGPL
 
 %if %{_gcc_ver} > 2
 CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
@@ -276,6 +269,7 @@ cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
 	--disable-elf-dynstr-gc \
 	--disable-pedantic \
 	--disable-tests \
+	--disable-freetype2 \
 	--enable-calendar \
 	--enable-crypto \
 	--enable-extensions \
@@ -537,6 +531,8 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %dir %{_libdir}/%{name}/searchplugins
 %dir %{_datadir}/%{name}
 
+%attr(755,root,root) %{_libdir}/libgfxpsshar.so
+# what's that? :) ^^
 %attr(755,root,root) %{_libdir}/libgkgfx.so
 %attr(755,root,root) %{_libdir}/libgtkembedmoz.so
 %{?with_gtk1:%attr(755,root,root) %{_libdir}/libgtksuperwin.so}
@@ -611,6 +607,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %{_libdir}/%{name}/components/bookmarks.xpt
 %{_libdir}/%{name}/components/caps.xpt
 %{_libdir}/%{name}/components/chardet.xpt
+%{_libdir}/%{name}/components/chrome.xpt
 %{_libdir}/%{name}/components/commandhandler.xpt
 %{_libdir}/%{name}/components/composer.xpt
 %{_libdir}/%{name}/components/content*.xpt
@@ -629,7 +626,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 #%{_libdir}/%{name}/components/helperAppDlg.xpt
 %{_libdir}/%{name}/components/history.xpt
 %{_libdir}/%{name}/components/htmlparser.xpt
-#%{_libdir}/%{name}/components/imgicon.xpt
+%{_libdir}/%{name}/components/imgicon.xpt
 %{_libdir}/%{name}/components/imglib2.xpt
 %{_libdir}/%{name}/components/intl.xpt
 %{_libdir}/%{name}/components/jar.xpt
