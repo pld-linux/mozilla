@@ -29,8 +29,8 @@ BuildRequires:	libmng-devel
 BuildRequires:	libpng-devel
 BuildRequires:	gtk+-devel
 BuildRequires:	ORBit-devel
-BuildRequires:	openssl-devel
 BuildRequires:	nspr-devel
+BuildRequires:	nss
 BuildRequires:	fileutils
 BuildRequires:	zip >= 2.1
 BuildRequires:	perl-modules >= 5.6.0
