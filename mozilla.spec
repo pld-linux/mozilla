@@ -6,7 +6,7 @@ Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
 Version:	0.9.2
-Release:	4
+Release:	5
 Epoch:		1
 License:	NPL
 Group:		X11/Applications/Networking
@@ -20,7 +20,8 @@ Patch0:		%{name}-navigator-overlay-menu.patch
 Patch1:		%{name}-taskbar-nomozilla.patch
 Patch2:		%{name}-dlopen-plugin.patch
 Patch3:		%{name}-pld-homepage.patch
-Patch4:		%{name}-embedded-psm2-enable.patch
+Patch4:		%{name}-bug-83393-1.patch
+Patch5:		%{name}-bug-83393-2.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
 BuildRequires:	libjpeg-devel
@@ -92,6 +93,7 @@ Embedded part of mozilla.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
