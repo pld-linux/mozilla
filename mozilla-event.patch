@@ -1,0 +1,55 @@
+--- mozilla/embedding/browser/gtk/src/EmbedPrivate.cpp	2001/03/19 00:52:52	1.8
++++ mozilla/embedding/browser/gtk/src/EmbedPrivate.cpp	2001/04/06 14:55:56
+@@ -396,6 +396,11 @@
+ {
+   if (!mStream)
+     return NS_ERROR_FAILURE;
++
++  // Attach listeners to this document since in some cases we don't
++  // get updates for content added this way.
++  ContentStateChange();
++
+   return mStream->AppendToStream(aData, aLen);
+ }
+ 
+@@ -441,7 +446,7 @@
+ }
+ 
+ void
+-EmbedPrivate::ContentProgressChange(void)
++EmbedPrivate::ContentStateChange(void)
+ {
+   // we don't attach listeners to chrome
+   if (mListenersAttached && !mIsChrome)
+--- mozilla/embedding/browser/gtk/src/EmbedPrivate.h	2001/03/19 00:52:51	1.7
++++ mozilla/embedding/browser/gtk/src/EmbedPrivate.h	2001/04/06 14:55:56
+@@ -75,7 +75,7 @@
+   // This is an upcall that will come from the progress listener
+   // whenever there is a progress change.  We need this so we can
+   // attach event listeners.
+-  void        ContentProgressChange (void);
++  void        ContentStateChange    (void);
+ 
+   // This is an upcall from the progress listener when content is
+   // finished loading.  We have this so that if it's chrome content
+--- mozilla/embedding/browser/gtk/src/EmbedProgress.cpp	2001/03/16 19:38:01	1.2
++++ mozilla/embedding/browser/gtk/src/EmbedProgress.cpp	2001/04/06 14:55:56
+@@ -51,6 +51,8 @@
+ 			     PRInt32         aStateFlags,
+ 			     PRUint32        aStatus)
+ {
++  // give the widget a chance to attach any listeners
++  mOwner->ContentStateChange();
+   // if we've got the start flag, emit the signal
+   if ((aStateFlags & GTK_MOZ_EMBED_FLAG_IS_DOCUMENT) && 
+       (aStateFlags & GTK_MOZ_EMBED_FLAG_START))
+@@ -99,9 +101,6 @@
+ 				PRInt32         aMaxTotalProgress)
+ {
+ 
+-  // give the widget a chance to attach any listeners
+-  mOwner->ContentProgressChange();
+-  
+   nsXPIDLCString uriString;
+   RequestToURIString(aRequest, getter_Copies(uriString));
+   
