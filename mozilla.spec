@@ -8,7 +8,8 @@ Name:		mozilla
 Version:	%ver
 Release:	%rel
 Copyright:	NPL
-Group:		Mozilla
+Group:		X11/Applications/Networking
+Group(pl):	X11/Aplikacje/Sieciowe
 Source:		mozilla-%{ver}-%{rel}.tar.gz
 BuildRoot:	/tmp/%{name}-%{version}-root
 Packager:	Ramiro Estrugo <ramiro@netscape.com>
@@ -21,7 +22,7 @@ Mozilla
 
 %package devel
 Summary:	Mozilla development crap
-Group:		Mozilla
+Group:		X11/Development/Libraries
 #Requires:	mozilla nspr-devel
 
 #Obsoletes: libnspr-devel
