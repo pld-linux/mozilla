@@ -3,7 +3,7 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
 Version:	0.0.M18
 Epoch:		1
-Release:	2
+Release:	3
 License:	NPL
 Group:		X11/Applications/Networking
 Group(de):	X11/Applikationen/Netzwerkwesen
@@ -14,6 +14,7 @@ Patch0:		%{name}-no_libnsl.patch
 Patch1:		%{name}-default-home.patch
 Patch2:		%{name}-user-agent.patch
 Patch3:		%{name}-psm.patch
+Patch4:		mathml.diff
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
 BuildRequires:	libjpeg-devel
@@ -67,6 +68,7 @@ Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
 %patch1 -p0
 %patch2 -p0
 %patch3 -p1
+%patch4 -p0
 
 %build
 autoconf
