@@ -13,8 +13,8 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.4
-Release:	0.1
-Epoch:		3
+Release:	1
+Epoch:		4
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
@@ -526,13 +526,14 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 
 # Is this a correct package for these files?
 %{_libdir}/%{name}/components/ipcd.xpt
-%{_libdir}/%{name}/components/transmngr.xpt
+#%{_libdir}/%{name}/components/transmngr.xpt
 %{_libdir}/%{name}/components/ucnative.xpt
 %attr(755,root,root) %{_libdir}/%{name}/components/libipcdc.so
 %{!?_with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libsystem-pref.so}
-%attr(755,root,root) %{_libdir}/%{name}/components/libtransmngr_client.so
+#%attr(755,root,root) %{_libdir}/%{name}/components/libtransmngr_client.so
 
 %{_libdir}/%{name}/components/jsconsole-clhandler.js
+%{_libdir}/%{name}/components/inspector-cmdline.js
 %{_libdir}/%{name}/components/nsCloseAllWindows.js
 %{_libdir}/%{name}/components/nsDictionary.js
 %{_libdir}/%{name}/components/nsDownloadProgressListener.js
