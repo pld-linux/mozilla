@@ -56,7 +56,7 @@ BuildConflicts:	freetype-devel = 2.1.8
 %endif
 %{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.0.0}
 %{?with_gtk1:BuildRequires:	gtk+-devel >= 1.2.0}
-%{!?with_gtk1:BuildRequires:	gtk+2-devel >= 2.2.0}
+%{!?with_gtk1:BuildRequires:	gtk+2-devel >= 2:2.2.0}
 # for libnegotiateauth
 %{?with_heimdal:BuildRequires:	heimdal-devel}
 %{!?with_gtk1:BuildRequires:	libIDL-devel >= 0.8.0}
