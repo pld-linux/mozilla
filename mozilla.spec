@@ -37,7 +37,7 @@ BuildRequires:	libmng-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	nss-devel >= 3.4.rc1-1
-BuildRequires:  nspr-devel >= 4.1.2-3
+BuildRequires:	nspr-devel >= 4.1.2-3
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	zip >= 2.1
 Provides:	mozilla-embedded = %{version}
@@ -81,7 +81,7 @@ Mozilla - полнофункциональный web-browser с открытыми исходными
 %package mailnews
 Summary:	Mozilla - programs for mail and news
 Summary(pl):	Mozilla - programy do poczty i newsСw
-Summary(ru): Почтовая система на основе Mozilla
+Summary(ru):	Почтовая система на основе Mozilla
 Group:		X11/Applications/Networking
 Requires:	%{name} = %{version}
 Obsoletes:	mozilla-mail
@@ -93,8 +93,8 @@ Programs for mail and news integrated with browser.
 Programy pocztowe i obsЁuga newsСw zintegrowane z przegl╠dark╠.
 
 %description mailnews -l ru
-Клиент почты и новостей, на основе Mozilla. Поддерживает IMAP, POP
-и NNTP и имеет простой интерфейс пользователя.
+Клиент почты и новостей, на основе Mozilla. Поддерживает IMAP, POP и
+NNTP и имеет простой интерфейс пользователя.
 
 %package devel
 Summary:	Headers for developing programs that will use Mozilla
@@ -118,8 +118,8 @@ Arquivos de inclusЦo para desenvolvimento de programas que usam o
 Mozilla.
 
 %description devel -l ru
-Заголовочные файлы и программы, необходимые для разработки программ,
-испеользующих Mozilla
+Заголовочные файлы, необходимые для разработки программ, испеользующих
+Mozilla
 
 %prep
 %setup -q -a 3 -n mozilla
