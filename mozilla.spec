@@ -262,7 +262,6 @@ cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
 	--disable-pedantic \
 	--disable-tests \
 	--disable-freetype2 \
-#	--enable-calendar \
 	--enable-crypto \
 	--enable-extensions \
 	--enable-ldap \
