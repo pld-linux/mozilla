@@ -354,6 +354,9 @@ sed -e 's,lib/mozilla-%{version},lib,g;s/mozilla-%{version}/mozilla/g' build/uni
 
 sed -e 's|/mozilla-%{version}||' build/unix/mozilla-nspr.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nspr.pc
+sed -e 's|^libdir=%{_libdir}/mozilla|libdir=%{_libdir}|;
+	s|^includedir=%{_includedir}/mozilla|includedir=%{_includedir}|' \
+	build/unix/mozilla-nss.pc > $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nss.pc
 
 install %{SOURCE1} %{SOURCE3} %{SOURCE4} %{SOURCE5} %{SOURCE6} %{SOURCE7} \
 	%{SOURCE9} %{SOURCE10} $RPM_BUILD_ROOT%{_desktopdir}
