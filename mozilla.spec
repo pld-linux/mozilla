@@ -13,9 +13,7 @@ Source3:	mozilla.desktop
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
 BuildRequires:	gtk+-devel
-BuildRequires:	glib-devel
 BuildRequires:	ORBit-devel
-BuildRequires:	XFree86-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_prefix		/usr/X11R6
