@@ -8,7 +8,7 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Name:		mozilla
 Version:	0.9.6
-Release:	3
+Release:	4
 Epoch:		1
 License:	GPL
 # Mirror0:	ftp://sunsite.icm.edu.pl/pub/mozilla/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
@@ -30,7 +30,7 @@ BuildRequires:	libpng-devel
 BuildRequires:	gtk+-devel
 BuildRequires:	ORBit-devel
 BuildRequires:	nspr-devel
-BuildRequires:	nss
+BuildRequires:	nss-static
 BuildRequires:	fileutils
 BuildRequires:	zip >= 2.1
 BuildRequires:	perl-modules >= 5.6.0
