@@ -3,21 +3,23 @@
 # _with_clearmenu
 #
 Summary:	Mozilla - web browser
+Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
+Summary(pt_BR):	Navegador Mozilla
 Name:		mozilla
-Version:	0.9.5
-Release:	2
+Version:	0.9.6
+Release:	1
 Epoch:		1
 License:	NPL
+# Mirror0:	ftp://sunsite.icm.edu.pl/pub/mozilla/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
 Group:		X11/Applications/Networking
 Group(de):	X11/Applikationen/Netzwerkwesen
 Group(pl):	X11/Aplikacje/Sieciowe
-# Mirror0:	ftp://sunsite.icm.edu.pl/pub/mozilla/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
-Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.gz
+Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Patch0:		%{name}-navigator-overlay-menu.patch
-Patch1:		%{name}-taskbar-nomozilla.patch
+Patch1:		%{name}-taskbar-no%{name}.patch
 Patch2:		%{name}-pld-homepage.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
@@ -41,9 +43,19 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Mozilla is an open-source web browser, designed for standards
 compliance, performance and portability.
 
+%description -l es
+Mozilla es un navegador de Internet que se basa en una versiÛn inicial
+de Netscape Communicator. Este software est· en desarrollo, por lo
+cual todavÌa es inestable.
+
 %description -l pl
 Mozilla jest potÍøn± graficzn± przegl±dark± WWW, ktÛra jest nastÍpc±
 Netscape Navigatora.
+
+%description -l pt_BR
+O Mozilla È um web browser baseado numa vers„o inicial do Netscape
+Communicator. Este software est· em fase de desenvolvimento, portanto,
+ainda n„o est·vel.
 
 %package mailnews
 Summary:	Mozilla - programs for mail and news
@@ -61,10 +73,17 @@ Programy pocztowe i newsÛw zintegrowane z przegl±dark±.
 
 %package devel
 Summary:	Mozilla development crap
+Summary(es):	Headers for developing programs that will use Mozilla
 Summary(pl):	Mozilla - pliki nag≥Ûwkowe i biblioteki
+Summary(pt_BR):	Arquivos de inclus„o para desenvolvimento de programas que usam o Mozilla
 Group:		X11/Development/Libraries
 Group(de):	X11/Entwicklung/Libraries
+Group(es):	X11/Desarrollo/Bibliotecas
+Group(fr):	X11/Development/Librairies
 Group(pl):	X11/Programowanie/Biblioteki
+Group(pt_BR):	X11/Desenvolvimento/Bibliotecas
+Group(ru):	X11/Ú¡⁄“¡¬œ‘À¡/‚…¬Ã…œ‘≈À…
+Group(uk):	X11/Úœ⁄“œ¬À¡/‚¶¬Ã¶œ‘≈À…
 Requires:	%{name} = %{version}
 Provides:	mozilla-embedded-devel
 Obsoletes:	mozilla-embedded-devel
@@ -72,8 +91,15 @@ Obsoletes:	mozilla-embedded-devel
 %description devel
 Mozilla development libs and headers.
 
+%description -l es devel
+Development package for Mozilla.
+
 %description -l pl devel
 Biblioteki i pliki nag≥Ûwkowe s≥uø±ce programowaniu.
+
+%description -l pt_BR devel
+Arquivos de inclus„o para desenvolvimento de programas que usam o
+Mozilla.
 
 %prep
 %setup -q -n mozilla
