@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Mozilla Composer
-Name[pl]=Mozilla - Projektant stron WWW
+Comment=Mozilla Composer
+Comment[pl]=Mozilla - Projektant stron WWW
 Exec=mozilla -edit
 Icon=mozilla.png
 Terminal=0
