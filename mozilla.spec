@@ -2,6 +2,7 @@ Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
 Version:	0.0.M18
+Epoch:		1
 Release:	1
 License:	NPL
 Group:		X11/Applications/Networking
