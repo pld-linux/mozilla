@@ -8,8 +8,8 @@ Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Name:		mozilla
-Version:	0.9.9
-Release:	0.2
+Version:	1.0.rc1
+Release:	0.1
 Epoch:		1
 License:	GPL
 Group:		X11/Applications/Networking
@@ -23,6 +23,7 @@ Patch1:		%{name}-taskbar-no%{name}.patch
 Patch2:		%{name}-pld-homepage.patch
 Patch3:		%{name}-gdkxft.patch
 Patch4:		%{name}-nss.patch
+Patch5:		%{name}-ldap_nspr_includes.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	ORBit-devel
 BuildRequires:	autoconf
@@ -104,6 +105,7 @@ Mozilla.
 %patch2 -p1
 %{?_with_gdkxft:%patch3 -p1}
 %patch4 -p1
+%patch5 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
@@ -228,8 +230,8 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %attr(755,root,root) %{_libdir}/libgtksuperwin.so
 %attr(755,root,root) %{_libdir}/libgtkxtbin.so
 %attr(755,root,root) %{_libdir}/libjsj.so
-%attr(755,root,root) %{_libdir}/liblber40.so
-%attr(755,root,root) %{_libdir}/libldap40.so
+%attr(755,root,root) %{_libdir}/libldap50.so
+%attr(755,root,root) %{_libdir}/libprldap50.so
 %attr(755,root,root) %{_libdir}/libmozjs.so
 %attr(755,root,root) %{_libdir}/libmozpango.so
 %attr(755,root,root) %{_libdir}/libmozpango-thaix.so
