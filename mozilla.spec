@@ -45,7 +45,7 @@ BuildRequires:	freetype-devel >= 2.0.9
 %{?_with_gtk2:BuildRequires:	gtk+2-devel >= 2.0.2}
 %{?_with_gtk2:BuildRequires:	pkgconfig}
 %{?_with_gtk2:BuildRequires:	libIDL-devel}
-%{?_with_gtk2:BuildRequires:  freetype-devel >= 6.1.0}
+%{?_with_gtk2:BuildRequires:  freetype-devel >= 2.1.0}
 BuildRequires:	libjpeg-devel
 BuildRequires:	libmng-devel >= 1.0.4
 BuildRequires:	libpng-devel
