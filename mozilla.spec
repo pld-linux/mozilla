@@ -29,7 +29,6 @@ Patch4:		%{name}-gfx.patch
 #Patch5:		%{name}-gtk2.patch
 URL:		http://www.mozilla.org/
 BuildRequires:	ORBit-devel
-BuildRequires:	Xft-devel >= 2.1-2
 BuildRequires:	autoconf
 BuildRequires:	freetype-devel >= 2.1.3
 BuildRequires:	gtk+-devel
@@ -133,9 +132,7 @@ MOZILLA_OFFICIAL="1"; export MOZILLA_OFFICIAL
 MOZ_INTERNAL_LIBART_LGPL="x"
 export MOZ_INTERNAL_LIBART_LGPL
 
-%if %{_gcc_ver} > 2
 CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
-%endif
 
 %configure2_13 \
 	--disable-debug \
@@ -154,7 +151,6 @@ CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 	--enable-strip-libs \
 	--enable-svg \
 	--enable-toolkit-gtk \
-	--enable-xft \
 	--enable-xinerama \
 	--enable-xprint \
 	--enable-xsl \
