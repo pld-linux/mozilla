@@ -27,7 +27,6 @@ Source7:	%{name}-mail.desktop
 Source8:	%{name}-news.desktop
 Source9:	%{name}-terminal.desktop
 Source10:	%{name}-venkman.desktop
-Source14:	%{name}-antialiasing-howto.txt
 Patch0:		%{name}-pld-homepage.patch
 Patch2:		%{name}-nss.patch
 Patch3:		%{name}-ldap_nspr_includes.patch
@@ -256,8 +255,6 @@ install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
 cp $RPM_BUILD_ROOT%{_chromedir}/installed-chrome.txt \
 	$RPM_BUILD_ROOT%{_chromedir}/%{name}-installed-chrome.txt
 
-cp -f %{SOURCE14} .
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -283,8 +280,6 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/*
-
-%doc %{name}-antialiasing-howto.txt
 
 %dir %{_libdir}/%{name}
 %dir %{_chromedir}
