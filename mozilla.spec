@@ -13,7 +13,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.4a
-Release:	0.1
+Release:	0.2
 Epoch:		3
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -148,6 +148,9 @@ MOZILLA_OFFICIAL="1"; export MOZILLA_OFFICIAL
 
 MOZ_INTERNAL_LIBART_LGPL="x"
 export MOZ_INTERNAL_LIBART_LGPL
+
+newoptflags="%{optflags} -Os -fomit-frame-pointer"
+%define optflags $newoptflags
 
 %if %{_gcc_ver} > 2
 CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
