@@ -14,7 +14,7 @@
 %bcond_without	heimdal	# disable heimdal support
 %bcond_without	svg	# disable svg support
 #
-%define	pre	a6
+%define	pre	b1
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
@@ -22,12 +22,12 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.8
-Release:	0.%{pre}.2
+Release:	0.%{pre}.1
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{version}%{pre}/source/%{name}-source-%{version}%{pre}.tar.bz2
-# Source0-md5:	79c9fbb58cd83b905cc88f62d66cb457
+# Source0-md5:	42a0b25d405ee60128adb0eef4bc0fa0
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-composer.desktop
@@ -262,6 +262,7 @@ cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
 	--disable-pedantic \
 	--disable-tests \
 	--disable-freetype2 \
+	--enable-application=suite \
 	--enable-crypto \
 	--enable-extensions \
 	--enable-ldap \
@@ -528,6 +529,7 @@ fi
 %attr(755,root,root) %{_libdir}/%{name}/components/libpref.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libprofile.so
 %attr(755,root,root) %{_libdir}/%{name}/components/librdf.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libschemavalidation.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libspellchecker.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libsql.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libsroaming.so
@@ -574,7 +576,7 @@ fi
 #%{_libdir}/%{name}/components/helperAppDlg.xpt
 %{_libdir}/%{name}/components/history.xpt
 %{_libdir}/%{name}/components/htmlparser.xpt
-# %{_libdir}/%{name}/components/imgicon.xpt
+%{_libdir}/%{name}/components/imgicon.xpt
 %{_libdir}/%{name}/components/imglib2.xpt
 %{_libdir}/%{name}/components/intl.xpt
 %{_libdir}/%{name}/components/jar.xpt
@@ -600,6 +602,7 @@ fi
 %{_libdir}/%{name}/components/proxyObjInst.xpt
 %{_libdir}/%{name}/components/rdf.xpt
 %{_libdir}/%{name}/components/related.xpt
+%{_libdir}/%{name}/components/schemavalidation.xpt
 %{_libdir}/%{name}/components/search.xpt
 %{_libdir}/%{name}/components/shistory.xpt
 %{_libdir}/%{name}/components/sidebar.xpt
@@ -640,6 +643,7 @@ fi
 %{_libdir}/%{name}/components/nsProgressDialog.js
 %{_libdir}/%{name}/components/nsProxyAutoConfig.js
 %{_libdir}/%{name}/components/nsResetPref.js
+%{_libdir}/%{name}/components/nsSchemaValidatorRegexp.js
 %{_libdir}/%{name}/components/nsSidebar.js
 %{_libdir}/%{name}/components/nsUpdateNotifier.js
 %{_libdir}/%{name}/components/nsXmlRpcClient.js
@@ -670,6 +674,7 @@ fi
 %{?with_svg:%{_datadir}/%{name}/chrome/svg.jar}
 %{_datadir}/%{name}/chrome/tasks.jar
 %{_datadir}/%{name}/chrome/toolkit.jar
+%{_datadir}/%{name}/chrome/xforms.jar
 
 %ghost %{_datadir}/%{name}/chrome/chrome.rdf
 %{_datadir}/%{name}/chrome/chromelist.txt
