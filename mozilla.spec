@@ -5,7 +5,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.2.1
-Release:	0.11
+Release:	0.12
 Epoch:		2
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -116,7 +116,6 @@ Mozilla.
 Mozilla
 
 %prep
-#%setup -q -a 3 -n mozilla
 %setup -q -n mozilla
 %patch0 -p1
 %patch1 -p1
