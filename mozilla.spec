@@ -86,7 +86,7 @@ Programs for mail and news integrated with browser.
 %description mailnews -l pl
 Programy pocztowe i obsЁuga newsСw zintegrowane z przegl╠dark╠.
 
-%description mail -l ru
+%description mailnews -l ru
 Клиент почты и новостей, на основе Mozilla. Поддерживает IMAP, POP
 и NNTP и имеет простой интерфейс пользователя.
 
