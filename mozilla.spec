@@ -9,7 +9,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.2.1
-Release:	0.1
+Release:	0.9
 Epoch:		2
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -29,13 +29,14 @@ Patch2:		%{name}-nss.patch
 Patch3:		%{name}-ldap_nspr_includes.patch
 Patch5:		%{name}-ldap-with-nss.patch
 Patch6:		%{name}-gfx.patch
+Patch7:		%{name}-gtk2.patch
 URL:		http://www.mozilla.org/
 BuildRequires:	ORBit-devel
 BuildRequires:	Xft-devel >= 2.0-6
 BuildRequires:	autoconf
 BuildRequires:	freetype-devel >= 2.0.9
 %{?_with_gtk1:BuildRequires:	gtk+-devel}
-%{!?_with_gtk1:BuildRequires:  gtk+2-devel >= 2.0.2}
+%{!?_with_gtk1:BuildRequires:  gtk+2-devel >= 2.1.3}
 %{!?_with_gtk1:BuildRequires:  pkgconfig}
 %{!?_with_gtk1:BuildRequires:  libIDL-devel}
 %{!?_with_gtk1:BuildRequires:  freetype-devel >= 2.1.0}
@@ -53,8 +54,6 @@ Requires:	nss >= 3.6
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
 
-%define		_prefix		/usr/X11R6
-%define		_mandir		%{_prefix}/man
 %define		_chromedir	%{_libdir}/%{name}/chrome
 
 %define		_gcc_ver	%(%{__cc} -dumpversion | cut -b 1)
@@ -136,6 +135,7 @@ Mozilla
 %patch3 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p0
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
@@ -220,14 +220,15 @@ cp -frL dist/public/ldap{,-private} $RPM_BUILD_ROOT%{_includedir}/%{name}
 install dist/bin/*.so $RPM_BUILD_ROOT%{_libdir}
 
 for f in build/unix/*.pc ; do
-	sed -e 's/%{name}-%{version}b/%{name}/' $f \
+	sed -e 's/mozilla-1.2.1/mozilla/' $f \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/$(basename $f)
 done
 
-sed -e 's,lib/mozilla-1.2b,lib,g;s/mozilla-1.2b/mozilla/g' build/unix/mozilla-gtkmozembed.pc \
+sed -e 's,lib/mozilla-1.2.1,lib,g;s/mozilla-1.2.1/mozilla/g' build/unix/mozilla-gtkmozembed.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-gtkmozembed.pc
+
 		
-sed -e 's|/%{name}-%{version}b||; s|/X11R6||' build/unix/mozilla-nspr.pc \
+sed -e 's|/mozilla-1.2.1||' build/unix/mozilla-nspr.pc \
 		> $RPM_BUILD_ROOT%{_pkgconfigdir}/mozilla-nspr.pc
 
 install %{SOURCE1}	$RPM_BUILD_ROOT%{_applnkdir}/Network/WWW
@@ -283,7 +284,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 
 #%ghost %{_libdir}/%{name}/component.reg
 %attr(755,root,root) %{_libdir}/libgkgfx.so
-%{?_with_gtk1:%attr(755,root,root) %{_libdir}/libgtkembedmoz.so}
+%attr(755,root,root) %{_libdir}/libgtkembedmoz.so
 %{?_with_gtk1:%attr(755,root,root) %{_libdir}/libgtksuperwin.so}
 %attr(755,root,root) %{_libdir}/libgtkxtbin.so
 %attr(755,root,root) %{_libdir}/libjsj.so
@@ -434,7 +435,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/windowwatcher.xpt
 %{_libdir}/%{name}/components/x*.xpt
 
-%{_libdir}/*.js
+#%{_libdir}/*.js
 %{_libdir}/%{name}/components/*.js
 %config %verify(not size mtime md5) %{_libdir}/%{name}/components/*.dat
 
