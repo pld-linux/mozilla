@@ -145,9 +145,10 @@ MOZILLA_OFFICIAL="1"; export MOZILLA_OFFICIAL
 MOZ_INTERNAL_LIBART_LGPL="x"
 export MOZ_INTERNAL_LIBART_LGPL
 
-if [ -f %{_pkgconfigdir}/libpng12.pc ] ; then
-	CPPFLAGS="`pkg-config libpng12 --cflags`"; export CPPFLAGS
-fi
+%if %{_gcc_ver} > 2
+CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
+%endif
+
 %configure2_13 \
 	--disable-debug \
 	--disable-dtd-debug \
@@ -264,7 +265,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 
 %ghost %{_libdir}/%{name}/component.reg
 %attr(755,root,root) %{_libdir}/libgkgfx.so
-%{!?_with_gtk2:%attr(755,root,root) %{_libdir}/libgtkembedmoz.so}
+%attr(755,root,root) %{_libdir}/libgtkembedmoz.so
 %{!?_with_gtk2:%attr(755,root,root) %{_libdir}/libgtksuperwin.so}
 %{!?_with_gtk2:%attr(755,root,root) %{_libdir}/libgtkxtbin.so}
 %attr(755,root,root) %{_libdir}/libjsj.so
