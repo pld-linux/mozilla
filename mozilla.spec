@@ -74,7 +74,7 @@ BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
 # mozilla
 %configure \
 	--with-default-mozilla-five-home=%{_libdir}/mozilla \
-	--enable-optimize="%{?debug:-O0 -g}%{!?debug:$RPM_OPT_FLAGS}" \
+	--enable-optimize="%{rpmcflags}" \
 	--with-pthreads \
 	--enable-toolkit=gtk \
 	--enable-strip-libs \
@@ -100,7 +100,7 @@ BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
 # psm
 %configure \
 	--with-default-mozilla-five-home=%{_libdir}/mozilla \
-	--enable-optimize="%{?debug:-O0 -g}%{!?debug:$RPM_OPT_FLAGS}" \
+	--enable-optimize="%{rpmcflags}" \
 	--with-pthreads \
 	--enable-toolkit=gtk \
 	--enable-strip-libs \
