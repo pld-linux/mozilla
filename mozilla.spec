@@ -23,8 +23,6 @@ Source7:	%{name}-mail.desktop
 Source8:	%{name}-news.desktop
 Source9:	%{name}-terminal.desktop
 Source10:	%{name}-venkman.desktop
-Source11:	http://osdn.dl.sourceforge.net/mozillapl/Lang-PL-Build-ID-%{version}.xpi
-Source12:	http://osdn.dl.sourceforge.net/mozillapl/Reg-PL-Build-ID-%{version}.xpi
 Source14:	%{name}-antialiasing-howto.txt
 Patch0:		%{name}-pld-homepage.patch
 Patch2:		%{name}-nss.patch
