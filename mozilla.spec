@@ -34,7 +34,7 @@ Mozilla development libs and headers
 %setup -n mozilla
 
 %build
-./configure \
+./configure %{_target} \
 			--with-pthreads \
 			--enable-toolkit=gtk \
 			--disable-build-nspr \
