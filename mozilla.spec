@@ -157,7 +157,12 @@ install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post	-p /sbin/ldconfig
+%post 
+/sbin/ldconfig
+umask 022
+rm -f %{_libdir}/mozilla/component.reg
+MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
+
 %postun	-p /sbin/ldconfig
 
 %post   mailnews 
