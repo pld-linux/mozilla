@@ -36,6 +36,7 @@ BuildRequires:	nss-devel >= 3.4.rc1-0.2
 BuildRequires:  nspr-devel >= 4.1.2-3
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	zip >= 2.1
+BuildConflicts:	freetype1-devel < 1.3.1-5
 Provides:	mozilla-embedded = %{version}
 %{?_with_gdkxft:Requires:	gdkxft}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
