@@ -13,8 +13,18 @@ Release:	3
 Epoch:		1
 License:	GPL
 Group:		X11/Applications/Networking
+Group(cs):	X11/Aplikace/Sí»ové
+Group(da):	X11/Programmer/Netværks
 Group(de):	X11/Applikationen/Netzwerkwesen
+Group(es):	X11/Aplicaciones/Red
+Group(fr):	X11/Applications/Réseau
+Group(it):	X11/Applicazioni/Rete
+Group(no):	X11/Applikasjoner/Nettverks
 Group(pl):	X11/Aplikacje/Sieciowe
+Group(pt_BR):	X11/Aplicações/Rede
+Group(pt):	X11/Aplicações/Rede
+Group(ru):	X11/ğÒÉÌÏÖÅÎÉÑ/óÅÔÅ×ÙÅ
+Group(sv):	X11/Tillämpningar/Nätverk
 Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
 #Mirror0:	ftp://sunsite.icm.edu.pl/pub/mozilla/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
 Source1:	%{name}.desktop
@@ -68,8 +78,18 @@ ainda não estável.
 Summary:	Mozilla - programs for mail and news
 Summary(pl):	Mozilla - programy do poczty i newsów
 Group:		X11/Applications/Networking
+Group(cs):	X11/Aplikace/Sí»ové
+Group(da):	X11/Programmer/Netværks
 Group(de):	X11/Applikationen/Netzwerkwesen
+Group(es):	X11/Aplicaciones/Red
+Group(fr):	X11/Applications/Réseau
+Group(it):	X11/Applicazioni/Rete
+Group(no):	X11/Applikasjoner/Nettverks
 Group(pl):	X11/Aplikacje/Sieciowe
+Group(pt_BR):	X11/Aplicações/Rede
+Group(pt):	X11/Aplicações/Rede
+Group(ru):	X11/ğÒÉÌÏÖÅÎÉÑ/óÅÔÅ×ÙÅ
+Group(sv):	X11/Tillämpningar/Nätverk
 Requires:	%{name} = %{version}
 Obsoletes:	mozilla-mail
 
@@ -84,12 +104,19 @@ Summary:	Headers for developing programs that will use Mozilla
 Summary(pl):	Mozilla - pliki nag³ówkowe i biblioteki
 Summary(pt_BR):	Arquivos de inclusão para desenvolvimento de programas que usam o Mozilla
 Group:		X11/Development/Libraries
-Group(de):	X11/Entwicklung/Libraries
+Group(cs):	X11/Vıvojové prostøedky/Knihovny
+Group(da):	X11/Udvikling/Biblioteker
+Group(de):	X11/Entwicklung/Bibliotheken
 Group(es):	X11/Desarrollo/Bibliotecas
 Group(fr):	X11/Development/Librairies
+Group(it):	X11/Sviluppo/Librerie
+Group(ja):	X11/³«È¯/¥é¥¤¥Ö¥é¥ê
+Group(no):	X11/Applikasjoner/Biblioteker
 Group(pl):	X11/Programowanie/Biblioteki
 Group(pt_BR):	X11/Desenvolvimento/Bibliotecas
+Group(pt):	X11/Desenvolvimento/Bibliotecas
 Group(ru):	X11/òÁÚÒÁÂÏÔËÁ/âÉÂÌÉÏÔÅËÉ
+Group(sv):	X11/Utveckling/Bibliotek
 Group(uk):	X11/òÏÚÒÏÂËÁ/â¦ÂÌ¦ÏÔÅËÉ
 Requires:	%{name} = %{version}
 Requires:	nspr-devel
