@@ -48,7 +48,7 @@ BuildRequires:	cairo-devel >= 0.1.17
 %if %{with ft218}
 BuildRequires:	freetype-devel >= 1:2.1.8
 %else
-BuildRequires:	freetype-devel < 1:2.1.8
+BuildConflicts:	freetype-devel = 2.1.8
 BuildRequires:	freetype-devel >= 2.1.3
 %endif
 %{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.0.0}
