@@ -1,0 +1,82 @@
+--- mozilla/editor/ui/composer/content/editor.xul.menu	Tue Dec 19 12:01:11 2000
++++ mozilla/editor/ui/composer/content/editor.xul	Tue Dec 19 12:01:55 2000
+@@ -137,10 +137,6 @@
+     <!-- tasks menu filled from tasksOverlay -->
+     <menu id="tasksMenu" accesskey="t"/>
+ 
+-    <!-- DEBUG only -->
+-    <menu id="debugMenu" />
+-    <!-- end DEBUG only -->
+-  
+     <!-- help menu filled from globalOverlay -->
+     <menu id="menu_Help"/>
+ 
+--- mozilla/editor/ui/composer/content/TextEditorAppShell.xul.menu	Tue Dec 19 12:01:01 2000
++++ mozilla/editor/ui/composer/content/TextEditorAppShell.xul	Tue Dec 19 12:01:42 2000
+@@ -96,10 +96,6 @@
+     <!-- tasks menu filled from tasksOverlay -->
+     <menu accesskey="t" id="tasksMenu"/>
+ 
+-    <!-- DEBUG only -->
+-    <menu id="debugMenu" />
+-    <!-- end DEBUG only -->
+-  
+     <!-- help menu filled from globalOverlay -->
+     <menu accesskey="h" id="menu_Help"/>
+ 
+--- mozilla/editor/ui/composer/content/editorOverlay.xul.menu	Tue Dec 19 12:01:18 2000
++++ mozilla/editor/ui/composer/content/editorOverlay.xul	Tue Dec 19 12:02:17 2000
+@@ -780,53 +780,4 @@
+    -->
+   <menuitem id="menu_pasteQuote" accesskey="&editpastequotation.accesskey;" observes="cmd_pasteQuote"/>
+ 
+-  <!-- DEBUG only -->
+-  <menu id="debugMenu" value="&debugMenu.label;">
+-  <menupopup>
+-    <menuitem value="&newEditorTestPage.label;" oncommand="window.openDialog('chrome://editor/content','_blank','chrome,all,dialog=no','chrome://editor/content/EditorInitPage.html')"/>
+-    <menuitem value="&textEditorCmd.label;"     oncommand="EditorNewPlaintext();" />
+-    <menuitem value="&outputTextCmd.label;"
+-           oncommand="EditorGetText()"/>
+-    <menuitem value="&outputHTMLCmd.label;"
+-           oncommand="EditorGetHTML()"/>
+-    <menuitem value="Dom Serializer"
+-           oncommand="EditorSerialize()"/>
+-    <menuseparator />
+-    <menuitem value="&pasteAsQuotationCmd.label;"
+-           accesskey="&editpastequotation.accesskey;"
+-           oncommand="goDoCommand('cmd_pasteQuote')"/>
+-    <menuitem value="&editRewrapCmd.label;"
+-           oncommand="editorShell.Rewrap(false)"/>
+-    <menuitem value="&editStripQuotesCmd.label;"
+-           oncommand="editorShell.StripCites()"/>
+-    <menuitem value="&insertTextCmd.label;"
+-           oncommand="EditorInsertText('All good things come to those who wait. ')"/>
+-    <menuseparator />
+-    <menuitem value="&testSelectionCmd.label;"
+-           oncommand="EditorTestSelection()"/>
+-    <menuitem value="&testTableLayoutCmd.label;"
+-           oncommand="EditorTestTableLayout()"/>
+-    <menuitem value="&showEmbeddedCmd.label;"
+-           oncommand="EditorShowEmbeddedObjects()"/>
+-    <menuitem value="&dumpContentCmd.label;"
+-           oncommand="EditorDumpContent()"/>
+-    <menuitem value="&testDocumentCmd.label;"
+-           oncommand="EditorTestDocument()"/>
+-    <menuitem value="&runUnitTestsCmd.label;"
+-           oncommand="EditorUnitTests()"/>
+-    <menuseparator />
+-    <menuitem value="&startLogCmd.label;"
+-           oncommand="EditorStartLog()"/>
+-    <menuitem value="&stopLogCmd.label;"
+-           oncommand="EditorStopLog()"/>
+-    <menuitem value="&runLogCmd.label;"
+-           oncommand="EditorRunLog()"/>
+-    <menuseparator />
+-    <menuitem value="&setFocusCmd.label;"
+-            accesskey="&toolsetfocus.accesskey;"
+-            oncommand="window.focus()"/>
+-  </menupopup>
+-  </menu>
+-  <!-- end DEBUG only -->
+-
+ </overlay>
