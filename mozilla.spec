@@ -254,7 +254,7 @@ install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}/mozilla
 install dist/bin/regchrome $RPM_BUILD_ROOT%{_bindir}
 install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
 
-cp %{SOURCE14} .
+cp -f %{SOURCE14} .
 
 %clean
 rm -rf $RPM_BUILD_ROOT
