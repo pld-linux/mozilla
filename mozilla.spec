@@ -16,7 +16,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.7
-Release:	0.9
+Release:	1
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
