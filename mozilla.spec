@@ -14,7 +14,7 @@ Source1:	%{name}.desktop
 Source2:	%{name}.png
 # Patch0:		%{name}-navigator-overlay-menu.patch
 # Patch1:		%{name}-taskbar-nomozilla.patch
-# Patch2:		%{name}-fix-wrapper.patch
+# Patch2:		%{name}-dlopen-plugin.patch
 Patch3:		%{name}-pld-homepage.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
