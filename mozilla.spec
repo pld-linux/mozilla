@@ -176,7 +176,7 @@ CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 	--enable-xinerama \
 	--enable-xprint \
 	--enable-xsl \
-	--enable-xterm-updates \
+	--disable-xterm-updates \
 	--with-default-mozilla-five-home=%{_libdir}/mozilla \
 	--with-system-nspr \
 	--with-pthreads \
