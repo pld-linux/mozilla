@@ -12,13 +12,13 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
-Version:	1.4
-Release:	1
+Version:	1.5a
+Release:	0.1
 Epoch:		4
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
-# Source0-md5:	a4644caeeeb323d0d8b59758b67d4454
+# Source0-md5:	f75e8bba12a7142fe90ed4108a55fe09
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source4:	%{name}-addressbook.desktop
@@ -565,6 +565,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_datadir}/%{name}/chrome/en-US.jar
 %{_datadir}/%{name}/chrome/en-unix.jar
 %{_datadir}/%{name}/chrome/help.jar
+%{_datadir}/%{name}/chrome/layoutdebug.jar
 %{_datadir}/%{name}/chrome/modern.jar
 %{_datadir}/%{name}/chrome/pipnss.jar
 %{_datadir}/%{name}/chrome/pippki.jar
