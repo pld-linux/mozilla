@@ -25,9 +25,10 @@ Patch5:		%{name}-bug-83393-2.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	libstdc++-devel
 BuildRequires:	libjpeg-devel
+BuildRequires:	libmng-devel
+BuildRequires:	libpng-devel
 BuildRequires:	gtk+-devel
 BuildRequires:	ORBit-devel
-BuildRequires:	libmng-devel
 BuildRequires:	fileutils
 BuildRequires:	zip >= 2.1
 BuildRequires:	perl-modules >= 5.6.0
