@@ -8,7 +8,7 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Name:		mozilla
 Version:	0.9.8
-Release:	1
+Release:	2
 Epoch:		1
 License:	GPL
 Group:		X11/Applications/Networking
@@ -371,6 +371,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %{_datadir}/%{name}/res
 %{_datadir}/%{name}/searchplugins
 %{_datadir}/%{name}/dtd
+%{_datadir}/idl/*
 
 %{_pixmapsdir}/mozilla.png
 %{_applnkdir}/Network/WWW/mozilla.desktop
@@ -406,4 +407,3 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %files devel
 %defattr(644,root,root,755)
 %{_includedir}/%{name}
-%{_datadir}/idl/*
