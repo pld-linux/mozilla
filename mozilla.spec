@@ -11,7 +11,7 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Name:		mozilla
 Version:	%{_version}.%{_rc}
-Release:	1
+Release:	2
 Epoch:		1
 License:	GPL
 Group:		X11/Applications/Networking
@@ -280,6 +280,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libgfx*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libgk*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libhtmlpars.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libiiextras.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libimg*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libinspector.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjar50.so
@@ -309,6 +310,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libuconv.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libucv*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libunicharutil.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libuniversalchardet.so
 %attr(755,root,root) %{_libdir}/%{name}/components/liburiloader.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwallet.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwalletviewers.so
@@ -325,11 +327,14 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %{_libdir}/%{name}/components/caps.xpt
 %{_libdir}/%{name}/components/chardet.xpt
 %{_libdir}/%{name}/components/chrome.xpt
+%{_libdir}/%{name}/components/commandhandler.xpt
+%{_libdir}/%{name}/components/composer.xpt
 %{_libdir}/%{name}/components/content*.xpt
 %{_libdir}/%{name}/components/cookie.xpt
 %{_libdir}/%{name}/components/directory.xpt
 %{_libdir}/%{name}/components/docshell.xpt
 %{_libdir}/%{name}/components/dom*.xpt
+%{_libdir}/%{name}/components/downloadmanager.xpt
 %{_libdir}/%{name}/components/editor.xpt
 %{_libdir}/%{name}/components/embed_base.xpt
 %{_libdir}/%{name}/components/exthandler.xpt
@@ -339,6 +344,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %{_libdir}/%{name}/components/helperAppDlg.xpt
 %{_libdir}/%{name}/components/history.xpt
 %{_libdir}/%{name}/components/htmlparser.xpt
+%{_libdir}/%{name}/components/iiextras.xpt
 %{_libdir}/%{name}/components/imglib2.xpt
 %{_libdir}/%{name}/components/inspector.xpt
 %{_libdir}/%{name}/components/intl.xpt
@@ -350,6 +356,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %{_libdir}/%{name}/components/moz*.xpt
 %{_libdir}/%{name}/components/necko*.xpt
 %{_libdir}/%{name}/components/oji.xpt
+%{_libdir}/%{name}/components/p3p.xpt
 %{_libdir}/%{name}/components/pipboot.xpt
 %{_libdir}/%{name}/components/pipnss.xpt
 %{_libdir}/%{name}/components/pippki.xpt
@@ -357,6 +364,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %{_libdir}/%{name}/components/pref.xpt
 %{_libdir}/%{name}/components/prefmigr.xpt
 %{_libdir}/%{name}/components/profile.xpt
+%{_libdir}/%{name}/components/progressDlg.xpt
 %{_libdir}/%{name}/components/proxyObjInst.xpt
 %{_libdir}/%{name}/components/rdf.xpt
 %{_libdir}/%{name}/components/regviewer.xpt
@@ -365,6 +373,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %{_libdir}/%{name}/components/shistory.xpt
 %{_libdir}/%{name}/components/sidebar.xpt
 %{_libdir}/%{name}/components/signonviewer.xpt
+%{_libdir}/%{name}/components/timebomb.xpt
 %{_libdir}/%{name}/components/transformiix.xpt
 %{_libdir}/%{name}/components/txmgr.xpt
 %{_libdir}/%{name}/components/txtsvc.xpt
@@ -404,6 +413,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libabsyncsvc.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libaddrbook.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libimpText.so
+%attr(755,root,root) %{_libdir}/%{name}/components/libimpComm4xMail.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libimport.so
 %attr(755,root,root) %{_libdir}/%{name}/components/liblocalmail.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libmailnews.so
@@ -414,6 +424,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 
 %{_libdir}/%{name}/components/absync.xpt
 %{_libdir}/%{name}/components/addrbook.xpt
+%{_libdir}/%{name}/components/impComm4xMail.xpt
 %{_libdir}/%{name}/components/import.xpt
 %{_libdir}/%{name}/components/mailnews.xpt
 %{_libdir}/%{name}/components/mime.xpt
