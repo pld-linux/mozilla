@@ -12,8 +12,8 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
-Version:	1.4b
-Release:	0.4
+Version:	1.4rc1
+Release:	0.1
 Epoch:		3
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
