@@ -13,7 +13,7 @@
 %bcond_without	heimdal	# disable heimdal support
 %bcond_without	svg	# disable svg support
 #
-%define	pre	a2
+%define	pre	a3
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
@@ -26,7 +26,7 @@ Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{version}%{pre}/src/%{name}-source-%{version}%{pre}.tar.bz2
-# Source0-md5:	610007ae35933022fc167f4166b1293e
+# Source0-md5:	123d90d91965e2a655550a3af44513ce
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-composer.desktop
@@ -622,10 +622,10 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %{_libdir}/%{name}/components/filepicker.xpt
 %{_libdir}/%{name}/components/gfx*.xpt
 %{?with_svg:%{_libdir}/%{name}/components/gksvgrenderer.xpt}
-%{_libdir}/%{name}/components/helperAppDlg.xpt
+#%{_libdir}/%{name}/components/helperAppDlg.xpt
 %{_libdir}/%{name}/components/history.xpt
 %{_libdir}/%{name}/components/htmlparser.xpt
-%{_libdir}/%{name}/components/imgicon.xpt
+#%{_libdir}/%{name}/components/imgicon.xpt
 %{_libdir}/%{name}/components/imglib2.xpt
 %{_libdir}/%{name}/components/intl.xpt
 %{_libdir}/%{name}/components/jar.xpt
@@ -762,8 +762,8 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
 %{_pixmapsdir}/mozilla.png
 %{_desktopdir}/mozilla.desktop
 %{_desktopdir}/mozilla-composer.desktop
-#%{_desktopdir}/mozilla-jconsole.desktop
-#%{_desktopdir}/mozilla-terminal.desktop
+%{_desktopdir}/mozilla-jconsole.desktop
+%{_desktopdir}/mozilla-terminal.desktop
 
 %files mailnews
 %defattr(644,root,root,755)
