@@ -64,6 +64,7 @@ Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
 Obsoletes:	mozilla-theme-NegativeModern
 Obsoletes:	mozilla-theme-gold
+Obsoletes:	mozilla-theme-kzilla
 
 %define		_chromedir	%{_libdir}/%{name}/chrome
 
