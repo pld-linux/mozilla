@@ -90,6 +90,7 @@ CXXFLAGS="-fno-rtti -fno-exceptions" ; export CXXFLAGS
 	--with-jpeg \
 	--with-zlib \
 	--with-png \
+	--with-mng \
 	--with-xprint
 
 %{__make}
@@ -111,6 +112,7 @@ CXXFLAGS="-fno-rtti -fno-exceptions" ; export CXXFLAGS
 	--with-jpeg \
 	--with-zlib \
 	--with-png \
+	--with-mng \
 	--with-xprint
 
 %{__make}
