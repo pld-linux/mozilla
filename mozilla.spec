@@ -1,3 +1,5 @@
+# TODO:
+# - mark pl-files as lang
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
 Summary(pl):	Mozilla - przegl±darka WWW
@@ -434,21 +436,21 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/windowwatcher.xpt
 %{_libdir}/%{name}/components/x*.xpt
 
-#%{_libdir}/*.js
+%{_libdir}/*.js
 %{_libdir}/%{name}/components/*.js
 %config %verify(not size mtime md5) %{_libdir}/%{name}/components/*.dat
 
-%{_chromedir}
+%{_datadir}/%{name}/chrome
 %{_datadir}/%{name}/defaults
 %{_datadir}/%{name}/icons
 %{_datadir}/%{name}/res
 %{_datadir}/%{name}/searchplugins
 %{_datadir}/idl/*
 
-%lang(pl) %{_chromedir}/lang_pl-installed-chrome.txt
-%lang(pl) %{_chromedir}/PL.jar
-%lang(pl) %{_chromedir}/pl-PL.jar
-%lang(pl) %{_chromedir}/pl-unix.jar
+#%lang(pl) %{_chromedir}/lang_pl-installed-chrome.txt
+#%lang(pl) %{_chromedir}/PL.jar
+#%lang(pl) %{_chromedir}/pl-PL.jar
+#%lang(pl) %{_chromedir}/pl-unix.jar
 
 %{_pixmapsdir}/mozilla.png
 %{_applnkdir}/Network/WWW/mozilla.desktop
