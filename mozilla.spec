@@ -18,7 +18,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.7.5
-Release:	0.1
+Release:	0.2
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -62,7 +62,7 @@ BuildConflicts:	freetype-devel = 2.1.8
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.0
 BuildRequires:	libstdc++-devel
-BuildRequires:	nspr-devel >= 1:4.5.0
+BuildRequires:	nspr-devel >= 1:4.6-0.20041030.1
 BuildRequires:	nss-devel >= 3.8
 %{!?with_gtk1:BuildRequires:	pango-devel >= 1:1.1.0}
 BuildRequires:	perl-modules >= 5.6.0
@@ -72,7 +72,7 @@ BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.0.0
 Requires(post,postun):	/sbin/ldconfig
-Requires:	nspr >= 1:4.5.0
+Requires:	nspr >= 1:4.6-0.20041030.1
 Requires:	nss >= 3.8
 %{?with_gtk1:Provides:	mozilla(gtk1) = %{epoch}:%{version}-%{release}}
 %{!?with_gtk1:Provides:	mozilla(gtk2) = %{epoch}:%{version}-%{release}}
@@ -595,7 +595,7 @@ fi
 %{_libdir}/%{name}/components/pipboot.xpt
 %{_libdir}/%{name}/components/pipnss.xpt
 %{_libdir}/%{name}/components/pippki.xpt
-%{_libdir}/%{name}/components/plugin.xpt
+#%{_libdir}/%{name}/components/plugin.xpt
 %{_libdir}/%{name}/components/pref.xpt
 %{_libdir}/%{name}/components/prefetch.xpt
 %{_libdir}/%{name}/components/prefmigr.xpt
