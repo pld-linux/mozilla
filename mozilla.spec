@@ -26,16 +26,16 @@ Source7:	%{name}-mail.desktop
 Source8:	%{name}-news.desktop
 Source9:	%{name}-terminal.desktop
 Source10:	%{name}-venkman.desktop
-%{!?_without_PL:Source11: ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Lang-PL-Build-ID-%{version}.xpi}
-%{!?_without_PL:Source12: ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Reg-PL-Build-ID-%{version}.xpi}
-%{!?_without_PL:Source13: http://free.of.pl/a/adgor/lang_pl-installed-chrome.txt}
+Source11:	ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Lang-PL-Build-ID-%{version}.xpi
+Source12:	ftp://ftp.sourceforge.net/pub/sourceforge/mozillapl/Reg-PL-Build-ID-%{version}.xpi
+Source13:	http://free.of.pl/a/adgor/lang_pl-installed-chrome.txt
 Patch0:		%{name}-pld-homepage.patch
 Patch1:		%{name}-gdkxft.patch
 Patch2:		%{name}-nss.patch
 Patch3:		%{name}-ldap_nspr_includes.patch
 Patch4:		http://people.redhat.com/blizzard/mozilla/gtk2_embedding/2002-04-11/gtk2_embed.patch
 Patch5:		http://people.redhat.com/blizzard/mozilla/gtk2_embedding/2002-04-11/gtk2_widget.patch
-%{!?_without_PL:Patch6: %{name}-pld-homepage-PL.patch}
+Patch6:		%{name}-pld-homepage-PL.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	ORBit-devel
 BuildRequires:	autoconf
@@ -44,14 +44,14 @@ BuildRequires:	freetype-devel >= 2.0.9
 %{?_with_gtk2:BuildRequires:	gtk+2-devel >= 2.0.2}
 %{?_with_gtk2:BuildRequires:	pkgconfig}
 BuildRequires:	libjpeg-devel
-BuildRequires:	libmng-devel
+BuildRequires:	libmng-devel >= 1.0.4
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	nss-devel >= 3.4.1
 BuildRequires:	nspr-devel >= 4.1.2-3
 BuildRequires:	perl-modules >= 5.6.0
-BuildRequires:	zip >= 2.1
 %{!?_without_PL:BuildRequires: unzip}
+BuildRequires:	zip >= 2.1
 Provides:	mozilla-embedded = %{version}
 %{?_with_gdkxft:Requires:	gdkxft}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
