@@ -68,12 +68,12 @@ Biblioteki i pliki nag³ówkowe s³u¿±ce programowaniu.
 %patch1 -p0
 %patch2 -p0
 %patch3 -p1
-%patch4 -p0
+%patch4 -p1
 
 %build
 autoconf
 CXXFLAGS="-fno-rtti -fno-exceptions"
-MOZ_OPTIMIZE_FLAGS="$RPM_OPT_FLAGS"
+MOZ_OPTIMIZE_FLAGS="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}"
 %configure \
 	--with-default-mozilla-five-home=%{_libdir}/mozilla \
 	--with-pthreads \
@@ -95,7 +95,6 @@ MOZ_OPTIMIZE_FLAGS="$RPM_OPT_FLAGS"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 install -d $RPM_BUILD_ROOT{%{_bindir},%{_applnkdir}/Network/WWW} \
 	$RPM_BUILD_ROOT%{_datadir}/{idl,pixmaps} \
 	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,res,icons,searchplugins} \
