@@ -68,7 +68,7 @@ Obsoletes:	mozilla-theme-kzilla
 
 %define		_chromedir	%{_libdir}/%{name}/chrome
 
-%if%{?_with_gcc2:1}%{!?_with_gcc2:0}
+%if %{?_with_gcc2:1}%{!?_with_gcc2:0}
 %define		__cc		gcc2
 %define		__cxx		gcc2
 %endif
