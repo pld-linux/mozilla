@@ -12,8 +12,8 @@ Group(pl):	X11/Aplikacje/Sieciowe
 Source0:	ftp://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
 Source1:	%{name}.desktop
 Source2:	%{name}.png
-# Patch0:		%{name}-navigator-overlay-menu.patch
-# Patch1:		%{name}-taskbar-nomozilla.patch
+Patch0:		%{name}-navigator-overlay-menu.patch
+Patch1:		%{name}-taskbar-nomozilla.patch
 Patch2:		%{name}-dlopen-plugin.patch
 Patch3:		%{name}-pld-homepage.patch
 URL:		http://www.mozilla.org/projects/newlayout/
@@ -152,6 +152,7 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{_pixmapsdir}
 
 install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}/mozilla
 install dist/bin/regchrome $RPM_BUILD_ROOT%{_bindir}
+install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
