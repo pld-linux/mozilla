@@ -6,7 +6,7 @@ Summary:	Mozilla - web browser
 Summary(pl):	Mozilla - przegl±darka WWW
 Name:		mozilla
 Version:	0.9.2
-Release:	5
+Release:	6
 Epoch:		1
 License:	NPL
 Group:		X11/Applications/Networking
@@ -146,12 +146,12 @@ LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regxpcom
 LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regchrome
 install dist/bin/component.reg $RPM_BUILD_ROOT%{_libdir}/%{name}
 
-ln -s ../../share/mozilla/chrome $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome
-ln -s ../../share/mozilla/defaults $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults
-ln -s ../../share/mozilla/dtd $RPM_BUILD_ROOT%{_libdir}/%{name}/dtd
-ln -s ../../share/mozilla/icons $RPM_BUILD_ROOT%{_libdir}/%{name}/icons
-ln -s ../../share/mozilla/res $RPM_BUILD_ROOT%{_libdir}/%{name}/res
-ln -s ../../share/mozilla/searchplugins $RPM_BUILD_ROOT%{_libdir}/%{name}/searchplugins
+ln -sf ../../share/mozilla/chrome $RPM_BUILD_ROOT%{_libdir}/%{name}/chrome
+ln -sf ../../share/mozilla/defaults $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults
+ln -sf ../../share/mozilla/dtd $RPM_BUILD_ROOT%{_libdir}/%{name}/dtd
+ln -sf ../../share/mozilla/icons $RPM_BUILD_ROOT%{_libdir}/%{name}/icons
+ln -sf ../../share/mozilla/res $RPM_BUILD_ROOT%{_libdir}/%{name}/res
+ln -sf ../../share/mozilla/searchplugins $RPM_BUILD_ROOT%{_libdir}/%{name}/searchplugins
 
 cp -frL dist/bin/chrome/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
 cp -frL dist/bin/components/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/components
@@ -180,9 +180,10 @@ install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
 (
     cd dist/Embed
 
+    echo "%defattr(644,root,root,755)" > embedded-mozilla.list
     # at first overwrite file list
     # with libraries, which go to %{_libdir}
-    for f in *.so; do echo %{_libdir}/$f; done > embedded-mozilla.list
+    for f in *.so; do echo "%attr(755,root,root) %{_libdir}/$f"; done >> embedded-mozilla.list
 
     # next all files in %{_datadir}/mozilla
     for f in chrome defaults res; do
@@ -190,11 +191,12 @@ install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
     done >> embedded-mozilla.list
 
     # and files in %{_libdir}/mozilla
-    for f in components; do
-        find $f -type f -printf %{_libdir}/%{name}/%p\\n ;
+    for f in components/*.so ; do
+        echo "%attr(755,root,root) %{_libdir}/%{name}/$f"
     done >> embedded-mozilla.list
-
-    cp embedded-mozilla.list /var/tmp
+    for f in components/*.xpt ; do
+        echo "%{_libdir}/%{name}/$f"
+    done >> embedded-mozilla.list
 )
 
 %clean
@@ -432,12 +434,16 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla regxpcom
 %attr(755,root,root) %{_libdir}/libgtkxtbin.so
 
 %dir %{_libdir}/%{name}
-%dir %{_libdir}/%{name}/chrome
 %dir %{_libdir}/%{name}/components
-%dir %{_libdir}/%{name}/defaults
-%dir %{_libdir}/%{name}/dtd
-%dir %{_libdir}/%{name}/icons
 %dir %{_libdir}/%{name}/plugins
-%dir %{_libdir}/%{name}/res
-%dir %{_libdir}/%{name}/searchplugins
 %dir %{_datadir}/%{name}
+%dir %{_datadir}/%{name}/res
+%dir %{_datadir}/%{name}/res/builtin
+%dir %{_datadir}/%{name}/defaults
+%dir %{_datadir}/%{name}/defaults/pref
+%dir %{_datadir}/%{name}/chrome
+# symlinks
+%{_libdir}/%{name}/chrome
+%{_libdir}/%{name}/defaults
+%{_libdir}/%{name}/res
+#%{_libdir}/%{name}/{searchplugins,icons,dtd} - symlinks to non-existing dirs
