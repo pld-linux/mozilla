@@ -12,12 +12,12 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
-Version:	1.3
-Release:	0.2
+Version:	1.4a
+Release:	0.1
 Epoch:		3
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
-Source0:	http://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.gz
+Source0:	http://ftp.mozilla.org/pub/mozilla/releases/mozilla%{version}/src/%{name}-source-%{version}.tar.bz2
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source4:	%{name}-addressbook.desktop
@@ -32,7 +32,6 @@ Patch2:		%{name}-nss.patch
 Patch3:		%{name}-ldap_nspr_includes.patch
 Patch5:		%{name}-ldap-with-nss.patch
 Patch6:		%{name}-gfx.patch
-#Patch7:		%{name}-gtk2.patch
 URL:		http://www.mozilla.org/
 %{?_with_gtk1:BuildRequires:	ORBit-devel}
 BuildRequires:	Xft-devel >= 2.1-2
@@ -142,7 +141,6 @@ Mozilla
 %patch3 -p1
 %patch5 -p1
 %patch6 -p1
-#%%patch7 -p0
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
@@ -309,6 +307,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{!?_with_gtk1:%attr(755,root,root) %{_libdir}/libmai.so}
 #%attr(755,root,root) %{_libdir}/libnullplugin.so
 %attr(755,root,root) %{_libdir}/libxpcom.so
+%attr(755,root,root) %{_libdir}/libxpcom_compat.so
 %attr(755,root,root) %{_libdir}/libxpistub.so
 %attr(755,root,root) %{_libdir}/libxlibrgb.so
 %attr(755,root,root) %{_libdir}/%{name}/libxpcom.so
@@ -330,14 +329,14 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libgk*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libhtmlpars.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libi18n.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libiiextras.so
+#%attr(755,root,root) %{_libdir}/%{name}/components/libiiextras.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libimg*.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libinspector.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjar50.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjsd.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libjsdom.so
 #%attr(755,root,root) %{_libdir}/%{name}/components/libjsloader.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libjsurl.so
+#%attr(755,root,root) %{_libdir}/%{name}/components/libjsurl.so
 #%attr(755,root,root) %{_libdir}/%{name}/components/liblwbrk.so
 
 %attr(755,root,root) %{_libdir}/%{name}/components/libmork.so
@@ -355,8 +354,8 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libpref.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libprofile.so
 %attr(755,root,root) %{_libdir}/%{name}/components/librdf.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libregviewer.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libshistory.so
+#%attr(755,root,root) %{_libdir}/%{name}/components/libregviewer.so
+#%attr(755,root,root) %{_libdir}/%{name}/components/libshistory.so
 #%attr(755,root,root) %{_libdir}/%{name}/components/libstrres.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtransformiix.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libtxmgr.so
@@ -366,7 +365,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %attr(755,root,root) %{_libdir}/%{name}/components/libucv*.so
 #%attr(755,root,root) %{_libdir}/%{name}/components/libunicharutil.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libuniversalchardet.so
-%attr(755,root,root) %{_libdir}/%{name}/components/liburiloader.so
+#%attr(755,root,root) %{_libdir}/%{name}/components/liburiloader.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwallet.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwalletviewers.so
 %attr(755,root,root) %{_libdir}/%{name}/components/libwebbrwsr.so
@@ -399,7 +398,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/helperAppDlg.xpt
 %{_libdir}/%{name}/components/history.xpt
 %{_libdir}/%{name}/components/htmlparser.xpt
-%{_libdir}/%{name}/components/iiextras.xpt
+#%{_libdir}/%{name}/components/iiextras.xpt
 %{_libdir}/%{name}/components/imglib2.xpt
 %{_libdir}/%{name}/components/inspector.xpt
 %{_libdir}/%{name}/components/intl.xpt
@@ -424,7 +423,7 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/progressDlg.xpt
 %{_libdir}/%{name}/components/proxyObjInst.xpt
 %{_libdir}/%{name}/components/rdf.xpt
-%{_libdir}/%{name}/components/regviewer.xpt
+#%{_libdir}/%{name}/components/regviewer.xpt
 %{_libdir}/%{name}/components/related.xpt
 %{_libdir}/%{name}/components/search.xpt
 %{_libdir}/%{name}/components/shistory.xpt
@@ -447,6 +446,8 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/widget.xpt
 %{_libdir}/%{name}/components/windowds.xpt
 %{_libdir}/%{name}/components/windowwatcher.xpt
+%{_libdir}/%{name}/components/wsdl.xpt
+%{_libdir}/%{name}/components/wsproxy.xpt
 %{_libdir}/%{name}/components/x*.xpt
 
 #%%{_libdir}/*.js
