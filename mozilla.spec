@@ -1,6 +1,7 @@
 #
 # Conditional build:
 # _with_clearmenu
+# _with_gdkxft
 
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
@@ -8,7 +9,7 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Name:		mozilla
 Version:	0.9.8
-Release:	2
+Release:	3
 Epoch:		1
 License:	GPL
 Group:		X11/Applications/Networking
@@ -23,6 +24,7 @@ Patch0:		%{name}-navigator-overlay-menu.patch
 Patch1:		%{name}-taskbar-no%{name}.patch
 Patch2:		%{name}-pld-homepage.patch
 Patch3:		%{name}-nspr_correct_in_nss.patch
+Patch4:		%{name}-gdkxft.patch
 URL:		http://www.mozilla.org/projects/newlayout/
 BuildRequires:	ORBit-devel
 BuildRequires:	autoconf
@@ -36,6 +38,7 @@ BuildRequires:	nss-static
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	zip >= 2.1
 Provides:	mozilla-embedded
+%{?_with_gdkxft:Requires:	gdkxft}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
@@ -109,6 +112,7 @@ Mozilla.
 %{?_with_clearmenu:%patch1 -p1}
 %patch2 -p1
 %patch3 -p1
+%{?_with_gdkxft:%patch4 -p1}
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
