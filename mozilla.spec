@@ -1,9 +1,9 @@
 #
 # Conditional build:
 # _with_gtk1		- use gtk+ 1.2.x instead of 2.x.x
-# _with_gcc2		- compile using gcc2 to get working flash and java plugins
-#			  on nest and other gcc 3.x systems. WARNING! You have to 
-#			  recompile galeon with gcc2 in order to get it working with 
+# _with_gcc2		- compile using gcc2 to get working flash and Sun Java plugins
+#			  on nest and other gcc 3.x systems. WARNING! You have to
+#			  recompile galeon with gcc2 in order to get it working with
 #			  this release of mozilla
 #
 Summary:	Mozilla - web browser
@@ -137,7 +137,6 @@ Mozilla.
 Mozilla
 
 %prep
-#%setup -q -a 3 -n mozilla
 %setup -q -n mozilla
 %patch0 -p1
 %patch2 -p1
@@ -190,7 +189,7 @@ CXXFLAGS="-Wno-deprecated"; export CXXFLAGS
 	--with-system-zlib \
 	--with-x
 
-%{__make} 
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -254,6 +253,9 @@ install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}/mozilla
 install dist/bin/regchrome $RPM_BUILD_ROOT%{_bindir}
 install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
 
+cp $RPM_BUILD_ROOT%{_chromedir}/installed-chrome.txt \
+	$RPM_BUILD_ROOT%{_chromedir}/%{name}-installed-chrome.txt
+
 cp -f %{SOURCE14} .
 
 %clean
@@ -264,6 +266,9 @@ rm -rf $RPM_BUILD_ROOT
 umask 022
 rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
+
+cd %{_chromedir}
+cat *-installed-chrome.txt >installed-chrome.txt
 
 %postun	-p /sbin/ldconfig
 
@@ -371,7 +376,6 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{!?_with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk2.so}
 %attr(755,root,root) %{_libdir}/%{name}/components/libx*.so
 
-
 %{_libdir}/%{name}/components/access*.xpt
 %{_libdir}/%{name}/components/appshell.xpt
 %{_libdir}/%{name}/components/autocomplete.xpt
@@ -451,7 +455,12 @@ MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
 %{_libdir}/%{name}/components/*.js
 %config %verify(not size mtime md5) %{_libdir}/%{name}/components/*.dat
 
-%{_datadir}/%{name}/chrome
+%dir %{_datadir}/%{name}/chrome
+%{_datadir}/%{name}/chrome/[!i]*
+%{_datadir}/%{name}/chrome/i[!n]*
+%{_datadir}/%{name}/chrome/ins[!t]*
+%ghost %{_datadir}/%{name}/chrome/installed-chrome.txt
+
 %{_datadir}/%{name}/defaults
 %{_datadir}/%{name}/icons
 %{_datadir}/%{name}/res
