@@ -39,6 +39,7 @@ Patch3:		%{name}-ldap-with-nss.patch
 Patch4:		%{name}-gfx.patch
 Patch5:		%{name}-alpha-gcc3.patch
 Patch6:		%{name}-amd64.patch
+Patch7:		%{name}-gcc34.patch
 URL:		http://www.mozilla.org/
 %{?with_gtk1:BuildRequires:	ORBit-devel}
 BuildRequires:	automake
@@ -207,6 +208,7 @@ Mozilla
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1 
+%patch7 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
