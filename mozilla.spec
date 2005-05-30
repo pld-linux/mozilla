@@ -18,7 +18,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.7.8
-Release:	1
+Release:	2
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -231,6 +231,7 @@ Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	nspr-devel >= 1:4.6-0.20041030.2
 Provides:	mozilla-embedded-devel = %{epoch}:%{version}-%{release}
 Obsoletes:	mozilla-embedded-devel
+Obsoletes:	mozilla-firefox-devel
 
 %description devel
 Mozilla development package.
