@@ -18,7 +18,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.7.8
-Release:	2
+Release:	3
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -60,7 +60,7 @@ BuildConflicts:	freetype-devel = 2.1.8
 %{?with_gtk1:BuildRequires:	gtk+-devel >= 1.2.0}
 %{!?with_gtk1:BuildRequires:	gtk+2-devel >= 2:2.2.0}
 # for libnegotiateauth
-%{?with_heimdal:BuildRequires:	heimdal-devel}
+%{?with_heimdal:BuildRequires:	heimdal-devel >= 0.7}
 %{!?with_gtk1:BuildRequires:	libIDL-devel >= 0.8.0}
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.0
