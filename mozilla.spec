@@ -18,7 +18,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.7.8
-Release:	3
+Release:	4
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -44,6 +44,7 @@ Patch5:		%{name}-alpha-gcc3.patch
 # http://bugzilla.mozilla.org/attachment.cgi?id=149334&action=view
 Patch6:		%{name}-freetype218.patch
 Patch7:		%{name}-cairo.patch
+Patch8:		%{name}-gcc-bugs.patch
 URL:		http://www.mozilla.org/
 BuildRequires:	automake
 BuildRequires:	tar >= 1:1.15.1
@@ -258,6 +259,7 @@ tar jxf %{SOURCE0} --strip-components=1
 %patch5 -p1
 %{?with_ft218:%patch6 -p0}
 %patch7 -p1
+%patch8 -p0
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
