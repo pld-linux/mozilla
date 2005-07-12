@@ -5,7 +5,7 @@
 			# gcc2-compiled Java plugins on nest and other gcc 3.x systems.
 			# WARNING! You have to recompile galeon with gcc2 in
 			# order to get it working with this release of mozilla
-%bcond_with	ft218	# compile with freetype >= 2.1.8
+%bcond_without	ft218	# compile with freetype < 2.1.8
 %bcond_without	gnomevfs	# disable GnomeVFS support
 
 %bcond_without	heimdal	# disable heimdal support
