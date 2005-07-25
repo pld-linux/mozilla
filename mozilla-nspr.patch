@@ -1,0 +1,10 @@
+--- mozilla-1.7.10/config/autoconf.mk.in.orig	2004-10-12 06:13:31.000000000 +0200
++++ mozilla-1.7.10/config/autoconf.mk.in	2005-07-25 13:13:28.000000000 +0200
+@@ -172,6 +172,7 @@
+ MOZ_INSURE_EXCLUDE_DIRS = @MOZ_INSURE_EXCLUDE_DIRS@
+ 
+ MOZ_NATIVE_NSPR = @MOZ_NATIVE_NSPR@
++NSPR_CONFIG     = @NSPR_CONFIG@
+ 
+ CROSS_COMPILE   = @CROSS_COMPILE@
+ 
