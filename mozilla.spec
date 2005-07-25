@@ -17,13 +17,13 @@ Summary(pl):	Mozilla - przegl±darka WWW
 Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
-Version:	1.7.8
-Release:	5
+Version:	1.7.10
+Release:	1
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/mozilla/releases/mozilla%{version}/source/%{name}-%{version}-source.tar.bz2
-# Source0-md5:	a6fa13d0c9243060bac6821fcff4b973
+# Source0-md5:	27d4215b2a52aff47dcf328b3b135fa2
 Source1:	%{name}.desktop
 Source2:	%{name}.png
 Source3:	%{name}-composer.desktop
@@ -45,6 +45,7 @@ Patch5:		%{name}-alpha-gcc3.patch
 Patch6:		%{name}-freetype218.patch
 Patch7:		%{name}-cairo.patch
 Patch8:		%{name}-gcc-bugs.patch
+Patch9:		%{name}-nspr.patch
 URL:		http://www.mozilla.org/
 BuildRequires:	automake
 BuildRequires:	tar >= 1:1.15.1
@@ -66,7 +67,7 @@ BuildConflicts:	freetype-devel = 2.1.8
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.0
 BuildRequires:	libstdc++-devel
-BuildRequires:	nspr-devel >= 1:4.6-0.20041030.2
+BuildRequires:	nspr-devel >= 1:4.6-2
 BuildRequires:	nss-devel >= 3.9.4-1
 %{!?with_gtk1:BuildRequires:	pango-devel >= 1:1.1.0}
 BuildRequires:	perl-modules >= 5.6.0
@@ -76,7 +77,7 @@ BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.0.0
 Requires(post,postun):	/sbin/ldconfig
-Requires:	nspr >= 1:4.6-0.20041030.2
+Requires:	nspr >= 1:4.6-2
 Requires:	nss >= 3.9.4-1
 %{?with_gtk1:Provides:	mozilla(gtk1) = %{epoch}:%{version}-%{release}}
 %{!?with_gtk1:Provides:	mozilla(gtk2) = %{epoch}:%{version}-%{release}}
@@ -229,7 +230,7 @@ Summary(pt_BR):	Arquivos de inclusão para desenvolvimento de programas que usam 
 Summary(ru):	æÁÊÌÙ, ÎÅÏÂÈÏÄÉÍÙÅ ÄÌÑ ÉÓÐÏÌØÚÏ×ÁÎÉÑ ÐÒÏÇÒÁÍÍ, ×ËÌÀÞÁÀÝÉÈ Mozilla
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
-Requires:	nspr-devel >= 1:4.6-0.20041030.2
+Requires:	nspr-devel >= 1:4.6-2
 Provides:	mozilla-embedded-devel = %{epoch}:%{version}-%{release}
 Obsoletes:	mozilla-embedded-devel
 Obsoletes:	mozilla-firefox-devel
@@ -260,6 +261,7 @@ tar jxf %{SOURCE0} --strip-components=1
 %{?with_ft218:%patch6 -p0}
 %patch7 -p1
 %patch8 -p0
+%patch9 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
