@@ -50,6 +50,7 @@ URL:		http://www.mozilla.org/
 BuildRequires:	automake
 BuildRequires:	tar >= 1:1.15.1
 %{?with_gtk1:BuildRequires:	ORBit-devel}
+# TODO: https://bugzilla.mozilla.org/show_bug.cgi?id=296463
 %{?with_svg:BuildRequires:	cairo-devel >= 0.3.0}
 %{?with_svg:BuildRequires:	cairo-devel < 0.5.0}
 %if %{with ft218}
