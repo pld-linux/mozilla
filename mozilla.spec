@@ -80,8 +80,8 @@ BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.0.0
 Requires(post,postun):	/sbin/ldconfig
-Requires:	cairo >= 0.3.0
-Requires:	cairo < 0.5.0
+%{?with_svg:Requires:	cairo >= 0.3.0}
+%{?with_svg:Requires:	cairo < 0.5.0}
 Requires:	nspr >= 1:4.6-2
 Requires:	nss >= 3.9.4-1
 %{?with_gtk1:Provides:	mozilla(gtk1) = %{epoch}:%{version}-%{release}}
