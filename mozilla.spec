@@ -9,7 +9,7 @@
 %bcond_without	gnomevfs	# disable GnomeVFS support
 
 %bcond_without	heimdal	# disable heimdal support
-%bcond_without	svg	# disable svg support
+%bcond_with	svg	# enable svg support
 #
 Summary:	Mozilla - web browser
 Summary(es):	Navegador de Internet Mozilla
@@ -18,7 +18,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.7.11
-Release:	1
+Release:	2
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
