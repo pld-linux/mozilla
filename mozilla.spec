@@ -18,7 +18,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.7.12
-Release:	1
+Release:	1.1
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -77,6 +77,7 @@ BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
 BuildRequires:	xcursor-devel
 BuildRequires:	xft-devel >= 2.1-2
+BuildRequires:	tar >= 1:1.15.1
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.0.0
 Requires(post,postun):	/sbin/ldconfig
@@ -84,6 +85,7 @@ Requires(post,postun):	/sbin/ldconfig
 %{?with_svg:Requires:	cairo < 0.5.0}
 Requires:	nspr >= 1:4.6-2
 Requires:	nss >= 3.9.4-1
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 %{?with_gtk1:Provides:	mozilla(gtk1) = %{epoch}:%{version}-%{release}}
 %{!?with_gtk1:Provides:	mozilla(gtk2) = %{epoch}:%{version}-%{release}}
 Provides:	mozilla-embedded = %{epoch}:%{version}-%{release}
@@ -137,6 +139,13 @@ ainda nЦo estАvel.
 Mozilla - полнофункциональный web-browser с открытыми исходными
 текстами, разработанный для максимального соотвествия стандартам,
 максмимальной переносимости и скорости работы
+
+%package libs
+Summary:	mozilla shared libraries
+Group:		Libraries
+
+%description libs
+mozilla shared libraries.
 
 %package mailnews
 Summary:	Mozilla - programs for mail and news
@@ -384,46 +393,46 @@ install dist/bin/xpidl $RPM_BUILD_ROOT%{_bindir}
 cp $RPM_BUILD_ROOT%{_chromedir}/installed-chrome.txt \
 	$RPM_BUILD_ROOT%{_chromedir}/%{name}-installed-chrome.txt
 
-cat << EOF > $RPM_BUILD_ROOT%{_bindir}/mozilla
+cat << 'EOF' > $RPM_BUILD_ROOT%{_bindir}/mozilla
 #!/bin/sh
 # (c) vip at linux.pl, wolf at pld-linux.org
 
 MOZILLA_FIVE_HOME=%{_libdir}/mozilla
-if [ "\$1" == "-remote" ]; then
-	%{_bindir}/mozilla-bin "\$@"
+if [ "$1" == "-remote" ]; then
+	%{_bindir}/mozilla-bin "$@"
 else
-	PING=\`%{_bindir}/mozilla-bin -remote 'ping()' 2>&1 >/dev/null\`
-	if [ -n "\$PING" ]; then
-		if [ -f "\`pwd\`/\$1" ]; then
-			%{_bindir}/mozilla-bin "file://\`pwd\`/\$1"
+	PING=`%{_bindir}/mozilla-bin -remote 'ping()' 2>&1 >/dev/null`
+	if [ -n "$PING" ]; then
+		if [ -f "`pwd`/$1" ]; then
+			%{_bindir}/mozilla-bin "file://`pwd`/$1"
 		else
-			%{_bindir}/mozilla-bin "\$@"
+			%{_bindir}/mozilla-bin "$@"
 		fi
 	else
-		if [ -z "\$1" ]; then
+		if [ -z "$1" ]; then
 			%{_bindir}/mozilla-bin -remote 'xfeDoCommand (openBrowser)'
-		elif [ "\$1" == "-mail" ]; then
+		elif [ "$1" == "-mail" ]; then
 			%{_bindir}/mozilla-bin -remote 'xfeDoCommand (openInbox)'
-		elif [ "\$1" == "-compose" ]; then
+		elif [ "$1" == "-compose" ]; then
 			%{_bindir}/mozilla-bin -remote 'xfeDoCommand (composeMessage)'
 		else
-			if [ -f "\`pwd\`/\$1" ]; then
-				URL="file://\`pwd\`/\$1"
+			if [ -f "`pwd`/$1" ]; then
+				URL="file://`pwd`/$1"
 			else
-				URL="\$1"
+				URL="$1"
 			fi
 			grep browser.tabs.opentabfor.middleclick ~/.mozilla/default/*/prefs.js | grep true > /dev/null
 			if [ $? -eq 0 ]; then
-				%{_bindir}/mozilla-bin -remote "OpenUrl(\$URL,new-tab)"
+				%{_bindir}/mozilla-bin -remote "OpenUrl($URL,new-tab)"
 			else
-				%{_bindir}/mozilla-bin -remote "OpenUrl(\$URL,new-window)"
+				%{_bindir}/mozilla-bin -remote "OpenUrl($URL,new-window)"
 			fi
 		fi
 	fi
 fi
 EOF
 
-cat << EOF > $RPM_BUILD_ROOT%{_sbindir}/mozilla-chrome+xpcom-generate
+cat << 'EOF' > $RPM_BUILD_ROOT%{_sbindir}/mozilla-chrome+xpcom-generate
 #!/bin/sh
 umask 022
 cd %{_datadir}/mozilla/chrome
@@ -439,15 +448,16 @@ EOF
 rm -rf $RPM_BUILD_ROOT
 
 %post
-/sbin/ldconfig
 umask 022
 %{_sbindir}/mozilla-chrome+xpcom-generate
 
 %postun
-/sbin/ldconfig
 if [ "$1" = "1" ]; then
 	%{_sbindir}/mozilla-chrome+xpcom-generate
 fi
+
+%post	libs -p /sbin/ldconfig
+%postun	libs -p /sbin/ldconfig
 
 %post mailnews
 /sbin/ldconfig
@@ -504,20 +514,6 @@ fi
 %dir %{_libdir}/%{name}/searchplugins
 %dir %{_datadir}/%{name}
 
-%attr(755,root,root) %{_libdir}/libgkgfx.so
-%attr(755,root,root) %{_libdir}/libgtkembedmoz.so
-%{?with_gtk1:%attr(755,root,root) %{_libdir}/libgtksuperwin.so}
-%attr(755,root,root) %{_libdir}/libgtkxtbin.so
-%attr(755,root,root) %{_libdir}/libjsj.so
-%attr(755,root,root) %{_libdir}/libldap50.so
-%attr(755,root,root) %{_libdir}/libprldap50.so
-%attr(755,root,root) %{_libdir}/libssldap50.so
-%attr(755,root,root) %{_libdir}/libmozjs.so
-##%attr(755,root,root) %{_libdir}/libmoz_art_lgpl.so
-%attr(755,root,root) %{_libdir}/libxpcom.so
-%attr(755,root,root) %{_libdir}/libxpcom_compat.so
-%attr(755,root,root) %{_libdir}/libxpistub.so
-%attr(755,root,root) %{_libdir}/libxlibrgb.so
 %attr(755,root,root) %{_libdir}/%{name}/libxpcom.so
 %attr(755,root,root) %{_libdir}/%{name}/libnssckbi.so
 
@@ -730,6 +726,28 @@ fi
 %{_desktopdir}/mozilla-composer.desktop
 #%{_desktopdir}/mozilla-jconsole.desktop
 #%{_desktopdir}/mozilla-terminal.desktop
+
+%files libs
+%defattr(644,root,root,755)
+# libxpcom.so used by mozillaplug-in
+# probably should add more if more packages require
+%attr(755,root,root) %{_libdir}/libxpcom.so
+%attr(755,root,root) %{_libdir}/libxpcom_compat.so
+
+# add rest too
+%attr(755,root,root) %{_libdir}/libgkgfx.so
+%attr(755,root,root) %{_libdir}/libgtkembedmoz.so
+%{?with_gtk1:%attr(755,root,root) %{_libdir}/libgtksuperwin.so}
+%attr(755,root,root) %{_libdir}/libgtkxtbin.so
+%attr(755,root,root) %{_libdir}/libjsj.so
+%attr(755,root,root) %{_libdir}/libldap50.so
+%attr(755,root,root) %{_libdir}/libprldap50.so
+%attr(755,root,root) %{_libdir}/libssldap50.so
+%attr(755,root,root) %{_libdir}/libmozjs.so
+##%attr(755,root,root) %{_libdir}/libmoz_art_lgpl.so
+%attr(755,root,root) %{_libdir}/libxpistub.so
+%attr(755,root,root) %{_libdir}/libxlibrgb.so
+
 
 %files mailnews
 %defattr(644,root,root,755)
