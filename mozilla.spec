@@ -142,10 +142,14 @@ Mozilla - полнофункциональный web-browser с открытыми исходными
 
 %package libs
 Summary:	mozilla shared libraries
+Summary(pl):	Biblioteki wspСЁdzielone mozilli
 Group:		Libraries
 
 %description libs
 mozilla shared libraries.
+
+%description libs -l pl
+Biblioteki wspСЁdzielone mozilli.
 
 %package mailnews
 Summary:	Mozilla - programs for mail and news
