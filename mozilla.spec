@@ -18,7 +18,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.7.12
-Release:	1.1
+Release:	1.2
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -46,6 +46,7 @@ Patch6:		%{name}-freetype218.patch
 Patch7:		%{name}-cairo.patch
 Patch8:		%{name}-gcc-bugs.patch
 Patch9:		%{name}-nspr.patch
+Patch10:	firefox-1.0-gcc4-compile.patch
 URL:		http://www.mozilla.org/
 BuildRequires:	automake
 BuildRequires:	tar >= 1:1.15.1
@@ -98,6 +99,8 @@ Obsoletes:	mozilla-theme-NegativeModern
 Obsoletes:	mozilla-theme-gold
 Obsoletes:	mozilla-theme-kzilla
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		specflags	-fno-strict-aliasing
 
 %define		_chromedir	%{_libdir}/%{name}/chrome
 # mozilla and firefox provide their own versions
