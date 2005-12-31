@@ -283,6 +283,7 @@ tar jxf %{SOURCE0} --strip-components=1
 %patch7 -p1
 %patch8 -p0
 %patch9 -p1
+%patch10 -p0
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
