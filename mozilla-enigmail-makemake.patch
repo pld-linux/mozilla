@@ -1,0 +1,32 @@
+diff -ur mozilla.orig/extensions/enigmail/makemake mozilla/extensions/enigmail/makemake
+--- mozilla.orig/extensions/enigmail/makemake	2004-12-18 15:06:12.000000000 +0100
++++ mozilla/extensions/enigmail/makemake	2006-01-24 08:29:48.000000000 +0100
+@@ -17,7 +17,11 @@
+    echo $wd
+ 
+    set top_srcdir = ""
+-   while (("$wd" != "") && (${wd:t} != "mozilla"))
++   while (("$wd" != ""))
++      if((${wd:t} == "extensions")) then
++         set top_srcdir = "../$top_srcdir"
++         break
++      endif
+       if ("$top_srcdir" == "") then
+          set top_srcdir = ".."
+       else
+diff -ur mozilla.orig/extensions/ipc/makemake mozilla/extensions/ipc/makemake
+--- mozilla.orig/extensions/ipc/makemake	2006-01-24 08:29:09.000000000 +0100
++++ mozilla/extensions/ipc/makemake	2006-01-24 08:29:48.000000000 +0100
+@@ -17,7 +17,11 @@
+    echo $wd
+ 
+    set top_srcdir = ""
+-   while (("$wd" != "") && (${wd:t} != "mozilla"))
++   while (("$wd" != ""))
++      if((${wd:t} == "extensions")) then
++         set top_srcdir = "../$top_srcdir"
++         break
++      endif
+       if ("$top_srcdir" == "") then
+          set top_srcdir = ".."
+       else
