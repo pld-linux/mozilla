@@ -99,6 +99,7 @@ Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Provides:	mozilla-embedded = %{epoch}:%{version}-%{release}
 %{?with_gtk1:Provides:	mozilla-embedded(gtk1) = %{epoch}:%{version}-%{release}}
 %{!?with_gtk1:Provides:	mozilla-embedded(gtk2) = %{epoch}:%{version}-%{release}}
+Provides:	wwwbrowser
 Obsoletes:	light
 Obsoletes:	mozilla-embedded
 Obsoletes:	mozilla-irc
