@@ -32,39 +32,6 @@ diff -u -r1.7.20.1 nsHttpConnectionMgr.cpp
  
      switch (name) {
      case MAX_CONNECTIONS:
-Index: security/nss/lib/pki1/oiddata.h
-===================================================================
-RCS file: /cvsroot/mozilla/security/nss/lib/pki1/oiddata.h,v
-retrieving revision 1.1
-diff -u -r1.1 oiddata.h
---- security/nss/lib/pki1/oiddata.h	4 Jan 2002 05:22:07 -0000	1.1
-+++ security/nss/lib/pki1/oiddata.h	4 Mar 2005 19:59:58 -0000
-@@ -43,9 +43,6 @@
- #include "nsspki1t.h"
- #endif /* NSSPKI1T_H */
- 
--extern const NSSOID nss_builtin_oids[];
--extern const PRUint32 nss_builtin_oid_count;
--
- /*extern const nssAttributeTypeAliasTable nss_attribute_type_aliases[];*/
- /*extern const PRUint32 nss_attribute_type_alias_count;*/
- 
-Index: security/nss/lib/pki1/pki1.h
-===================================================================
-RCS file: /cvsroot/mozilla/security/nss/lib/pki1/pki1.h,v
-retrieving revision 1.2
-diff -u -r1.2 pki1.h
---- security/nss/lib/pki1/pki1.h	19 Jul 2001 20:40:42 -0000	1.2
-+++ security/nss/lib/pki1/pki1.h	4 Mar 2005 19:59:59 -0000
-@@ -58,6 +58,8 @@
- /* fgmr 19990505 moved these here from oiddata.h */
- extern const nssAttributeTypeAliasTable nss_attribute_type_aliases[];
- extern const PRUint32 nss_attribute_type_alias_count;
-+extern const NSSOID nss_builtin_oids[];
-+extern const PRUint32 nss_builtin_oid_count;
- 
- /*
-  * NSSOID
 Index: widget/src/gtk2/nsDragService.cpp
 ===================================================================
 RCS file: /cvsroot/mozilla/widget/src/gtk2/nsDragService.cpp,v
