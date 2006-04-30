@@ -18,7 +18,7 @@ Summary(pt_BR):	Navegador Mozilla
 Summary(ru):	Web browser
 Name:		mozilla
 Version:	1.7.13
-Release:	1
+Release:	1.1
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -52,6 +52,7 @@ Patch8:		%{name}-gcc-bugs.patch
 Patch9:		%{name}-nspr.patch
 Patch10:	firefox-1.0-gcc4-compile.patch
 Patch11:	%{name}-enigmail-makemake.patch
+Patch12:	%{name}-lib_path.patch
 URL:		http://www.mozilla.org/
 BuildRequires:	/bin/csh
 BuildRequires:	/bin/ex
@@ -110,6 +111,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags	-fno-strict-aliasing
 
+%define		_mozilladir	%{_libdir}/%{name}
 %define		_chromedir	%{_libdir}/%{name}/chrome
 # mozilla and firefox provide their own versions
 %define		_noautoreqdep	libgkgfx.so libgtkxtbin.so libjsj.so libmozjs.so libxpcom.so libxpcom_compat.so
@@ -316,6 +318,7 @@ cd ..
 %patch9 -p1
 %patch10 -p0
 %patch11 -p1
+%patch12 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
@@ -350,7 +353,7 @@ cp -f /usr/share/automake/config.* directory/c-sdk/config/autoconf
 	--enable-xprint \
 	--disable-xterm-updates \
 	--enable-old-abi-compat-wrappers \
-	--with-default-mozilla-five-home=%{_libdir}/mozilla \
+	--with-default-mozilla-five-home=%{_mozilladir} \
 	--with-pthreads \
 	--with-system-jpeg \
 	--with-system-nspr \
@@ -370,11 +373,11 @@ cd ../enigmail
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d \
-	$RPM_BUILD_ROOT{%{_bindir},%{_sbindir},%{_datadir}/idl} \
+	$RPM_BUILD_ROOT{%{_bindir},%{_sbindir},%{_datadir}} \
 	$RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}} \
 	$RPM_BUILD_ROOT%{_datadir}/%{name}/{chrome,defaults,icons,res,searchplugins,greprefs} \
-	$RPM_BUILD_ROOT%{_libdir}/%{name}/{components,plugins} \
-	$RPM_BUILD_ROOT{%{_includedir}/%{name},%{_pkgconfigdir}}
+	$RPM_BUILD_ROOT%{_mozilladir}/{components,plugins} \
+	$RPM_BUILD_ROOT{%{_includedir}/%{name}/idl,%{_pkgconfigdir}}
 
 # preparing to create register
 # remove empty directory trees
@@ -387,30 +390,29 @@ echo "locale,install,select,en-US"	>> dist/bin/chrome/installed-chrome.txt
 # creating and installing register
 LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regxpcom
 LD_LIBRARY_PATH="dist/bin" MOZILLA_FIVE_HOME="dist/bin" dist/bin/regchrome
-#install dist/bin/component.reg $RPM_BUILD_ROOT%{_libdir}/%{name}
+#install dist/bin/component.reg $RPM_BUILD_ROOT%{_mozilladir}
 
 ln -sf ../../share/mozilla/chrome $RPM_BUILD_ROOT%{_chromedir}
-ln -sf ../../share/mozilla/defaults $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults
-ln -sf ../../share/mozilla/greprefs $RPM_BUILD_ROOT%{_libdir}/%{name}/greprefs
-ln -sf ../../share/mozilla/icons $RPM_BUILD_ROOT%{_libdir}/%{name}/icons
-ln -sf ../../share/mozilla/res $RPM_BUILD_ROOT%{_libdir}/%{name}/res
-ln -sf ../../share/mozilla/searchplugins $RPM_BUILD_ROOT%{_libdir}/%{name}/searchplugins
+ln -sf ../../share/mozilla/defaults $RPM_BUILD_ROOT%{_mozilladir}/defaults
+ln -sf ../../share/mozilla/greprefs $RPM_BUILD_ROOT%{_mozilladir}/greprefs
+ln -sf ../../share/mozilla/icons $RPM_BUILD_ROOT%{_mozilladir}/icons
+ln -sf ../../share/mozilla/res $RPM_BUILD_ROOT%{_mozilladir}/res
+ln -sf ../../share/mozilla/searchplugins $RPM_BUILD_ROOT%{_mozilladir}/searchplugins
 
 cp -frL dist/bin/chrome/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/chrome
-cp -frL dist/bin/components/*	$RPM_BUILD_ROOT%{_libdir}/%{name}/components
+cp -frL dist/bin/components/*	$RPM_BUILD_ROOT%{_mozilladir}/components
 cp -frL dist/bin/defaults/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/defaults
 %{?with_gtk1:cp -frL dist/bin/icons/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/icons}
 cp -frL dist/bin/res/*		$RPM_BUILD_ROOT%{_datadir}/%{name}/res
 cp -frL dist/bin/searchplugins/* $RPM_BUILD_ROOT%{_datadir}/%{name}/searchplugins
 cp -frL dist/gre/greprefs/*	$RPM_BUILD_ROOT%{_datadir}/%{name}/greprefs
-cp -frL dist/idl/*		$RPM_BUILD_ROOT%{_datadir}/idl
+cp -frL dist/idl/*		$RPM_BUILD_ROOT%{_includedir}/%{name}/idl
 cp -frL dist/include/*		$RPM_BUILD_ROOT%{_includedir}/%{name}
 cp -frL dist/public/ldap{,-private} $RPM_BUILD_ROOT%{_includedir}/%{name}
 
-install dist/bin/*.so $RPM_BUILD_ROOT%{_libdir}
+install dist/bin/*.so $RPM_BUILD_ROOT%{_mozilladir}
 
-ln -s %{_libdir}/libxpcom.so $RPM_BUILD_ROOT%{_libdir}/%{name}/libxpcom.so
-ln -s %{_libdir}/libnssckbi.so $RPM_BUILD_ROOT%{_libdir}/%{name}/libnssckbi.so
+ln -s %{_libdir}/libnssckbi.so $RPM_BUILD_ROOT%{_mozilladir}/libnssckbi.so
 
 for f in build/unix/*.pc ; do
 	sed -e 's/mozilla-%{version}/mozilla/' $f \
@@ -432,7 +434,10 @@ install %{SOURCE1} %{SOURCE3} %{SOURCE5} %{SOURCE6} %{SOURCE7} \
 
 install %{SOURCE2}	$RPM_BUILD_ROOT%{_pixmapsdir}
 
-install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_bindir}
+install dist/bin/mozilla-bin $RPM_BUILD_ROOT%{_mozilladir}
+install dist/bin/regchrome $RPM_BUILD_ROOT%{_mozilladir}
+install dist/bin/regxpcom $RPM_BUILD_ROOT%{_mozilladir}
+install dist/bin/xpidl $RPM_BUILD_ROOT%{_mozilladir}
 install dist/bin/regchrome $RPM_BUILD_ROOT%{_bindir}
 install dist/bin/regxpcom $RPM_BUILD_ROOT%{_bindir}
 install dist/bin/xpidl $RPM_BUILD_ROOT%{_bindir}
@@ -444,35 +449,43 @@ cat << 'EOF' > $RPM_BUILD_ROOT%{_bindir}/mozilla
 #!/bin/sh
 # (c) vip at linux.pl, wolf at pld-linux.org
 
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla
+LD_LIBRARY_PATH=%{_mozilladir}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
+export LD_LIBRARY_PATH
+
+MOZILLA_FIVE_HOME=%{_mozilladir}
 if [ "$1" == "-remote" ]; then
-	%{_bindir}/mozilla-bin "$@"
+	%{_mozilladir}/mozilla-bin "$@"
 else
-	PING=`%{_bindir}/mozilla-bin -remote 'ping()' 2>&1 >/dev/null`
+	PING=`%{_mozilladir}/mozilla-bin -remote 'ping()' 2>&1 >/dev/null`
 	if [ -n "$PING" ]; then
 		if [ -f "`pwd`/$1" ]; then
-			%{_bindir}/mozilla-bin "file://`pwd`/$1"
+			%{_mozilladir}/mozilla-bin "file://`pwd`/$1"
 		else
-			%{_bindir}/mozilla-bin "$@"
+			%{_mozilladir}/mozilla-bin "$@"
 		fi
 	else
 		if [ -z "$1" ]; then
-			%{_bindir}/mozilla-bin -remote 'xfeDoCommand (openBrowser)'
+			%{_mozilladir}/mozilla-bin -remote 'xfeDoCommand (openBrowser)'
 		elif [ "$1" == "-mail" ]; then
-			%{_bindir}/mozilla-bin -remote 'xfeDoCommand (openInbox)'
+			%{_mozilladir}/mozilla-bin -remote 'xfeDoCommand (openInbox)'
 		elif [ "$1" == "-compose" ]; then
-			%{_bindir}/mozilla-bin -remote 'xfeDoCommand (composeMessage)'
+			%{_mozilladir}/mozilla-bin -remote 'xfeDoCommand (composeMessage)'
 		else
-			if [ -f "`pwd`/$1" ]; then
-				URL="file://`pwd`/$1"
-			else
-				URL="$1"
-			fi
-			grep browser.tabs.opentabfor.middleclick ~/.mozilla/default/*/prefs.js | grep true > /dev/null
+			echo $1 | grep -q "^-" > /dev/null
 			if [ $? -eq 0 ]; then
-				%{_bindir}/mozilla-bin -remote "OpenUrl($URL,new-tab)"
+				%{_mozilladir}/mozilla-bin "$@"
 			else
-				%{_bindir}/mozilla-bin -remote "OpenUrl($URL,new-window)"
+				if [ -f "`pwd`/$1" ]; then
+					URL="file://`pwd`/$1"
+				else
+					URL="$1"
+				fi
+				grep browser.tabs.opentabfor.middleclick ~/.mozilla/default/*/prefs.js | grep true > /dev/null
+				if [ $? -eq 0 ]; then
+					%{_mozilladir}/mozilla-bin -remote "OpenUrl($URL,new-tab)"
+				else
+					%{_mozilladir}/mozilla-bin -remote "OpenUrl($URL,new-window)"
+				fi
 			fi
 		fi
 	fi
@@ -485,9 +498,13 @@ umask 022
 cd %{_datadir}/mozilla/chrome
 cat *-installed-chrome.txt > installed-chrome.txt
 rm -f chrome.rdf overlayinfo/*/*/*.rdf
-rm -f %{_libdir}/mozilla/components/{compreg,xpti}.dat
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regxpcom
-MOZILLA_FIVE_HOME=%{_libdir}/mozilla %{_bindir}/regchrome
+rm -f %{_mozilladir}/components/{compreg,xpti}.dat
+
+LD_LIBRARY_PATH=%{_mozilladir}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
+export LD_LIBRARY_PATH
+
+MOZILLA_FIVE_HOME=%{_mozilladir} %{_mozilladir}/regxpcom
+MOZILLA_FIVE_HOME=%{_mozilladir} %{_mozilladir}/regchrome
 exit 0
 EOF
 
@@ -552,171 +569,174 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/mozilla*
-%attr(755,root,root) %{_bindir}/reg*
+%attr(755,root,root) %{_bindir}/mozilla
 %attr(744,root,root) %{_sbindir}/mozilla-chrome+xpcom-generate
 
-%dir %{_libdir}/%{name}
+%dir %{_mozilladir}
 %dir %{_chromedir}
-%dir %{_libdir}/%{name}/components
-%dir %{_libdir}/%{name}/defaults
-%dir %{_libdir}/%{name}/greprefs
-%dir %{_libdir}/%{name}/icons
-%dir %{_libdir}/%{name}/plugins
-%dir %{_libdir}/%{name}/res
-%dir %{_libdir}/%{name}/searchplugins
+%dir %{_mozilladir}/components
+%dir %{_mozilladir}/defaults
+%dir %{_mozilladir}/greprefs
+%dir %{_mozilladir}/icons
+%dir %{_mozilladir}/plugins
+%dir %{_mozilladir}/res
+%dir %{_mozilladir}/searchplugins
 %dir %{_datadir}/%{name}
 
-%attr(755,root,root) %{_libdir}/%{name}/libxpcom.so
-%attr(755,root,root) %{_libdir}/%{name}/libnssckbi.so
+%attr(755,root,root) %{_mozilladir}/mozilla-bin
+%attr(755,root,root) %{_mozilladir}/reg*
+%attr(755,root,root) %{_mozilladir}/xpidl
 
-%attr(755,root,root) %{_libdir}/%{name}/components/libaccess*.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libappcomps.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libautoconfig.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libcaps.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libchrome.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libcomposer.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libcookie.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libdocshell.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libeditor.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libembedcomponents.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libfileview.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libgfx*.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libgk*.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libhtmlpars.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libi18n.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libimg*.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libjar50.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libjsd.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libmork.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libmoz*.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libmyspell.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libnecko*.so
-%{?with_heimdal:%attr(755,root,root) %{_libdir}/%{name}/components/libnegotiateauth.so}
-%attr(755,root,root) %{_libdir}/%{name}/components/libnkdatetime.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libnkfinger.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libns*.so
-%attr(755,root,root) %{_libdir}/%{name}/components/liboji.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libp3p.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libpipboot.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libpipnss.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libpippki.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libpref.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libprofile.so
-%attr(755,root,root) %{_libdir}/%{name}/components/librdf.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libspellchecker.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libtransformiix.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libtxmgr.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libtypeaheadfind.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libuconv.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libucv*.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libuniversalchardet.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libwallet.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libwalletviewers.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libwebbrwsr.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libwebsrvcs.so
-%{?with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk.so}
-%{!?with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libwidget_gtk2.so}
-%attr(755,root,root) %{_libdir}/%{name}/components/libx*.so
+%attr(755,root,root) %{_mozilladir}/libxpcom.so
+%attr(755,root,root) %{_mozilladir}/libnssckbi.so
 
-%{_libdir}/%{name}/components/access*.xpt
-%{_libdir}/%{name}/components/appshell.xpt
-%{_libdir}/%{name}/components/autocomplete.xpt
-%{_libdir}/%{name}/components/autoconfig.xpt
-%{_libdir}/%{name}/components/bookmarks.xpt
-%{_libdir}/%{name}/components/caps.xpt
-%{_libdir}/%{name}/components/chardet.xpt
-%{_libdir}/%{name}/components/commandhandler.xpt
-%{_libdir}/%{name}/components/composer.xpt
-%{_libdir}/%{name}/components/content*.xpt
-%{_libdir}/%{name}/components/cookie.xpt
-%{_libdir}/%{name}/components/directory.xpt
-%{_libdir}/%{name}/components/docshell.xpt
-%{_libdir}/%{name}/components/dom*.xpt
-%{_libdir}/%{name}/components/downloadmanager.xpt
-%{_libdir}/%{name}/components/editor.xpt
-%{_libdir}/%{name}/components/embed_base.xpt
-%{_libdir}/%{name}/components/exthandler.xpt
-%{_libdir}/%{name}/components/find.xpt
-%{_libdir}/%{name}/components/filepicker.xpt
-%{_libdir}/%{name}/components/gfx*.xpt
-%{?with_svg:%{_libdir}/%{name}/components/gksvgrenderer.xpt}
-%{_libdir}/%{name}/components/helperAppDlg.xpt
-%{_libdir}/%{name}/components/history.xpt
-%{_libdir}/%{name}/components/htmlparser.xpt
-%{_libdir}/%{name}/components/imglib2.xpt
-%{_libdir}/%{name}/components/intl.xpt
-%{_libdir}/%{name}/components/jar.xpt
-%{_libdir}/%{name}/components/js*.xpt
-%{_libdir}/%{name}/components/layout*.xpt
-%{_libdir}/%{name}/components/locale.xpt
-%{_libdir}/%{name}/components/lwbrk.xpt
-%{_libdir}/%{name}/components/mimetype.xpt
-%{_libdir}/%{name}/components/moz*.xpt
-%{_libdir}/%{name}/components/necko*.xpt
-%{_libdir}/%{name}/components/oji.xpt
-%{_libdir}/%{name}/components/p3p.xpt
-%{_libdir}/%{name}/components/pipboot.xpt
-%{_libdir}/%{name}/components/pipnss.xpt
-%{_libdir}/%{name}/components/pippki.xpt
-#%{_libdir}/%{name}/components/plugin.xpt
-%{_libdir}/%{name}/components/pref.xpt
-%{_libdir}/%{name}/components/prefetch.xpt
-%{_libdir}/%{name}/components/prefmigr.xpt
-%{_libdir}/%{name}/components/profile.xpt
-%{_libdir}/%{name}/components/profilesharingsetup.xpt
-%{_libdir}/%{name}/components/progressDlg.xpt
-%{_libdir}/%{name}/components/proxyObjInst.xpt
-%{_libdir}/%{name}/components/rdf.xpt
-%{_libdir}/%{name}/components/related.xpt
-%{_libdir}/%{name}/components/search.xpt
-%{_libdir}/%{name}/components/shistory.xpt
-%{_libdir}/%{name}/components/sidebar.xpt
-%{_libdir}/%{name}/components/signonviewer.xpt
-%{_libdir}/%{name}/components/spellchecker.xpt
-%{_libdir}/%{name}/components/txmgr.xpt
-%{_libdir}/%{name}/components/txtsvc.xpt
-%{_libdir}/%{name}/components/typeaheadfind.xpt
-%{_libdir}/%{name}/components/uconv.xpt
-%{_libdir}/%{name}/components/unicharutil.xpt
-%{_libdir}/%{name}/components/uriloader.xpt
-%{_libdir}/%{name}/components/urlbarhistory.xpt
-%{_libdir}/%{name}/components/wallet*.xpt
-%{_libdir}/%{name}/components/webBrowser_core.xpt
-%{_libdir}/%{name}/components/webbrowserpersist.xpt
-%{_libdir}/%{name}/components/webshell_idls.xpt
-%{_libdir}/%{name}/components/websrvcs.xpt
-%{_libdir}/%{name}/components/widget.xpt
-%{_libdir}/%{name}/components/windowds.xpt
-%{_libdir}/%{name}/components/windowwatcher.xpt
-%{_libdir}/%{name}/components/x*.xpt
+%attr(755,root,root) %{_mozilladir}/components/libaccess*.so
+%attr(755,root,root) %{_mozilladir}/components/libappcomps.so
+%attr(755,root,root) %{_mozilladir}/components/libautoconfig.so
+%attr(755,root,root) %{_mozilladir}/components/libcaps.so
+%attr(755,root,root) %{_mozilladir}/components/libchrome.so
+%attr(755,root,root) %{_mozilladir}/components/libcomposer.so
+%attr(755,root,root) %{_mozilladir}/components/libcookie.so
+%attr(755,root,root) %{_mozilladir}/components/libdocshell.so
+%attr(755,root,root) %{_mozilladir}/components/libeditor.so
+%attr(755,root,root) %{_mozilladir}/components/libembedcomponents.so
+%attr(755,root,root) %{_mozilladir}/components/libfileview.so
+%attr(755,root,root) %{_mozilladir}/components/libgfx*.so
+%attr(755,root,root) %{_mozilladir}/components/libgk*.so
+%attr(755,root,root) %{_mozilladir}/components/libhtmlpars.so
+%attr(755,root,root) %{_mozilladir}/components/libi18n.so
+%attr(755,root,root) %{_mozilladir}/components/libimg*.so
+%attr(755,root,root) %{_mozilladir}/components/libjar50.so
+%attr(755,root,root) %{_mozilladir}/components/libjsd.so
+%attr(755,root,root) %{_mozilladir}/components/libmork.so
+%attr(755,root,root) %{_mozilladir}/components/libmoz*.so
+%attr(755,root,root) %{_mozilladir}/components/libmyspell.so
+%attr(755,root,root) %{_mozilladir}/components/libnecko*.so
+%{?with_heimdal:%attr(755,root,root) %{_mozilladir}/components/libnegotiateauth.so}
+%attr(755,root,root) %{_mozilladir}/components/libnkdatetime.so
+%attr(755,root,root) %{_mozilladir}/components/libnkfinger.so
+%attr(755,root,root) %{_mozilladir}/components/libns*.so
+%attr(755,root,root) %{_mozilladir}/components/liboji.so
+%attr(755,root,root) %{_mozilladir}/components/libp3p.so
+%attr(755,root,root) %{_mozilladir}/components/libpipboot.so
+%attr(755,root,root) %{_mozilladir}/components/libpipnss.so
+%attr(755,root,root) %{_mozilladir}/components/libpippki.so
+%attr(755,root,root) %{_mozilladir}/components/libpref.so
+%attr(755,root,root) %{_mozilladir}/components/libprofile.so
+%attr(755,root,root) %{_mozilladir}/components/librdf.so
+%attr(755,root,root) %{_mozilladir}/components/libspellchecker.so
+%attr(755,root,root) %{_mozilladir}/components/libtransformiix.so
+%attr(755,root,root) %{_mozilladir}/components/libtxmgr.so
+%attr(755,root,root) %{_mozilladir}/components/libtypeaheadfind.so
+%attr(755,root,root) %{_mozilladir}/components/libuconv.so
+%attr(755,root,root) %{_mozilladir}/components/libucv*.so
+%attr(755,root,root) %{_mozilladir}/components/libuniversalchardet.so
+%attr(755,root,root) %{_mozilladir}/components/libwallet.so
+%attr(755,root,root) %{_mozilladir}/components/libwalletviewers.so
+%attr(755,root,root) %{_mozilladir}/components/libwebbrwsr.so
+%attr(755,root,root) %{_mozilladir}/components/libwebsrvcs.so
+%{?with_gtk1:%attr(755,root,root) %{_mozilladir}/components/libwidget_gtk.so}
+%{!?with_gtk1:%attr(755,root,root) %{_mozilladir}/components/libwidget_gtk2.so}
+%attr(755,root,root) %{_mozilladir}/components/libx*.so
+
+%{_mozilladir}/components/access*.xpt
+%{_mozilladir}/components/appshell.xpt
+%{_mozilladir}/components/autocomplete.xpt
+%{_mozilladir}/components/autoconfig.xpt
+%{_mozilladir}/components/bookmarks.xpt
+%{_mozilladir}/components/caps.xpt
+%{_mozilladir}/components/chardet.xpt
+%{_mozilladir}/components/commandhandler.xpt
+%{_mozilladir}/components/composer.xpt
+%{_mozilladir}/components/content*.xpt
+%{_mozilladir}/components/cookie.xpt
+%{_mozilladir}/components/directory.xpt
+%{_mozilladir}/components/docshell.xpt
+%{_mozilladir}/components/dom*.xpt
+%{_mozilladir}/components/downloadmanager.xpt
+%{_mozilladir}/components/editor.xpt
+%{_mozilladir}/components/embed_base.xpt
+%{_mozilladir}/components/exthandler.xpt
+%{_mozilladir}/components/find.xpt
+%{_mozilladir}/components/filepicker.xpt
+%{_mozilladir}/components/gfx*.xpt
+%{?with_svg:%{_mozilladir}/components/gksvgrenderer.xpt}
+%{_mozilladir}/components/helperAppDlg.xpt
+%{_mozilladir}/components/history.xpt
+%{_mozilladir}/components/htmlparser.xpt
+%{_mozilladir}/components/imglib2.xpt
+%{_mozilladir}/components/intl.xpt
+%{_mozilladir}/components/jar.xpt
+%{_mozilladir}/components/js*.xpt
+%{_mozilladir}/components/layout*.xpt
+%{_mozilladir}/components/locale.xpt
+%{_mozilladir}/components/lwbrk.xpt
+%{_mozilladir}/components/mimetype.xpt
+%{_mozilladir}/components/moz*.xpt
+%{_mozilladir}/components/necko*.xpt
+%{_mozilladir}/components/oji.xpt
+%{_mozilladir}/components/p3p.xpt
+%{_mozilladir}/components/pipboot.xpt
+%{_mozilladir}/components/pipnss.xpt
+%{_mozilladir}/components/pippki.xpt
+#%{_mozilladir}/components/plugin.xpt
+%{_mozilladir}/components/pref.xpt
+%{_mozilladir}/components/prefetch.xpt
+%{_mozilladir}/components/prefmigr.xpt
+%{_mozilladir}/components/profile.xpt
+%{_mozilladir}/components/profilesharingsetup.xpt
+%{_mozilladir}/components/progressDlg.xpt
+%{_mozilladir}/components/proxyObjInst.xpt
+%{_mozilladir}/components/rdf.xpt
+%{_mozilladir}/components/related.xpt
+%{_mozilladir}/components/search.xpt
+%{_mozilladir}/components/shistory.xpt
+%{_mozilladir}/components/sidebar.xpt
+%{_mozilladir}/components/signonviewer.xpt
+%{_mozilladir}/components/spellchecker.xpt
+%{_mozilladir}/components/txmgr.xpt
+%{_mozilladir}/components/txtsvc.xpt
+%{_mozilladir}/components/typeaheadfind.xpt
+%{_mozilladir}/components/uconv.xpt
+%{_mozilladir}/components/unicharutil.xpt
+%{_mozilladir}/components/uriloader.xpt
+%{_mozilladir}/components/urlbarhistory.xpt
+%{_mozilladir}/components/wallet*.xpt
+%{_mozilladir}/components/webBrowser_core.xpt
+%{_mozilladir}/components/webbrowserpersist.xpt
+%{_mozilladir}/components/webshell_idls.xpt
+%{_mozilladir}/components/websrvcs.xpt
+%{_mozilladir}/components/widget.xpt
+%{_mozilladir}/components/windowds.xpt
+%{_mozilladir}/components/windowwatcher.xpt
+%{_mozilladir}/components/x*.xpt
 
 # Is this a correct package for these files?
-%{_libdir}/%{name}/components/ipcd.xpt
-%attr(755,root,root) %{_libdir}/%{name}/components/libipcdc.so
-%{!?with_gtk1:%attr(755,root,root) %{_libdir}/%{name}/components/libsystem-pref.so}
+%{_mozilladir}/components/ipcd.xpt
+%attr(755,root,root) %{_mozilladir}/components/libipcdc.so
+%{!?with_gtk1:%attr(755,root,root) %{_mozilladir}/components/libsystem-pref.so}
 
-%{_libdir}/%{name}/components/jsconsole-clhandler.js
-%{_libdir}/%{name}/components/nsCloseAllWindows.js
-%{_libdir}/%{name}/components/nsDictionary.js
-%{_libdir}/%{name}/components/nsDownloadProgressListener.js
-%{_libdir}/%{name}/components/nsFilePicker.js
-%{_libdir}/%{name}/components/nsHelperAppDlg.js
-%{_libdir}/%{name}/components/nsInterfaceInfoToIDL.js
-%{_libdir}/%{name}/components/nsKillAll.js
-%{_libdir}/%{name}/components/nsProgressDialog.js
-%{_libdir}/%{name}/components/nsProxyAutoConfig.js
-%{_libdir}/%{name}/components/nsResetPref.js
-%{_libdir}/%{name}/components/nsSidebar.js
-%{_libdir}/%{name}/components/nsUpdateNotifier.js
-%{_libdir}/%{name}/components/nsXmlRpcClient.js
+%{_mozilladir}/components/jsconsole-clhandler.js
+%{_mozilladir}/components/nsCloseAllWindows.js
+%{_mozilladir}/components/nsDictionary.js
+%{_mozilladir}/components/nsDownloadProgressListener.js
+%{_mozilladir}/components/nsFilePicker.js
+%{_mozilladir}/components/nsHelperAppDlg.js
+%{_mozilladir}/components/nsInterfaceInfoToIDL.js
+%{_mozilladir}/components/nsKillAll.js
+%{_mozilladir}/components/nsProgressDialog.js
+%{_mozilladir}/components/nsProxyAutoConfig.js
+%{_mozilladir}/components/nsResetPref.js
+%{_mozilladir}/components/nsSidebar.js
+%{_mozilladir}/components/nsUpdateNotifier.js
+%{_mozilladir}/components/nsXmlRpcClient.js
 
 # not *.dat, so check-files can catch any new files
 # (and they won't be just silently placed empty in rpm)
-%ghost %{_libdir}/%{name}/components/compreg.dat
-%ghost %{_libdir}/%{name}/components/xpti.dat
+%ghost %{_mozilladir}/components/compreg.dat
+%ghost %{_mozilladir}/components/xpti.dat
 
-%{_libdir}/%{name}/components/myspell
+%{_mozilladir}/components/myspell
 
 %dir %{_datadir}/%{name}/chrome
 %{_datadir}/%{name}/chrome/US.jar
@@ -772,7 +792,6 @@ fi
 %{_datadir}/%{name}/res
 %exclude %{_datadir}/%{name}/res/inspector
 %{_datadir}/%{name}/searchplugins
-%{_datadir}/idl/*
 
 %{_pixmapsdir}/mozilla.png
 %{_desktopdir}/mozilla.desktop
@@ -784,52 +803,52 @@ fi
 %defattr(644,root,root,755)
 # libxpcom.so used by mozillaplug-in
 # probably should add more if more packages require
-%attr(755,root,root) %{_libdir}/libxpcom.so
-%attr(755,root,root) %{_libdir}/libxpcom_compat.so
+%attr(755,root,root) %{_mozilladir}/libxpcom.so
+%attr(755,root,root) %{_mozilladir}/libxpcom_compat.so
 
 # add rest too
-%attr(755,root,root) %{_libdir}/libgkgfx.so
-%attr(755,root,root) %{_libdir}/libgtkembedmoz.so
-%{?with_gtk1:%attr(755,root,root) %{_libdir}/libgtksuperwin.so}
-%attr(755,root,root) %{_libdir}/libgtkxtbin.so
-%attr(755,root,root) %{_libdir}/libjsj.so
-%attr(755,root,root) %{_libdir}/libldap50.so
-%attr(755,root,root) %{_libdir}/libprldap50.so
-%attr(755,root,root) %{_libdir}/libssldap50.so
-%attr(755,root,root) %{_libdir}/libmozjs.so
-##%attr(755,root,root) %{_libdir}/libmoz_art_lgpl.so
-%attr(755,root,root) %{_libdir}/libxpistub.so
-%attr(755,root,root) %{_libdir}/libxlibrgb.so
+%attr(755,root,root) %{_mozilladir}/libgkgfx.so
+%attr(755,root,root) %{_mozilladir}/libgtkembedmoz.so
+%{?with_gtk1:%attr(755,root,root) %{_mozilladir}/libgtksuperwin.so}
+%attr(755,root,root) %{_mozilladir}/libgtkxtbin.so
+%attr(755,root,root) %{_mozilladir}/libjsj.so
+%attr(755,root,root) %{_mozilladir}/libldap50.so
+%attr(755,root,root) %{_mozilladir}/libprldap50.so
+%attr(755,root,root) %{_mozilladir}/libssldap50.so
+%attr(755,root,root) %{_mozilladir}/libmozjs.so
+##%attr(755,root,root) %{_mozilladir}/libmoz_art_lgpl.so
+%attr(755,root,root) %{_mozilladir}/libxpistub.so
+%attr(755,root,root) %{_mozilladir}/libxlibrgb.so
 
 
 %files mailnews
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libmsgbaseutil.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libaddrbook.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libbayesflt.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libimpText.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libimpComm4xMail.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libimport.so
-%attr(755,root,root) %{_libdir}/%{name}/components/liblocalmail.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libmailnews.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libmailview.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libmimeemitter.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libmime.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libmsg*.so
-%attr(755,root,root) %{_libdir}/%{name}/components/libvcard.so
+%attr(755,root,root) %{_mozilladir}/libmsgbaseutil.so
+%attr(755,root,root) %{_mozilladir}/components/libaddrbook.so
+%attr(755,root,root) %{_mozilladir}/components/libbayesflt.so
+%attr(755,root,root) %{_mozilladir}/components/libimpText.so
+%attr(755,root,root) %{_mozilladir}/components/libimpComm4xMail.so
+%attr(755,root,root) %{_mozilladir}/components/libimport.so
+%attr(755,root,root) %{_mozilladir}/components/liblocalmail.so
+%attr(755,root,root) %{_mozilladir}/components/libmailnews.so
+%attr(755,root,root) %{_mozilladir}/components/libmailview.so
+%attr(755,root,root) %{_mozilladir}/components/libmimeemitter.so
+%attr(755,root,root) %{_mozilladir}/components/libmime.so
+%attr(755,root,root) %{_mozilladir}/components/libmsg*.so
+%attr(755,root,root) %{_mozilladir}/components/libvcard.so
 
-%{_libdir}/%{name}/components/addrbook.xpt
-%{_libdir}/%{name}/components/impComm4xMail.xpt
-%{_libdir}/%{name}/components/import.xpt
-%{_libdir}/%{name}/components/mailnews.xpt
-%{_libdir}/%{name}/components/mailview.xpt
-%{_libdir}/%{name}/components/mime.xpt
-%{_libdir}/%{name}/components/msg*.xpt
+%{_mozilladir}/components/addrbook.xpt
+%{_mozilladir}/components/impComm4xMail.xpt
+%{_mozilladir}/components/import.xpt
+%{_mozilladir}/components/mailnews.xpt
+%{_mozilladir}/components/mailview.xpt
+%{_mozilladir}/components/mime.xpt
+%{_mozilladir}/components/msg*.xpt
 
-%{_libdir}/%{name}/components/mdn-service.js
-%{_libdir}/%{name}/components/nsLDAPPrefsService.js
-%{_libdir}/%{name}/components/offlineStartup.js
-%{_libdir}/%{name}/components/smime-service.js
+%{_mozilladir}/components/mdn-service.js
+%{_mozilladir}/components/nsLDAPPrefsService.js
+%{_mozilladir}/components/offlineStartup.js
+%{_mozilladir}/components/smime-service.js
 
 %{_datadir}/%{name}/chrome/messenger.jar
 
@@ -848,12 +867,12 @@ fi
 
 %files addon-enigmail
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/components/libenigmime.so
-%{_libdir}/%{name}/components/enigmail.xpt
-%{_libdir}/%{name}/components/enigmime.xpt
-%{_libdir}/%{name}/components/ipc.xpt
-%{_libdir}/%{name}/components/enigmail.js
-%{_libdir}/%{name}/components/enigprefs-service.js
+%attr(755,root,root) %{_mozilladir}/components/libenigmime.so
+%{_mozilladir}/components/enigmail.xpt
+%{_mozilladir}/components/enigmime.xpt
+%{_mozilladir}/components/ipc.xpt
+%{_mozilladir}/components/enigmail.js
+%{_mozilladir}/components/enigprefs-service.js
 %{_datadir}/%{name}/chrome/enigmail-en-US.jar
 %{_datadir}/%{name}/chrome/enigmail-skin-tbird.jar
 %{_datadir}/%{name}/chrome/enigmail-skin.jar
@@ -864,7 +883,7 @@ fi
 
 %files chat
 %defattr(644,root,root,755)
-%{_libdir}/%{name}/components/chatzilla-service.js
+%{_mozilladir}/components/chatzilla-service.js
 %{_datadir}/%{name}/chrome/chatzilla.jar
 %{_datadir}/%{name}/chrome/icons/default/chatzilla-window*.xpm
 
@@ -885,16 +904,16 @@ fi
 
 %files js-debugger
 %defattr(644,root,root,755)
-%{_libdir}/%{name}/components/venkman-service.js
+%{_mozilladir}/components/venkman-service.js
 %{_datadir}/%{name}/chrome/venkman.jar
 %{_datadir}/%{name}/chrome/icons/default/venkman-window*.xpm
 %{_desktopdir}/mozilla-venkman.desktop
 
 %files dom-inspector
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/components/libinspector.so
-%{_libdir}/%{name}/components/inspector.xpt
-%{_libdir}/%{name}/components/inspector-cmdline.js
+%attr(755,root,root) %{_mozilladir}/components/libinspector.so
+%{_mozilladir}/components/inspector.xpt
+%{_mozilladir}/components/inspector-cmdline.js
 %{_datadir}/%{name}/chrome/inspector.jar
 %{_datadir}/%{name}/chrome/icons/default/winInspectorMain*.xpm
 %dir %{_datadir}/%{name}/chrome/overlayinfo/inspector
@@ -907,14 +926,14 @@ fi
 %if %{with gnomevfs}
 %files gnomevfs
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/components/libnkgnomevfs.so
+%attr(755,root,root) %{_mozilladir}/components/libnkgnomevfs.so
 %endif
 
 %files calendar
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/%{name}/components/libxpical.so
-%{_libdir}/%{name}/components/calendar.xpt
-%{_libdir}/%{name}/components/calendarService.js
+%attr(755,root,root) %{_mozilladir}/components/libxpical.so
+%{_mozilladir}/components/calendar.xpt
+%{_mozilladir}/components/calendarService.js
 %{_datadir}/%{name}/chrome/calendar.jar
 %{_datadir}/%{name}/chrome/icons/default/calendar-window*.xpm
 
@@ -922,4 +941,5 @@ fi
 %defattr(644,root,root,755)
 %{_includedir}/%{name}
 %{_pkgconfigdir}/*
+%attr(755,root,root) %{_bindir}/reg*
 %attr(755,root,root) %{_bindir}/xpidl
