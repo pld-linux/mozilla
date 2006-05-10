@@ -113,8 +113,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_mozilladir	%{_libdir}/%{name}
 %define		_chromedir	%{_libdir}/%{name}/chrome
-# mozilla and firefox provide their own versions
-%define		_noautoreqdep	libgkgfx.so libgtkxtbin.so libjsj.so libmozjs.so libxpcom.so libxpcom_compat.so
+# mozilla, seamonkey and firefox provide their own versions
+%define		_noautoreqdep	libgkgfx.so libgtkembedmoz.so libgtkxtbin.so libjsj.so libldap50.so libmozjs.so libprldap50.so libssldap50.so libxlibrgb.so libxpcom.so libxpcom_compat.so libxpistub.so
 
 %if %{with gcc2}
 %define		__cc		gcc2
