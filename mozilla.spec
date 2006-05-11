@@ -198,8 +198,9 @@ Mozilla Thunderbird which allows users to access the authentication and
 encryption features provided by GnuPG.
 
 %description addon-enigmail -l pl
-Rozszerzenie Mozilla Mail dla Mozilla Mail. Pozwala na ³atwe korzystanie
-z dobrodziejstw GnuPG.
+Enigmail jest rozszerzeniem dla klienta pocztowego Mozilla, SeaMonkey
+i Mozilla Thunderdbird pozwalaj±cym u¿ytkownikowi korzystaæ z
+funkcjonalno¶ci GnuPG.
 
 %package chat
 Summary:	Mozilla Chat - IRC client integrated with Mozilla
