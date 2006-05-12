@@ -574,7 +574,6 @@ fi
 %attr(755,root,root) %{_bindir}/mozilla
 %attr(744,root,root) %{_sbindir}/mozilla-chrome+xpcom-generate
 
-%dir %{_mozilladir}
 %dir %{_chromedir}
 %dir %{_mozilladir}/components
 %dir %{_mozilladir}/defaults
@@ -803,6 +802,7 @@ fi
 
 %files libs
 %defattr(644,root,root,755)
+%dir %{_mozilladir}
 # libxpcom.so used by mozillaplug-in
 # probably should add more if more packages require
 %attr(755,root,root) %{_mozilladir}/libxpcom.so
