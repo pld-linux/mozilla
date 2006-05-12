@@ -53,6 +53,7 @@ Patch9:		%{name}-nspr.patch
 Patch10:	firefox-1.0-gcc4-compile.patch
 Patch11:	%{name}-enigmail-makemake.patch
 Patch12:	%{name}-lib_path.patch
+Patch13:	%{name}-make.patch
 URL:		http://www.mozilla.org/
 BuildRequires:	/bin/csh
 BuildRequires:	/bin/ex
@@ -84,9 +85,8 @@ BuildRequires:	nss-devel >= 3.9.4-1
 BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
-BuildRequires:	xcursor-devel
-BuildRequires:	xft-devel >= 2.1-2
 BuildRequires:	tar >= 1:1.15.1
+BuildRequires:	xorg-lib-libXft-devel >= 2.1
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.0.0
 Requires(post,postun):	/sbin/ldconfig
@@ -320,6 +320,7 @@ cd ..
 %patch10 -p0
 %patch11 -p1
 %patch12 -p1
+%patch13 -p1
 
 %build
 BUILD_OFFICIAL="1"; export BUILD_OFFICIAL
