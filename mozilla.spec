@@ -86,7 +86,11 @@ BuildRequires:	perl-modules >= 5.6.0
 BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
 BuildRequires:	tar >= 1:1.15.1
+BuildRequires:	xorg-lib-libXext-devel
 BuildRequires:	xorg-lib-libXft-devel >= 2.1
+BuildRequires:	xorg-lib-libXinerama-devel
+BuildRequires:	xorg-lib-libXp-devel
+BuildRequires:	xorg-lib-libXt-devel
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.0.0
 Requires(post,postun):	/sbin/ldconfig
