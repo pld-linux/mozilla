@@ -584,7 +584,6 @@ fi
 %attr(755,root,root) %{_mozilladir}/reg*
 %attr(755,root,root) %{_mozilladir}/xpidl
 
-%attr(755,root,root) %{_mozilladir}/libxpcom.so
 %attr(755,root,root) %{_mozilladir}/libnssckbi.so
 
 %attr(755,root,root) %{_mozilladir}/components/libaccess*.so
