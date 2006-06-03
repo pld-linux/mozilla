@@ -93,7 +93,6 @@ BuildRequires:	xorg-lib-libXp-devel
 BuildRequires:	xorg-lib-libXt-devel
 BuildRequires:	zip >= 2.1
 BuildRequires:	zlib-devel >= 1.0.0
-Requires(post,postun):	/sbin/ldconfig
 %{?with_svg:Requires:	cairo >= 0.3.0}
 %{?with_svg:Requires:	cairo < 0.5.0}
 Requires:	nspr >= 1:4.6-2
@@ -173,7 +172,6 @@ Summary:	Mozilla - programs for mail and news
 Summary(pl):	Mozilla - programy do poczty i newsСw
 Summary(ru):	Почтовая система на основе Mozilla
 Group:		X11/Applications/Networking
-Requires(post,postun):	/sbin/ldconfig
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Obsoletes:	mozilla-mail
@@ -192,7 +190,6 @@ NNTP и имеет простой интерфейс пользователя.
 Summary:	Enigmail - PGP/GPG support for Mozilla
 Summary(pl):	Enigmail - obsЁuga PGP/GPG dla Mozilli
 Group:		X11/Applications/Networking
-Requires(post,postun):	/sbin/ldconfig
 Requires(post,postun):	%{name}-mailnews = %{epoch}:%{version}-%{release}
 Requires:	%{name}-mailnews = %{epoch}:%{version}-%{release}
 
@@ -526,15 +523,10 @@ if [ "$1" = "1" ]; then
 	%{_sbindir}/mozilla-chrome+xpcom-generate
 fi
 
-%post	libs -p /sbin/ldconfig
-%postun	libs -p /sbin/ldconfig
-
 %post mailnews
-/sbin/ldconfig
 %{_sbindir}/mozilla-chrome+xpcom-generate
 
 %postun mailnews
-/sbin/ldconfig
 %{_sbindir}/mozilla-chrome+xpcom-generate
 
 %post addon-enigmail
@@ -825,7 +817,6 @@ fi
 ##%attr(755,root,root) %{_mozilladir}/libmoz_art_lgpl.so
 %attr(755,root,root) %{_mozilladir}/libxpistub.so
 %attr(755,root,root) %{_mozilladir}/libxlibrgb.so
-
 
 %files mailnews
 %defattr(644,root,root,755)
