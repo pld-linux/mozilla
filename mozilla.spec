@@ -12,10 +12,10 @@
 %bcond_with	svg	# enable svg support
 #
 Summary:	Mozilla - web browser
-Summary(es):	Navegador de Internet Mozilla
-Summary(pl):	Mozilla - przegl╠darka WWW
-Summary(pt_BR):	Navegador Mozilla
-Summary(ru):	Web browser
+Summary(es.UTF-8):   Navegador de Internet Mozilla
+Summary(pl.UTF-8):   Mozilla - przeglд┘darka WWW
+Summary(pt_BR.UTF-8):   Navegador Mozilla
+Summary(ru.UTF-8):   Web browser
 Name:		mozilla
 Version:	1.7.13
 Release:	3
@@ -137,40 +137,40 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Mozilla is an open-source web browser, designed for standards
 compliance, performance and portability.
 
-%description -l es
-Mozilla es un navegador de Internet que se basa en una versiСn inicial
-de Netscape Communicator. Este software estА en desarrollo, por lo
-cual todavМa es inestable.
+%description -l es.UTF-8
+Mozilla es un navegador de Internet que se basa en una versiцЁn inicial
+de Netscape Communicator. Este software estц║ en desarrollo, por lo
+cual todavц╜a es inestable.
 
-%description -l pl
-Mozilla jest potЙ©n╠ graficzn╠ przegl╠dark╠ WWW, ktСra jest nastЙpc╠
+%description -l pl.UTF-8
+Mozilla jest potд≥е╪nд┘ graficznд┘ przeglд┘darkд┘ WWW, ktцЁra jest nastд≥pcд┘
 Netscape Navigatora.
 
-%description -l pt_BR
-O Mozilla И um web browser baseado numa versЦo inicial do Netscape
-Communicator. Este software estА em fase de desenvolvimento, portanto,
-ainda nЦo estАvel.
+%description -l pt_BR.UTF-8
+O Mozilla ц╘ um web browser baseado numa versцёo inicial do Netscape
+Communicator. Este software estц║ em fase de desenvolvimento, portanto,
+ainda nцёo estц║vel.
 
-%description -l ru
-Mozilla - полнофункциональный web-browser с открытыми исходными
-текстами, разработанный для максимального соотвествия стандартам,
-максмимальной переносимости и скорости работы
+%description -l ru.UTF-8
+Mozilla - п©п╬п╩п╫п╬я└я┐п╫п╨я├п╦п╬п╫п╟п╩я▄п╫я▀п╧ web-browser я│ п╬я┌п╨я─я▀я┌я▀п╪п╦ п╦я│я┘п╬п╢п╫я▀п╪п╦
+я┌п╣п╨я│я┌п╟п╪п╦, я─п╟п╥я─п╟п╠п╬я┌п╟п╫п╫я▀п╧ п╢п╩я▐ п╪п╟п╨я│п╦п╪п╟п╩я▄п╫п╬пЁп╬ я│п╬п╬я┌п╡п╣я│я┌п╡п╦я▐ я│я┌п╟п╫п╢п╟я─я┌п╟п╪,
+п╪п╟п╨я│п╪п╦п╪п╟п╩я▄п╫п╬п╧ п©п╣я─п╣п╫п╬я│п╦п╪п╬я│я┌п╦ п╦ я│п╨п╬я─п╬я│я┌п╦ я─п╟п╠п╬я┌я▀
 
 %package libs
 Summary:	mozilla shared libraries
-Summary(pl):	Biblioteki wspСЁdzielone mozilli
+Summary(pl.UTF-8):   Biblioteki wspцЁе┌dzielone mozilli
 Group:		Libraries
 
 %description libs
 mozilla shared libraries.
 
-%description libs -l pl
-Biblioteki wspСЁdzielone mozilli.
+%description libs -l pl.UTF-8
+Biblioteki wspцЁе┌dzielone mozilli.
 
 %package mailnews
 Summary:	Mozilla - programs for mail and news
-Summary(pl):	Mozilla - programy do poczty i newsСw
-Summary(ru):	Почтовая система на основе Mozilla
+Summary(pl.UTF-8):   Mozilla - programy do poczty i newsцЁw
+Summary(ru.UTF-8):   п÷п╬я┤я┌п╬п╡п╟я▐ я│п╦я│я┌п╣п╪п╟ п╫п╟ п╬я│п╫п╬п╡п╣ Mozilla
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -179,16 +179,16 @@ Obsoletes:	mozilla-mail
 %description mailnews
 Programs for mail and news integrated with browser.
 
-%description mailnews -l pl
-Programy pocztowe i obsЁuga newsСw zintegrowane z przegl╠dark╠.
+%description mailnews -l pl.UTF-8
+Programy pocztowe i obsе┌uga newsцЁw zintegrowane z przeglд┘darkд┘.
 
-%description mailnews -l ru
-Клиент почты и новостей, на основе Mozilla. Поддерживает IMAP, POP и
-NNTP и имеет простой интерфейс пользователя.
+%description mailnews -l ru.UTF-8
+п п╩п╦п╣п╫я┌ п©п╬я┤я┌я▀ п╦ п╫п╬п╡п╬я│я┌п╣п╧, п╫п╟ п╬я│п╫п╬п╡п╣ Mozilla. п÷п╬п╢п╢п╣я─п╤п╦п╡п╟п╣я┌ IMAP, POP п╦
+NNTP п╦ п╦п╪п╣п╣я┌ п©я─п╬я│я┌п╬п╧ п╦п╫я┌п╣я─я└п╣п╧я│ п©п╬п╩я▄п╥п╬п╡п╟я┌п╣п╩я▐.
 
 %package addon-enigmail
 Summary:	Enigmail - PGP/GPG support for Mozilla
-Summary(pl):	Enigmail - obsЁuga PGP/GPG dla Mozilli
+Summary(pl.UTF-8):   Enigmail - obsе┌uga PGP/GPG dla Mozilli
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name}-mailnews = %{epoch}:%{version}-%{release}
 Requires:	%{name}-mailnews = %{epoch}:%{version}-%{release}
@@ -198,14 +198,14 @@ Enigmail is an extension to the mail client of Mozilla / Netscape and
 Mozilla Thunderbird which allows users to access the authentication and
 encryption features provided by GnuPG.
 
-%description addon-enigmail -l pl
+%description addon-enigmail -l pl.UTF-8
 Enigmail jest rozszerzeniem dla klienta pocztowego Mozilla, SeaMonkey
-i Mozilla Thunderdbird pozwalaj╠cym u©ytkownikowi korzystaФ z
-funkcjonalno╤ci GnuPG.
+i Mozilla Thunderdbird pozwalajд┘cym uе╪ytkownikowi korzystaд┤ z
+funkcjonalnoе⌡ci GnuPG.
 
 %package chat
 Summary:	Mozilla Chat - IRC client integrated with Mozilla
-Summary(pl):	Mozilla Chat - zintegrowany z Mozill╠ klient IRC-a
+Summary(pl.UTF-8):   Mozilla Chat - zintegrowany z Mozillд┘ klient IRC-a
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -214,12 +214,12 @@ Requires:	%{name} = %{epoch}:%{version}-%{release}
 Mozilla Chat - IRC client that is integrated with the Mozilla web
 browser.
 
-%description chat -l pl
-Mozilla Chat - klient IRC-a zintegrowany z przegl╠dark╠ Mozilla.
+%description chat -l pl.UTF-8
+Mozilla Chat - klient IRC-a zintegrowany z przeglд┘darkд┘ Mozilla.
 
 %package js-debugger
 Summary:	JavaScript debugger for use with Mozilla
-Summary(pl):	Odpluskwiacz JavaScriptu do u©ywania z Mozill╠
+Summary(pl.UTF-8):   Odpluskwiacz JavaScriptu do uе╪ywania z Mozillд┘
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -227,12 +227,12 @@ Requires:	%{name} = %{epoch}:%{version}-%{release}
 %description js-debugger
 JavaScript debugger for use with Mozilla.
 
-%description js-debugger -l pl
-Odpluskwiacz JavaScriptu do u©ywania z Mozill╠.
+%description js-debugger -l pl.UTF-8
+Odpluskwiacz JavaScriptu do uе╪ywania z Mozillд┘.
 
 %package dom-inspector
 Summary:	A tool for inspecting the DOM of pages in Mozilla
-Summary(pl):	NarzЙdzie do ogl╠dania DOM stron w Mozilli
+Summary(pl.UTF-8):   Narzд≥dzie do oglд┘dania DOM stron w Mozilli
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -242,14 +242,14 @@ This is a tool that allows you to inspect the DOM for web pages in
 Mozilla. This is of great use to people who are doing Mozilla chrome
 development or web page development.
 
-%description dom-inspector -l pl
-To narzЙdzie pozwala na ogl╠danie DOM dla stron WWW w Mozilli. Jest
-bardzo przydatne dla ludzi rozwijaj╠cych chrome w Mozilli lub
-tworz╠cych strony WWW.
+%description dom-inspector -l pl.UTF-8
+To narzд≥dzie pozwala na oglд┘danie DOM dla stron WWW w Mozilli. Jest
+bardzo przydatne dla ludzi rozwijajд┘cych chrome w Mozilli lub
+tworzд┘cych strony WWW.
 
 %package gnomevfs
 Summary:	Gnome-VFS module providing support for smb:// URLs
-Summary(pl):	ModuЁ Gnome-VFS dodaj╠cy wsparcie dla URLi smb://
+Summary(pl.UTF-8):   Moduе┌ Gnome-VFS dodajд┘cy wsparcie dla URLi smb://
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -257,12 +257,12 @@ Requires:	%{name} = %{epoch}:%{version}-%{release}
 %description gnomevfs
 Gnome-VFS module providing support for smb:// URLs.
 
-%description gnomevfs -l pl
-ModuЁ Gnome-VFS dodaj╠cy wsparcie dla URLi smb://.
+%description gnomevfs -l pl.UTF-8
+Moduе┌ Gnome-VFS dodajд┘cy wsparcie dla URLi smb://.
 
 %package calendar
 Summary:	Mozilla calendar
-Summary(pl):	Kalendarz Mozilli
+Summary(pl.UTF-8):   Kalendarz Mozilli
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -270,14 +270,14 @@ Requires:	%{name} = %{epoch}:%{version}-%{release}
 %description calendar
 This package contains the calendar application from the Mozilla suite.
 
-%description calendar -l pl
+%description calendar -l pl.UTF-8
 Ten pakiet zawiera kalendarz z zestawu aplikacji Mozilla.
 
 %package devel
 Summary:	Headers for developing programs that will use Mozilla
-Summary(pl):	Mozilla - pliki nagЁСwkowe i biblioteki
-Summary(pt_BR):	Arquivos de inclusЦo para desenvolvimento de programas que usam o Mozilla
-Summary(ru):	Файлы, необходимые для использования программ, включающих Mozilla
+Summary(pl.UTF-8):   Mozilla - pliki nagе┌цЁwkowe i biblioteki
+Summary(pt_BR.UTF-8):   Arquivos de inclusцёo para desenvolvimento de programas que usam o Mozilla
+Summary(ru.UTF-8):   п╓п╟п╧п╩я▀, п╫п╣п╬п╠я┘п╬п╢п╦п╪я▀п╣ п╢п╩я▐ п╦я│п©п╬п╩я▄п╥п╬п╡п╟п╫п╦я▐ п©я─п╬пЁя─п╟п╪п╪, п╡п╨п╩я▌я┤п╟я▌я┴п╦я┘ Mozilla
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	nspr-devel >= 1:4.6-2
@@ -288,15 +288,15 @@ Obsoletes:	mozilla-firefox-devel
 %description devel
 Mozilla development package.
 
-%description devel -l pl
-Biblioteki i pliki nagЁСwkowe.
+%description devel -l pl.UTF-8
+Biblioteki i pliki nagе┌цЁwkowe.
 
-%description devel -l pt_BR
-Arquivos de inclusЦo para desenvolvimento de programas que usam o
+%description devel -l pt_BR.UTF-8
+Arquivos de inclusцёo para desenvolvimento de programas que usam o
 Mozilla.
 
-%description devel -l ru
-Заголовочные файлы, необходимые для разработки программ, испеользующих
+%description devel -l ru.UTF-8
+п≈п╟пЁп╬п╩п╬п╡п╬я┤п╫я▀п╣ я└п╟п╧п╩я▀, п╫п╣п╬п╠я┘п╬п╢п╦п╪я▀п╣ п╢п╩я▐ я─п╟п╥я─п╟п╠п╬я┌п╨п╦ п©я─п╬пЁя─п╟п╪п╪, п╦я│п©п╣п╬п╩я▄п╥я┐я▌я┴п╦я┘
 Mozilla
 
 %prep
