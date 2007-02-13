@@ -12,10 +12,10 @@
 %bcond_with	svg	# enable svg support
 #
 Summary:	Mozilla - web browser
-Summary(es.UTF-8):   Navegador de Internet Mozilla
-Summary(pl.UTF-8):   Mozilla - przeglądarka WWW
-Summary(pt_BR.UTF-8):   Navegador Mozilla
-Summary(ru.UTF-8):   Web browser
+Summary(es.UTF-8):	Navegador de Internet Mozilla
+Summary(pl.UTF-8):	Mozilla - przeglądarka WWW
+Summary(pt_BR.UTF-8):	Navegador Mozilla
+Summary(ru.UTF-8):	Web browser
 Name:		mozilla
 Version:	1.7.13
 Release:	3
@@ -158,7 +158,7 @@ Mozilla - полнофункциональный web-browser с открытым
 
 %package libs
 Summary:	mozilla shared libraries
-Summary(pl.UTF-8):   Biblioteki współdzielone mozilli
+Summary(pl.UTF-8):	Biblioteki współdzielone mozilli
 Group:		Libraries
 
 %description libs
@@ -169,8 +169,8 @@ Biblioteki współdzielone mozilli.
 
 %package mailnews
 Summary:	Mozilla - programs for mail and news
-Summary(pl.UTF-8):   Mozilla - programy do poczty i newsów
-Summary(ru.UTF-8):   Почтовая система на основе Mozilla
+Summary(pl.UTF-8):	Mozilla - programy do poczty i newsów
+Summary(ru.UTF-8):	Почтовая система на основе Mozilla
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -188,7 +188,7 @@ NNTP и имеет простой интерфейс пользователя.
 
 %package addon-enigmail
 Summary:	Enigmail - PGP/GPG support for Mozilla
-Summary(pl.UTF-8):   Enigmail - obsługa PGP/GPG dla Mozilli
+Summary(pl.UTF-8):	Enigmail - obsługa PGP/GPG dla Mozilli
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name}-mailnews = %{epoch}:%{version}-%{release}
 Requires:	%{name}-mailnews = %{epoch}:%{version}-%{release}
@@ -205,7 +205,7 @@ funkcjonalności GnuPG.
 
 %package chat
 Summary:	Mozilla Chat - IRC client integrated with Mozilla
-Summary(pl.UTF-8):   Mozilla Chat - zintegrowany z Mozillą klient IRC-a
+Summary(pl.UTF-8):	Mozilla Chat - zintegrowany z Mozillą klient IRC-a
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -219,7 +219,7 @@ Mozilla Chat - klient IRC-a zintegrowany z przeglądarką Mozilla.
 
 %package js-debugger
 Summary:	JavaScript debugger for use with Mozilla
-Summary(pl.UTF-8):   Odpluskwiacz JavaScriptu do używania z Mozillą
+Summary(pl.UTF-8):	Odpluskwiacz JavaScriptu do używania z Mozillą
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -232,7 +232,7 @@ Odpluskwiacz JavaScriptu do używania z Mozillą.
 
 %package dom-inspector
 Summary:	A tool for inspecting the DOM of pages in Mozilla
-Summary(pl.UTF-8):   Narzędzie do oglądania DOM stron w Mozilli
+Summary(pl.UTF-8):	Narzędzie do oglądania DOM stron w Mozilli
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -249,7 +249,7 @@ tworzących strony WWW.
 
 %package gnomevfs
 Summary:	Gnome-VFS module providing support for smb:// URLs
-Summary(pl.UTF-8):   Moduł Gnome-VFS dodający wsparcie dla URLi smb://
+Summary(pl.UTF-8):	Moduł Gnome-VFS dodający wsparcie dla URLi smb://
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -262,7 +262,7 @@ Moduł Gnome-VFS dodający wsparcie dla URLi smb://.
 
 %package calendar
 Summary:	Mozilla calendar
-Summary(pl.UTF-8):   Kalendarz Mozilli
+Summary(pl.UTF-8):	Kalendarz Mozilli
 Group:		X11/Applications/Networking
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
@@ -275,9 +275,9 @@ Ten pakiet zawiera kalendarz z zestawu aplikacji Mozilla.
 
 %package devel
 Summary:	Headers for developing programs that will use Mozilla
-Summary(pl.UTF-8):   Mozilla - pliki nagłówkowe i biblioteki
-Summary(pt_BR.UTF-8):   Arquivos de inclusão para desenvolvimento de programas que usam o Mozilla
-Summary(ru.UTF-8):   Файлы, необходимые для использования программ, включающих Mozilla
+Summary(pl.UTF-8):	Mozilla - pliki nagłówkowe i biblioteki
+Summary(pt_BR.UTF-8):	Arquivos de inclusão para desenvolvimento de programas que usam o Mozilla
+Summary(ru.UTF-8):	Файлы, необходимые для использования программ, включающих Mozilla
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	nspr-devel >= 1:4.6-2
