@@ -8,7 +8,7 @@
 %bcond_without	ft218	# compile with freetype < 2.1.8
 %bcond_without	gnomevfs	# disable GnomeVFS support
 
-%bcond_without	heimdal	# disable heimdal support
+%bcond_without	kerberos5	# disable Kerberos V support
 %bcond_with	svg	# enable svg support
 #
 Summary:	Mozilla - web browser
@@ -18,7 +18,7 @@ Summary(pt_BR.UTF-8):	Navegador Mozilla
 Summary(ru.UTF-8):	Web browser
 Name:		mozilla
 Version:	1.7.13
-Release:	3
+Release:	4
 Epoch:		5
 License:	Mozilla Public License
 Group:		X11/Applications/Networking
@@ -74,7 +74,7 @@ BuildConflicts:	freetype-devel = 2.1.8
 %{?with_gtk1:BuildRequires:	gtk+-devel >= 1.2.0}
 %{!?with_gtk1:BuildRequires:	gtk+2-devel >= 2:2.2.0}
 # for libnegotiateauth
-%{?with_heimdal:BuildRequires:	heimdal-devel >= 0.7}
+%{?with_kerberos5:BuildRequires:	krb5-devel}
 %{!?with_gtk1:BuildRequires:	libIDL-devel >= 0.8.0}
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.0
@@ -608,7 +608,7 @@ fi
 %attr(755,root,root) %{_mozilladir}/components/libmoz*.so
 %attr(755,root,root) %{_mozilladir}/components/libmyspell.so
 %attr(755,root,root) %{_mozilladir}/components/libnecko*.so
-%{?with_heimdal:%attr(755,root,root) %{_mozilladir}/components/libnegotiateauth.so}
+%{?with_kerberos5:%attr(755,root,root) %{_mozilladir}/components/libnegotiateauth.so}
 %attr(755,root,root) %{_mozilladir}/components/libnkdatetime.so
 %attr(755,root,root) %{_mozilladir}/components/libnkfinger.so
 %attr(755,root,root) %{_mozilladir}/components/libns*.so
