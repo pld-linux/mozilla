@@ -1,9 +1,8 @@
 [Desktop Entry]
-Encoding=UTF-8
 Name=Mozilla Chat
 Name[pl]=Chat Mozilli
 Exec=mozilla -chat
-Icon=mozilla.png
+Icon=mozilla
 Terminal=false
 Type=Application
 Categories=Network;IRCClient;

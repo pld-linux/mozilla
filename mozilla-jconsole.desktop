@@ -1,11 +1,10 @@
 [Desktop Entry]
-Encoding=UTF-8
 Name=Mozilla jConsole
 Name[pl]=Mozilla jConsole
 Comment=JavaScript Console
 Comment[pl]=Konsola JavaScript
 Exec=mozilla -jconsole
-Icon=mozilla.png
+Icon=mozilla
 Terminal=false
 Type=Application
 Categories=Development;WebDevelopment;

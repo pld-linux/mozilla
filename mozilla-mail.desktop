@@ -1,9 +1,8 @@
 [Desktop Entry]
-Encoding=UTF-8
 Name=Mozilla Mail
 Name[pl]=Poczta Mozilli
 Exec=mozilla -mail
-Icon=mozilla.png
+Icon=mozilla
 Terminal=false
 Type=Application
 Categories=Network;Email;

@@ -1,9 +1,8 @@
 [Desktop Entry]
-Encoding=UTF-8
 Name=Mozilla Terminal
 Name[pl]=Terminal Mozilli
 Exec=mozilla -terminal
-Icon=mozilla.png
+Icon=mozilla
 Terminal=false
 Type=Application
 Categories=Network;X-Misc;
