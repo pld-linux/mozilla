@@ -74,7 +74,7 @@ BuildConflicts:	freetype-devel = 2.1.8
 %{?with_gtk1:BuildRequires:	gtk+-devel >= 1.2.0}
 %{!?with_gtk1:BuildRequires:	gtk+2-devel >= 2:2.2.0}
 # for libnegotiateauth
-%{?with_kerberos5:BuildRequires:	krb5-devel}
+%{?with_kerberos5:BuildRequires:	heimdal-devel}
 %{!?with_gtk1:BuildRequires:	libIDL-devel >= 0.8.0}
 BuildRequires:	libjpeg-devel >= 6b
 BuildRequires:	libpng-devel >= 1.2.0
