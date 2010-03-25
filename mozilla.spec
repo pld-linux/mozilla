@@ -1,3 +1,5 @@
+# TODO
+# - browser plugins v2
 #
 # Conditional build:
 %bcond_with	gtk1	# use GTK+ 1.2.x instead of 2.x.x
@@ -515,55 +517,68 @@ EOF
 rm -rf $RPM_BUILD_ROOT
 
 %post
-umask 022
-%{_sbindir}/mozilla-chrome+xpcom-generate
-
-%postun
 if [ "$1" = "1" ]; then
 	%{_sbindir}/mozilla-chrome+xpcom-generate
 fi
 
+%postun
+[ ! -x %{_sbindir}/mozilla-chrome+xpcom-generate ] || %{_sbindir}/mozilla-chrome+xpcom-generate
+
 %post mailnews
-%{_sbindir}/mozilla-chrome+xpcom-generate
+if [ "$1" = "1" ]; then
+	%{_sbindir}/mozilla-chrome+xpcom-generate
+fi
 
 %postun mailnews
-%{_sbindir}/mozilla-chrome+xpcom-generate
+[ ! -x %{_sbindir}/mozilla-chrome+xpcom-generate ] || %{_sbindir}/mozilla-chrome+xpcom-generate
 
 %post addon-enigmail
-%{_sbindir}/mozilla-chrome+xpcom-generate
+if [ "$1" = "1" ]; then
+	%{_sbindir}/mozilla-chrome+xpcom-generate
+fi
 
 %postun addon-enigmail
-%{_sbindir}/mozilla-chrome+xpcom-generate
+[ ! -x %{_sbindir}/mozilla-chrome+xpcom-generate ] || %{_sbindir}/mozilla-chrome+xpcom-generate
 
 %post chat
-%{_sbindir}/mozilla-chrome+xpcom-generate
+if [ "$1" = "1" ]; then
+	%{_sbindir}/mozilla-chrome+xpcom-generate
+fi
 
 %postun chat
-%{_sbindir}/mozilla-chrome+xpcom-generate
+[ ! -x %{_sbindir}/mozilla-chrome+xpcom-generate ] || %{_sbindir}/mozilla-chrome+xpcom-generate
 
 %post js-debugger
-%{_sbindir}/mozilla-chrome+xpcom-generate
+if [ "$1" = "1" ]; then
+	%{_sbindir}/mozilla-chrome+xpcom-generate
+fi
 
 %postun js-debugger
-%{_sbindir}/mozilla-chrome+xpcom-generate
+[ ! -x %{_sbindir}/mozilla-chrome+xpcom-generate ] || %{_sbindir}/mozilla-chrome+xpcom-generate
 
 %post dom-inspector
-%{_sbindir}/mozilla-chrome+xpcom-generate
+if [ "$1" = "1" ]; then
+	%{_sbindir}/mozilla-chrome+xpcom-generate
+fi
 
 %postun dom-inspector
-%{_sbindir}/mozilla-chrome+xpcom-generate
+[ ! -x %{_sbindir}/mozilla-chrome+xpcom-generate ] || %{_sbindir}/mozilla-chrome+xpcom-generate
 
 %post gnomevfs
-%{_sbindir}/mozilla-chrome+xpcom-generate
+if [ "$1" = "1" ]; then
+	%{_sbindir}/mozilla-chrome+xpcom-generate
+fi
 
 %postun gnomevfs
-%{_sbindir}/mozilla-chrome+xpcom-generate
+[ ! -x %{_sbindir}/mozilla-chrome+xpcom-generate ] || %{_sbindir}/mozilla-chrome+xpcom-generate
 
 %post calendar
-%{_sbindir}/mozilla-chrome+xpcom-generate
+if [ "$1" = "1" ]; then
+	%{_sbindir}/mozilla-chrome+xpcom-generate
+fi
 
 %postun calendar
-%{_sbindir}/mozilla-chrome+xpcom-generate
+[ ! -x %{_sbindir}/mozilla-chrome+xpcom-generate ] || %{_sbindir}/mozilla-chrome+xpcom-generate
 
 %files
 %defattr(644,root,root,755)
